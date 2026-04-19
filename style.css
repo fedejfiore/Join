@@ -63,9 +63,12 @@ body {
 .overlay {
     position: absolute;
     inset: 0;
-    /* CAPA MÁS OSCURA: radial de 60% a 95% de negro */
-    background: radial-gradient(circle, rgba(0,12,20,0.6) 0%, rgba(0,12,20,0.95) 100%);
-    z-index: -1;
+    background: radial-gradient(
+        circle, 
+        rgba(0,12,20,0.5) 0%,   /* Un poco más oscuro en el centro */
+        rgba(0,12,20,0.98) 100% /* Casi negro total en los bordes */
+    );
+    z-index: 0;
 }
 
 /* WRAPPER */
@@ -117,11 +120,15 @@ body {
     text-transform: uppercase;
 }
 
-/* AJUSTE PARA EL ROJO: Brillo sutil para que no se apague */
 .accent-text { 
     color: var(--accent); 
-    text-shadow: 0 0 1px rgba(255,255,255,0.3); 
-}
+    /* Sombra blanca sutil para separar el color oscuro del fondo */
+    text-shadow: 
+        0px 0px 10px rgba(255, 255, 255, 0.4), 
+        0px 0px 2px rgba(255, 255, 255, 0.2);
+    filter: drop-shadow(0px 0px 1px rgba(255, 255, 255, 0.5));
+} 
+
 
 .subtitle {
     font-size: clamp(13px, 2vw, 15px);
