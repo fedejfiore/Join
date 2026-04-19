@@ -1,6 +1,6 @@
 :root {
-    --gold: #d4af37;
-    --dark: #000c14; /* Un azul casi negro más profundo */
+    --accent: #00d4ff; /* Celeste vibrante */
+    --dark: #000c14;   /* Azul noche profundo */
     --white: #ffffff;
 }
 
@@ -14,18 +14,19 @@ body {
     font-family: 'Montserrat', sans-serif;
     background-color: var(--dark);
     color: var(--white);
-    overflow: hidden;
+    overflow: hidden; 
 }
 
-/* NAVBAR */
+/* NAVBAR SUPERIOR */
 .navbar {
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 100;
     background: rgba(0, 12, 20, 0.7);
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(20px);
     padding: 25px 0;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.1); /* Borde celeste sutil */
 }
 
 .nav-container {
@@ -39,29 +40,34 @@ body {
 
 .logo {
     font-weight: 900;
-    letter-spacing: 6px;
-    font-size: 1.6rem;
+    letter-spacing: 8px;
+    font-size: 1.8rem;
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 35px;
+    gap: 40px;
 }
 
 .nav-menu li {
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 3px;
-    opacity: 0.7;
-    transition: 0.3s;
+    opacity: 0.6;
+    transition: 0.4s;
+    cursor: pointer;
 }
 
-.nav-menu li:hover { opacity: 1; color: var(--gold); }
+.nav-menu li:hover { 
+    opacity: 1; 
+    color: var(--accent); 
+}
 
-/* HERO & VIDEO */
+/* HERO Y VIDEO */
 .hero {
     height: 100vh;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -84,62 +90,71 @@ body {
 .overlay {
     position: absolute;
     inset: 0;
-    /* Capa más densa en los bordes para mejorar la lectura */
-    background: radial-gradient(circle, rgba(0,12,20,0.4) 0%, rgba(0,12,20,0.85) 100%);
+    background: radial-gradient(circle, rgba(0,12,20,0.2) 0%, rgba(0,12,20,0.85) 100%);
     z-index: 0;
 }
 
+/* CONTENIDO CENTRAL */
 .content {
     position: relative;
     z-index: 10;
     text-align: center;
+    padding-bottom: 80px;
 }
 
 .tagline {
     font-weight: 700;
-    letter-spacing: 10px;
-    font-size: 11px;
-    color: var(--gold);
-    margin-bottom: 20px;
+    letter-spacing: 12px;
+    font-size: 10px;
+    color: var(--accent);
+    margin-bottom: 25px;
+    text-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
 }
 
 .main-title {
-    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-size: clamp(3rem, 10vw, 6rem);
     font-weight: 900;
     font-style: italic;
-    letter-spacing: -3px;
-    line-height: 0.85;
-    margin-bottom: 30px;
+    letter-spacing: -4px;
+    line-height: 0.8;
+    margin-bottom: 40px;
+    text-transform: uppercase;
 }
 
-.gold { color: var(--gold); text-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+.accent-text { 
+    color: var(--accent); 
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+}
 
 .subtitle {
-    font-size: 13px;
-    letter-spacing: 5px;
+    font-size: 14px;
+    letter-spacing: 6px;
     font-weight: 400;
-    max-width: 700px;
+    max-width: 800px;
     margin: 0 auto;
-    line-height: 1.6;
+    line-height: 1.8;
+    opacity: 0.8;
 }
 
-/* WHATSAPP */
+/* WHATSAPP FLOAT */
 .whatsapp-float {
     position: fixed;
-    bottom: 40px;
-    right: 40px;
+    bottom: 50px;
+    right: 50px;
     z-index: 100;
-    width: 65px;
-    height: 65px;
+    width: 70px;
+    height: 70px;
     background: #25d366;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    transition: 0.3s;
 }
 
-.whatsapp-icon { width: 35px; }
+.whatsapp-float:hover { transform: translateY(-5px) scale(1.05); }
+.whatsapp-icon { width: 38px; }
 
 /* FOOTER */
 .footer-landing {
@@ -147,8 +162,8 @@ body {
     bottom: 0;
     width: 100%;
     z-index: 10;
-    padding: 50px;
-    background: linear-gradient(to top, var(--dark) 0%, transparent 100%);
+    padding: 60px 50px;
+    background: linear-gradient(to top, var(--dark) 40%, transparent 100%);
 }
 
 .footer-top {
@@ -159,34 +174,44 @@ body {
     margin: 0 auto 30px;
 }
 
-.footer-logo { font-weight: 900; letter-spacing: 4px; font-size: 1.2rem; }
+.logo-footer { font-weight: 900; letter-spacing: 5px; font-size: 1.4rem; }
 
 .social-links a {
     color: white;
     text-decoration: none;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
-    margin-left: 25px;
-    letter-spacing: 2px;
+    margin-left: 30px;
+    letter-spacing: 3px;
+    transition: 0.3s;
 }
 
-.footer-info { text-align: center; font-size: 12px; margin-bottom: 30px; opacity: 0.6; }
+.social-links a:hover { color: var(--accent); }
+
+.footer-info { 
+    text-align: center; 
+    font-size: 13px; 
+    margin-bottom: 30px; 
+    opacity: 0.5;
+    letter-spacing: 1px;
+}
 
 .footer-bottom {
     display: flex;
     justify-content: space-between;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 2px;
-    opacity: 0.4;
+    letter-spacing: 3px;
+    opacity: 0.3;
     max-width: 1400px;
     margin: 0 auto;
-    border-top: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(255,255,255,0.08);
     padding-top: 30px;
 }
 
 @media (max-width: 900px) {
     .nav-menu { display: none; }
-    .footer-top, .footer-bottom { flex-direction: column; gap: 25px; text-align: center; }
-    .social-links a { margin: 0 10px; }
+    .main-title { font-size: 3.5rem; }
+    .footer-top, .footer-bottom { flex-direction: column; gap: 30px; text-align: center; }
+    .social-links a { margin: 0 15px; }
 }
