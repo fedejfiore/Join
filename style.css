@@ -24,10 +24,10 @@ body {
     top: 0;
     width: 100%;
     z-index: 100;
-    background: rgba(0, 12, 20, 0.85);
+    background: rgba(0, 12, 20, 0.9); /* Más sólida */
     backdrop-filter: blur(20px);
     padding: 20px 0;
-    border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .nav-container {
@@ -63,26 +63,27 @@ body {
 .overlay {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle, rgba(0,12,20,0.4) 0%, rgba(0,12,20,0.95) 100%);
+    /* CAPA MÁS OSCURA: radial de 60% a 95% de negro */
+    background: radial-gradient(circle, rgba(0,12,20,0.6) 0%, rgba(0,12,20,0.95) 100%);
     z-index: -1;
 }
 
-/* WRAPPER PARA DISTRIBUIR ESPACIO */
+/* WRAPPER */
 .main-wrapper {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Empuja el contenido al centro y el footer al final */
-    padding-top: 120px; /* Espacio para que el título no toque la navbar */
+    justify-content: space-between;
+    padding-top: 120px;
     position: relative;
     z-index: 10;
 }
 
-/* CONTENIDO CENTRAL */
+/* CONTENIDO */
 .content {
     text-align: center;
     padding: 0 20px;
-    margin-top: auto; /* Ayuda a centrar verticalmente */
+    margin-top: auto;
     margin-bottom: auto;
 }
 
@@ -96,6 +97,7 @@ body {
     letter-spacing: 3px;
     border-radius: 50px;
     margin-bottom: 25px;
+    background: rgba(0,0,0,0.3); /* Fondo sutil para el badge */
 }
 
 .tagline {
@@ -115,7 +117,11 @@ body {
     text-transform: uppercase;
 }
 
-.accent-text { color: var(--accent); text-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+/* AJUSTE PARA EL ROJO: Brillo sutil para que no se apague */
+.accent-text { 
+    color: var(--accent); 
+    text-shadow: 0 0 1px rgba(255,255,255,0.3); 
+}
 
 .subtitle {
     font-size: clamp(13px, 2vw, 15px);
@@ -126,10 +132,10 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* FOOTER - YA NO ES ABSOLUTE PARA NO SUPERPONERSE */
+/* FOOTER */
 .footer-landing {
     padding: 40px 50px;
-    background: linear-gradient(to top, var(--dark) 60%, transparent);
+    background: linear-gradient(to top, var(--dark) 80%, transparent);
 }
 
 .footer-top {
@@ -183,7 +189,7 @@ body {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-    body { overflow-y: auto; height: auto; } /* En celular permitimos scroll si el texto es mucho */
+    body { overflow-y: auto; height: auto; }
     .hero { height: auto; min-height: 100vh; }
     .nav-menu { display: none; }
     .main-wrapper { padding-top: 100px; }
