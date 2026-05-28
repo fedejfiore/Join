@@ -1,0 +1,221 @@
+import { useState } from 'react';
+import Layout from '../components/layout/Layout';
+import { getAllSiteData } from '../lib/google-sheets';
+import { FileText, Eye, Download, X, Calendar, ChevronRight } from 'lucide-react';
+
+export default function MiConsorcio({ data }) {
+  const [isLogged, setIsLogged] = useState(false);
+  const [user, setUser] = useState(null);
+  const [dniInput, setDniInput] = useState('');
+  const [pswInput, setPswInput] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [viewingPdf, setViewingPdf] = useState(null);
+
+  if (!data) return null;
+
+  // --- FUNCIÓN PARA PROCESAR LINKS DE DRIVE ---
+  const getFileUrls = (url) => {
+    if (!url || !url.includes('drive.google.com')) return { view: url, download: url };
+    
+    // Extraer el ID del archivo de Drive sin importar el formato del link
+    const match = url.match(/\/d\/([^/]+)/) || url.match(/id=([^&]+)/);
+    const id = match ? match[1] : null;
+
+    return {
+      view: id ? `https://drive.google.com/file/d/${id}/preview` : url,
+      download: id ? `https://drive.google.com/uc?export=download&id=${id}` : url
+    };
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dni: dniInput, password: pswInput }),
+      });
+      const resData = await res.json();
+      if (res.ok) {
+        setUser(resData);
+        setIsLogged(true);
+      } else {
+        setError(resData.message || "Credenciales incorrectas");
+      }
+    } catch (err) {
+      setError("Error de conexión");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!isLogged) {
+    return (
+      <Layout data={data}>
+        <div className="min-h-[80vh] flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4 font-sans">
+          <form onSubmit={handleLogin} className="max-w-md w-full bg-white dark:bg-slate-900 p-8 md:p-12 rounded-[3rem] shadow-2xl border border-slate-100 dark:border-slate-800">
+            <h2 className="text-3xl font-black italic text-primary mb-2 text-center uppercase tracking-tighter italic">Mi Consorcio</h2>
+            <p className="text-center text-slate-400 text-[10px] mb-8 uppercase tracking-[0.3em] font-black italic">Acceso Propietarios</p>
+            <div className="space-y-4">
+              <input required type="text" placeholder="DNI (Sin puntos)" className="w-full text-center font-black tracking-widest p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border-none focus:ring-2 focus:ring-primary outline-none" value={dniInput} onChange={(e) => setDniInput(e.target.value)} />
+              <input required type="password" placeholder="PASSWORD" className="w-full text-center font-black tracking-widest p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border-none focus:ring-2 focus:ring-primary outline-none" value={pswInput} onChange={(e) => setPswInput(e.target.value)} />
+              {error && <p className="text-red-600 text-[10px] font-bold text-center uppercase">{error}</p>}
+              <button disabled={loading} className="btn-domus w-full py-4 rounded-2xl font-black uppercase tracking-widest transition-all shadow-lg">
+                {loading ? 'Validando...' : 'Ingresar'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </Layout>
+    );
+  }
+
+  // --- LÓGICA DE FILTRADO Y AGRUPACIÓN POR MES/AÑO ---
+  const userLiquidaciones = data.liquidaciones?.filter(l => 
+    String(l.id_consorcio).trim().toUpperCase() === String(user.id_consorcio).trim().toUpperCase()
+  ) || [];
+
+  const agrupadas = userLiquidaciones.reduce((acc, curr) => {
+    // Usamos los nombres exactos de tus columnas
+    const key = `${curr.mes} ${curr.año}`.trim();
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(curr);
+    return acc;
+  }, {});
+
+  return (
+    <Layout data={data}>
+      <div className="max-w-7xl mx-auto py-12 md:py-20 px-6 font-sans">
+        
+        {/* HEADER DE BIENVENIDA */}
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 border-b border-slate-100 dark:border-slate-800 pb-8 text-primary">
+          <div>
+            <span className="font-black text-[10px] uppercase tracking-[0.3em]">{user.edificio}</span>
+            <h1 className="text-5xl font-black italic uppercase leading-none tracking-tighter italic">Hola, {user.nombre.split(' ')[0]}</h1>
+            <p className="text-slate-400 font-bold text-xs mt-2 uppercase tracking-widest">UF: {user.unidad} | {user.direccion}</p>
+          </div>
+          <button onClick={() => setIsLogged(false)} className="px-6 py-2 rounded-full border-2 border-red-800 text-red-800 font-black text-[10px] hover:bg-red-800 hover:text-white transition-all uppercase tracking-widest">
+            Cerrar Sesión ✕
+          </button>
+        </header>
+
+        <div className="grid lg:grid-cols-3 gap-10">
+          
+          {/* COLUMNA IZQUIERDA: LIQUIDACIONES AGRUPADAS */}
+          <div className="lg:col-span-2 space-y-8">
+            <h2 className="text-sm font-black uppercase tracking-[0.3em] text-slate-400">Expensas Mensuales</h2>
+            
+            {Object.keys(agrupadas).length > 0 ? Object.entries(agrupadas).map(([periodo, archivos]) => (
+              <div key={periodo} className="bg-white dark:bg-slate-900 rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm mb-6">
+                <div className="bg-slate-50 dark:bg-slate-800/50 px-8 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
+                  <Calendar size={14} className="text-primary" />
+                  <span className="text-primary font-black text-[10px] uppercase tracking-widest italic">{periodo}</span>
+                </div>
+                <div className="p-4 space-y-2">
+                  {archivos.map((liq, i) => {
+                    const urls = getFileUrls(liq.link_liquidacion);
+                    const urlsAdjunto = getFileUrls(liq.link_adjunto);
+
+                    return (
+                      <div key={i} className="space-y-2">
+                        {/* Fila Liquidación Principal */}
+                        <div className="flex flex-col md:flex-row md:items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800/30 rounded-2xl transition-all group border border-transparent hover:border-slate-100">
+                          <div className="flex items-center gap-4 mb-4 md:mb-0">
+                            <div className="p-3 bg-primary/10 text-primary rounded-xl"><FileText size={20} /></div>
+                            <div>
+                              <p className="text-sm font-black uppercase text-slate-700 dark:text-slate-200">Liquidación de Expensas</p>
+                              <p className="text-[10px] font-bold text-slate-400 uppercase">Vencimiento: {liq.vencimiento}</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <button onClick={() => setViewingPdf(urls.view)} className="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-primary/20">
+                              <Eye size={14} /> Ver
+                            </button>
+                            <a href={urls.download} target="_blank" rel="noreferrer" className="flex items-center gap-2 border-2 border-primary text-primary px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
+                              <Download size={14} />
+                            </a>
+                          </div>
+                        </div>
+
+                        {/* Fila Adjunto / Nota (Si existe) */}
+                        {liq.link_adjunto && liq.link_adjunto !== "" && (
+                          <div className="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50/50 dark:bg-slate-800/20 rounded-2xl border border-dashed border-slate-200 ml-4 md:ml-8">
+                            <div className="flex items-center gap-4">
+                              <div className="p-2 bg-slate-200 text-slate-500 rounded-lg"><FileText size={16} /></div>
+                              <p className="text-[10px] font-black uppercase text-slate-500">Documento secundario</p>
+                            </div>
+                            <div className="flex gap-2 mt-2 md:mt-0">
+                                <button onClick={() => setViewingPdf(urlsAdjunto.view)} className="text-[9px] font-black uppercase text-primary underline">Ver Nota</button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )) : (
+              <div className="p-20 text-center bg-white rounded-[3rem] border-2 border-dashed border-slate-100">
+                 <p className="text-slate-400 font-bold uppercase text-xs tracking-widest">No hay expensas registradas.</p>
+              </div>
+            )}
+          </div>
+
+          {/* COLUMNA DERECHA: DOCUMENTOS FIJOS */}
+          <div className="space-y-6">
+            <h2 className="text-sm font-black uppercase tracking-[0.3em] text-slate-400">Documentos del Edificio</h2>
+            <div className="grid gap-3">
+              {user.reglamento && (
+                <button onClick={() => setViewingPdf(getFileUrls(user.reglamento).view)} className="flex items-center p-5 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 hover:border-primary transition-all text-left group">
+                  <div className="text-2xl mr-4 group-hover:scale-110 transition-transform">📜</div>
+                  <div className="flex-1">
+                    <p className="text-[10px] font-black text-primary uppercase leading-tight">Reglamento</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase">Copropiedad</p>
+                  </div>
+                  <ChevronRight size={16} className="text-slate-300" />
+                </button>
+              )}
+              {user.manual && (
+                <button onClick={() => setViewingPdf(getFileUrls(user.manual).view)} className="flex items-center p-5 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 hover:border-primary transition-all text-left group">
+                  <div className="text-2xl mr-4 group-hover:scale-110 transition-transform">📘</div>
+                  <div className="flex-1">
+                    <p className="text-[10px] font-black text-primary uppercase leading-tight">Manual</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase">Propietario</p>
+                  </div>
+                  <ChevronRight size={16} className="text-slate-300" />
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* --- VISOR MODAL PROFESIONAL --- */}
+      {viewingPdf && (
+        <div className="fixed inset-0 z-[100] flex flex-col bg-slate-950/95 backdrop-blur-md p-4 md:p-10 animate-in fade-in duration-300">
+          <div className="flex justify-between items-center mb-4 max-w-5xl mx-auto w-full">
+            <p className="text-white text-[10px] font-black uppercase tracking-[0.3em] italic">Previsualización de Documento</p>
+            <button onClick={() => setViewingPdf(null)} className="bg-white/10 text-white p-2 rounded-full hover:bg-red-500 transition-all shadow-xl">
+              <X size={24} />
+            </button>
+          </div>
+          <div className="flex-1 w-full max-w-5xl mx-auto bg-white rounded-3xl overflow-hidden shadow-2xl">
+            <iframe src={viewingPdf} className="w-full h-full border-none" title="Visor de Documentos Adomus"></iframe>
+          </div>
+        </div>
+      )}
+    </Layout>
+  );
+}
+
+export async function getStaticProps() {
+  try {
+    const data = await getAllSiteData();
+    return { props: { data }, revalidate: 10 };
+  } catch (e) {
+    return { props: { data: null } };
+  }
+}

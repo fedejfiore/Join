@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #0D3B66; 
+  --color-accent: #5D9CEC;   
+}
+
+.dark {
+  --color-primary: #6da1f5; 
+  --color-accent: #89c6ff;
+}
+
+/* --- TÍTULOS --- */
+/* Light: Azul Logo / Dark: Celeste */
+h2, h3 { 
+  color: var(--color-primary) !important;
+  @apply font-black italic uppercase tracking-tighter transition-colors duration-500;
+}
+
+.dark h2, .dark h3 {
+  color: var(--color-accent) !important;
+}
+
+/* Excepción sobre imágenes */
+.text-on-image {
+  color: var(--color-accent) !important;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5) !important;
+}
+
+/* --- ALTO CONTRASTE (SUAVIZADO) --- */
+/* Solo forzamos Blanco/Negro de fondo, pero no rompemos colores de acento */
+html.high-contrast body {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+html.dark.high-contrast body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* En alto contraste, los h2 y h3 mantienen su color (Azul o Celeste) pero con más peso */
+/* MODO ALTO CONTRASTE (CORREGIDO) */
+html.high-contrast h2, 
+html.high-contrast h3,
+html.high-contrast h1 {
+  font-weight: 900 !important; /* Grosor máximo para títulos */
+  filter: contrast(1.5);
+}
+
+html.high-contrast p,
+html.high-contrast span,
+html.high-contrast li,
+html.high-contrast label,
+html.high-contrast a {
+  font-weight: 800 !important; /* Negrita muy marcada para textos comunes */
+  letter-spacing: 0.02em;      /* Un poco de espacio extra ayuda a leer en bold */
+}
+
+/* --- BOTONES --- */
+.btn-submit {
+  @apply bg-primary dark:bg-accent text-white dark:text-slate-900 font-black uppercase transition-all shadow-lg;
+}
+
+/* --- ESTRUCTURA --- */
+body { @apply bg-slate-50 dark:bg-[#0a192f] transition-colors duration-500; }
+.section-dynamic { @apply py-24 px-6 bg-white dark:bg-[#0a192f]; }
+
+.dark .bg-primary {
+    background-color: var(--color-accent) !important;
+}
+
+.dark .text-primary {
+    color: var(--color-accent) !important;}
