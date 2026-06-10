@@ -1,13 +1,5 @@
 export const ThemeConfig = {
-  colors: {
-    primary: "#4C1D95", // Violeta Domus
-    accent: "#7C3AED",
-    text: "#1e293b",
-    bg: "#ffffff"
-  },
-  fonts: {
-    title: "'Crimson Pro', serif",
-    body: "'Inter', sans-serif"
-  },
+  colors: { primary: "#0D3B66", accent: "#5D9CEC", text: "#0D3B66", bg: "#f8fafc" },
+  fonts: { title: "'Montserrat', sans-serif", body: "'Montserrat', sans-serif" },
   borderRadius: "2.5rem"
 };

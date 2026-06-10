@@ -2,49 +2,48 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Menu, X, Accessibility } from 'lucide-react';
 import AccessibilityHub from '../ui/AccessibilityHub';
 
 export default function Navbar({ brand, setup, accConfig }) {
   const [isOpen, setIsOpen] = useState(false);
   const [showAcc, setShowAcc] = useState(false);
+  const [logoError, setLogoError] = useState(false);
 
   const menuItems = [
-    { id: 'nosotros', label: setup?.nosotros?.valor, show: setup?.nosotros?.status === 'ON' },
-    { id: 'proceso', label: setup?.proceso?.valor, show: setup?.proceso?.status === 'ON' },
-    { id: 'servicios', label: setup?.servicios?.valor, show: setup?.servicios?.status === 'ON' },
-    { id: 'valores', label: setup?.valores?.valor, show: setup?.valores?.status === 'ON' },
-    { id: 'novedades', label: setup?.noticias?.valor, show: setup?.noticias?.status === 'ON' },
-    { id: 'faq', label: setup?.FAQ?.valor, show: setup?.FAQ?.status === 'ON' },
-    { id: 'contacto', label: setup?.contacto?.valor, show: setup?.contacto?.status === 'ON' },
-  ].filter(item => item.show && item.label && item.label.trim() !== "");
-
-  // Función mínima para determinar si es página o ancla
-  const getHref = (id) => {
-    if (id === 'faq') return '/faq';
-    if (id === 'novedades') return '/novedades';
-    return `/#${id}`;
-  };
+    { id: 'tasaciones',  label: setup?.tasaciones?.valor  || 'TASACIONES',  href: '/tasaciones' },
+    { id: 'propiedades', label: setup?.propiedades?.valor || 'PROPIEDADES', href: '/propiedades' },
+    { id: 'sucesiones',  label: setup?.sucesiones?.valor  || 'SUCESIONES',  href: '/sucesiones' },
+    { id: 'juridico',    label: setup?.juridico?.valor    || 'JURÍDICO',    href: '/juridico' },
+    { id: 'blog',        label: setup?.blog?.valor        || 'BLOG',        href: '/blog' },
+  ].filter(item => setup?.[item.id]?.status !== 'OFF');
 
   return (
     <nav className="sticky top-0 w-full z-50 bg-slate-200 dark:bg-slate-900 border-b border-slate-300 dark:border-slate-800 shadow-sm transition-colors duration-500">
       <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
         
         {/* LOGO */}
-        <Link href="/" className="h-full py-4 shrink-0">
-          <Image 
-            src="/images/LOGO-DOMUS---Azul-sobre-transparente.png" 
-            alt="Logo Domus" 
-            width={220} height={70} priority
-            className="block dark:hidden h-full w-auto object-contain" 
-          />
-          <Image 
-            src="/images/LOGO-DOMUS---Blanco-sobre-transparente.png" 
-            alt="Logo Domus" 
-            width={220} height={70} priority
-            className="hidden dark:block h-full w-auto object-contain" 
-          />
+        <Link href="/" className="h-full py-4 shrink-0 flex items-center">
+          {logoError ? (
+            <span className="font-black text-2xl tracking-[8px] text-primary dark:text-accent select-none">
+              JOIN
+            </span>
+          ) : (
+            <>
+              <img 
+                src="/images/join-logo-color.png" 
+                alt="Logo Join" 
+                onError={() => setLogoError(true)}
+                className="block dark:hidden h-full w-auto object-contain max-h-[60px]" 
+              />
+              <img 
+                src="/images/join-logo-blanco.png" 
+                alt="Logo Join" 
+                onError={() => setLogoError(true)}
+                className="hidden dark:block h-full w-auto object-contain max-h-[60px]" 
+              />
+            </>
+          )}
         </Link>
 
         {/* NAVEGACIÓN DESKTOP */}
@@ -52,7 +51,7 @@ export default function Navbar({ brand, setup, accConfig }) {
           {menuItems.map(item => (
             <Link 
               key={item.id} 
-              href={getHref(item.id)} 
+              href={item.href} 
               className="relative font-bold uppercase text-[12px] tracking-[0.15em] text-slate-700 dark:text-slate-200 group"
             >
               {item.label}
@@ -61,13 +60,6 @@ export default function Navbar({ brand, setup, accConfig }) {
           ))}
           
           <div className="flex items-center gap-6 ml-4 border-l border-slate-200 dark:border-slate-700 pl-8">
-            <Link 
-              href="/mi-consorcio" 
-              className="bg-primary dark:bg-accent nav-btn-consorcio text-white dark:text-slate-950 px-7 py-3 rounded-full font-black uppercase text-[11px] tracking-tighter hover:scale-105 transition-all shadow-lg shadow-primary/20 dark:shadow-accent/20"
-            >
-              Mi Consorcio
-            </Link>
-
             <button 
               onClick={() => setShowAcc(!showAcc)}
               className="text-slate-400 hover:text-primary dark:hover:text-accent transition-colors p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -105,20 +97,13 @@ export default function Navbar({ brand, setup, accConfig }) {
           {menuItems.map(item => (
             <Link 
               key={item.id} 
-              href={getHref(item.id)} 
+              href={item.href} 
               onClick={() => setIsOpen(false)} 
               className="font-black uppercase text-lg text-primary dark:text-accent transition-colors"
             >
               {item.label}
             </Link>
           ))}
-          <Link 
-            href="/mi-consorcio" 
-            onClick={() => setIsOpen(false)} 
-            className="bg-primary dark:bg-accent text-white dark:text-slate-950 w-full text-center py-5 rounded-2xl font-black uppercase text-sm shadow-xl transition-colors"
-          >
-            Mi Consorcio
-          </Link>
         </div>
       )}
     </nav>

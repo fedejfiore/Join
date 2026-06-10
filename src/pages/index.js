@@ -1,65 +1,33 @@
 import { getAllSiteData } from '../lib/google-sheets';
 import Layout from '../components/layout/Layout';
-
-// SECCIONES
-import Hero from '../components/sections/Hero';
-import About from '../components/sections/About';
-import Services from '../components/sections/Services';
-import Features from '../components/sections/Features';
-import Process from '../components/sections/Process'; // <--- Nueva Sección
-import Contact from '../components/sections/Contact';
+import HeroJoin from '../components/sections/HeroJoin';
+import ServiciosJoin from '../components/sections/ServiciosJoin';
+import NosotrosJoin from '../components/sections/NosotrosJoin';
+import PorQueElegirnos from '../components/sections/PorQueElegirnos';
+import BlogPreviewJoin from '../components/sections/BlogPreviewJoin';
+import ContactoJoin from '../components/sections/ContactoJoin';
 
 export default function Home({ data }) {
   if (!data) return null;
-  
-  // Extraemos todas las pestañas necesarias del objeto data
-  const { setup, brand, banner, nosotros, servicios, valores, proceso } = data;
-
+  const { setup, brand, banner, nosotros, servicios, valores, noticias } = data;
   return (
     <Layout data={data}>
-      
-      {/* 1. HERO / BANNER */}
-      {setup.banner?.status === 'ON' && <Hero config={banner} />}
-      
-      {/* 2. SOBRE NOSOTROS */}
-      {setup.nosotros?.status === 'ON' && (
-        <About data={nosotros} /> 
-      )}
-
-      {/* 3. PROCESO DE GESTIÓN (Nueva Sección) */}
-      {setup.proceso?.status === 'ON' && (
-        <Process pasos={proceso} />
-      )}
-
-      {/* 4. SERVICIOS */}
-      {setup.servicios?.status === 'ON' && <Services servicios={servicios} />}
-      
-      {/* 5. VALORES / FEATURES */}
-      {setup.valores?.status === 'ON' && <Features valores={valores} />}
-      
-      {/* 6. CONTACTO E INFORMACIÓN */}
-      {(setup.contacto?.status === 'ON' || setup.formulario?.status === 'ON') && (
-        <Contact 
-          brand={brand} 
-          showForm={setup.formulario?.status === 'ON'} 
-          showInfo={setup.contacto?.status === 'ON'}
-        />
-      )}
-
+      {setup.banner?.status !== 'OFF'   && <HeroJoin config={banner} brand={brand} />}
+      {setup.servicios?.status !== 'OFF' && <ServiciosJoin servicios={servicios} />}
+      {setup.nosotros?.status !== 'OFF'  && <NosotrosJoin data={nosotros} />}
+      {setup.valores?.status !== 'OFF'   && <PorQueElegirnos valores={valores} />}
+      {setup.noticias?.status !== 'OFF'  && <BlogPreviewJoin noticias={noticias} />}
+      {setup.contacto?.status !== 'OFF'  && <ContactoJoin brand={brand} />}
     </Layout>
   );
 }
 
-// OBTENCIÓN DE DATOS (SSR con Revalidación)
 export async function getStaticProps() {
   try {
     const data = await getAllSiteData();
-    return { 
-      props: { data }, 
-      revalidate: 10 
-    };
-  } catch (error) {
-    console.error("Error al obtener datos de Google Sheets:", error);
+    return { props: { data }, revalidate: 10 };
+  } catch (e) {
+    console.error("Error at getStaticProps of Home:", e);
     return { props: { data: null } };
   }
 }

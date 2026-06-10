@@ -74,3 +74,16 @@ body { @apply bg-slate-50 dark:bg-[#0a192f] transition-colors duration-500; }
 
 .dark .text-primary {
     color: var(--color-accent) !important;}
+
+/* HERO CON VIDEO */
+.hero-video-section {
+  position: relative; height: 100vh; width: 100%; overflow: hidden;
+  background-color: #000c14;
+}
+.hero-video-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: radial-gradient(circle, rgba(0,12,20,0.5) 0%, rgba(0,12,20,0.98) 100%);
+}
+/* GRID DE PROPIEDADES */
+.property-card-img { transition: transform 0.5s ease; }
+.property-card:hover .property-card-img { transform: scale(1.04); }

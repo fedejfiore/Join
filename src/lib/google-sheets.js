@@ -9,18 +9,15 @@ const GIDS = {
   banner: '1166609304',
   nosotros: '1360191972',
   valores: '100701716',
-  footer: '443519777',
-  contacto: '1909991166',
-  formulario: '1781109751',
-  setup: '1368475897',
-  config_accesibilidad: '138221169',
-  setup_mkt: '2077502373',
-  faq: '1028538141',
+  FAQ: '1028538141',
   noticias: '708572124',
-  mkt_redirecciones: '563740450',
-  bd_liquidaciones: '374382943', 
-  bd_consorcios: '1122648895',   
-  bd_usuarios: '1904185236'
+  MKT_Redirecciones: '563740450',
+  SETUP: '1368475897',
+  config_accesibilidad: '138221169',
+  SETUP_mkt: '2077502373',
+  formulario: '1781109751',
+  propiedades: '1902783513',
+  contacto: '1909991166'
 };
 
 async function fetchCSV(gid) {
@@ -60,25 +57,18 @@ export async function getAllSiteData() {
   };
 
   return {
-    // CONFIGURACIONES (Mapeadas por Clave)
-    setup: mapConfig(rawData.setup),
-    brand: mapConfig(rawData.brand),
-    banner: mapConfig(rawData.banner),
-    nosotros: mapConfig(rawData.nosotros), 
+    setup:                mapConfig(rawData.SETUP),
+    brand:                mapConfig(rawData.brand),
+    banner:               mapConfig(rawData.banner),
+    nosotros:             mapConfig(rawData.nosotros),
     config_accesibilidad: mapConfig(rawData.config_accesibilidad),
-    mkt: mapConfig(rawData.setup_mkt),
-    
-    // REDIRECCIONES (Lista filtrada)
-    redirecciones: rawData.mkt_redirecciones?.filter(r => r.ON_OFF === 'ON') || [], // <--- Agregué la coma aquí
-    
-    // LISTAS (Filas que se filtran por ON)
-    servicios: rawData.servicios?.filter(s => s.ON_OFF === 'ON') || [],
-    valores: rawData.valores?.filter(v => v.ON_OFF === 'ON') || [],
-    proceso: rawData.proceso?.filter(p => p['ON/OFF'] === 'ON' || p.ON_OFF === 'ON') || [],
-    faq: rawData.faq?.filter(f => f.ON_OFF === 'ON') || [],
-    noticias: rawData.noticias?.filter(n => n.ON_OFF === 'ON') || [],
-    usuarios: rawData.bd_usuarios?.filter(u => u.ON_OFF === 'ON') || [],
-    consorcios: rawData.bd_consorcios?.filter(c => c.ON_OFF === 'ON') || [],
-    liquidaciones: rawData.bd_liquidaciones?.filter(c => c.ON_OFF === 'ON') || []
+    mkt:                  mapConfig(rawData.SETUP_mkt),
+    // LISTAS
+    servicios:    rawData.servicios?.filter(s => s.ON_OFF === 'ON') || [],
+    valores:      rawData.valores?.filter(v => v.ON_OFF === 'ON') || [],
+    faq:          rawData.FAQ?.filter(f => f.ON_OFF === 'ON') || [],
+    noticias:     rawData.noticias?.filter(n => n.ON_OFF === 'ON') || [],
+    propiedades:  rawData.propiedades?.filter(p => p.ON_OFF === 'ON') || [],
+    redirecciones: rawData.MKT_Redirecciones?.filter(r => r.ON_OFF === 'ON') || [],
   };
 }

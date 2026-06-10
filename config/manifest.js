@@ -1,22 +1,18 @@
 export const SiteConfig = {
-  name: "Administracion Domus",
-  domain: "administraciondomus.com.ar",
+  name: "Join",
+  domain: "ejoin.com.ar",
   modules: {
     heroDynamic: true,
-    cotizadorConsorcios: true,
+    tasaciones: true,
+    propiedades: true,
+    sucesiones: true,
+    juridico: true,
     nosotros: true,
     servicios: true,
     porQueElegirnos: true,
+    blog: true,
     contacto: true,
-    propiedades: false
-  },
-  contact: {
-    phone: "11-7896-0000",
-    email: "hola@admdomus.ar",
-    address: "Mercedes 255 - Piso 7, Dto. A, CABA",
-    social: {
-      facebook: "administracion.domus",
-      instagram: "administracion.domus"
-    }
+    cotizadorConsorcios: false,
+    miConsorcio: false
   }
 };

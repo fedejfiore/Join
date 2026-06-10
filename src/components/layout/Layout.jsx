@@ -105,7 +105,7 @@ export default function Layout({ children, data }) {
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Adomus" />
+        <meta name="apple-mobile-web-app-title" content="Join" />
         <link rel="apple-touch-icon" href="/favicon.png" />
       </Head>
 
@@ -166,7 +166,7 @@ export default function Layout({ children, data }) {
             <div className="flex-1">
               <p className="text-[10px] font-black uppercase tracking-widest text-primary">App Disponible</p>
               <h4 className="text-sm font-bold dark:text-white">
-                {isIOS ? 'Añadir a Inicio' : 'Instalar App Domus'}
+                {isIOS ? 'Añadir a Inicio' : 'Instalar App Join'}
               </h4>
             </div>
             <button 
