@@ -45,9 +45,9 @@ export default function BlogList({ noticias }) {
     // CONSTRUCCIÓN DE URL ROBUSTA
     const origin = window.location.origin;
     // IMPORTANTE: URL + UTM + HASH (en ese orden exacto para Analytics)
-    const shareUrl = `${origin}/novedades?utm_source=user_share&utm_medium=social#${nota.Clave}`;
+    const shareUrl = `${origin}/blog?utm_source=user_share&utm_medium=social#${nota.Clave}`;
     
-    const text = `Mira esta noticia en Domus: ${nota.Titulo}`;
+    const text = `Mira esta nota en Join: ${nota.Titulo}`;
     
     const links = {
       ws: `https://wa.me/?text=${encodeURIComponent(text + " " + shareUrl)}`,
