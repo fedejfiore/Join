@@ -5,18 +5,16 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: 'class',
+  darkMode: 'class', // Soporta la variante .dark nativa de Tailwind v3
   theme: {
     extend: {
       colors: {
-        primary: 'var(--primary)',
-        accent: 'var(--accent)',
-        'nav-footer': 'var(--nav-footer)',
-        'bg-site': 'var(--bg-site)',
-        'text-main': 'var(--text-main)',
-        'text-sec': 'var(--text-sec)',
+        primary: '#0D3B66',
+        accent: '#5D9CEC',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 }
