@@ -1,6 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #0D3B66; 
+  --color-accent: #5D9CEC;   
+}
+
+/* Dejá todo el resto de tus estilos personalizados de JOIN y Domus abajo de esto... */
 
 /* ============================================================
    1. VARIABLES Y CONFIGURACIÓN BASE (Unificación de Entornos)
