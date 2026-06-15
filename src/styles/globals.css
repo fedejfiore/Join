@@ -3,21 +3,21 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary: #0D3B66;
-  --color-accent: #5D9CEC;
+  --color-primary: #660033;
+  --color-accent: #cc0044;
 }
 
 /* ============================================================
    VARIABLES BASE
    ============================================================ */
 :root {
-    --color-primary: #0D3B66;
-    --color-accent: #5D9CEC;
+    --color-primary: #660033;
+    --color-accent: #cc0044;
 }
 
 .dark {
-    --color-primary: #5D9CEC;
-    --color-accent: #89c6ff;
+    --color-primary: #cc0044;
+    --color-accent: #ff4477;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -38,7 +38,7 @@ html:not(.dark) body {
 }
 
 /* ============================================================
-   TIPOGRAFÍA — LIMPIA, SIN FORZAR ITALIC/UPPERCASE
+   TIPOGRAFÍA
    ============================================================ */
 h2 {
     @apply font-bold tracking-tight transition-colors duration-300;
@@ -47,16 +47,11 @@ h3 {
     @apply font-semibold tracking-tight transition-colors duration-300;
 }
 
-/* Clase utilitaria para headings JOIN específicos */
-.join-heading {
-    @apply font-black italic uppercase tracking-tighter;
-}
-
 /* ============================================================
    SECCIONES
    ============================================================ */
 .section-dynamic {
-    @apply py-24 px-6 transition-colors duration-300;
+    @apply py-28 px-6 transition-colors duration-300;
     background-color: #0f0f0f;
 }
 
@@ -64,9 +59,9 @@ html:not(.dark) .section-dynamic {
     background-color: #f5f5f5;
 }
 
-/* Sección clara (blog): SIEMPRE blanca, incluso en dark mode */
+/* Sección clara (blog): SIEMPRE blanca */
 .section-light {
-    @apply py-24 px-6;
+    @apply py-28 px-6;
     background-color: #ffffff;
     color: #111111;
 }
@@ -76,7 +71,7 @@ html:not(.dark) .section-dynamic {
    ============================================================ */
 .hero-video-section {
     position: relative; height: 100vh; width: 100%;
-    overflow: hidden; background-color: #000;
+    overflow: hidden; background-color: #0a0a0a;
 }
 
 .hero-video-overlay {
@@ -85,12 +80,12 @@ html:not(.dark) .section-dynamic {
 }
 
 /* ============================================================
-   BOTONES Y FORMULARIO
+   BOTONES
    ============================================================ */
 .btn-submit {
     @apply font-black uppercase transition-all;
-    background-color: var(--color-accent);
-    color: #0a0a0a;
+    background-color: #660033;
+    color: #ffffff;
 }
 
 /* ============================================================
@@ -102,11 +97,28 @@ html:not(.dark) .section-dynamic {
 }
 
 /* ============================================================
+   OVERRIDE: neutralizar slate azulados en dark mode
+   ============================================================ */
+.dark .dark\:bg-slate-950 { background-color: #0f0f0f !important; }
+.dark .dark\:bg-slate-900 { background-color: #1c1c1e !important; }
+.dark .dark\:bg-slate-800 { background-color: #252528 !important; }
+.dark .dark\:bg-slate-800\/50 { background-color: rgba(37,37,40,0.5) !important; }
+.dark .dark\:bg-\[#0a192f\] { background-color: #0f0f0f !important; }
+.dark .dark\:border-slate-800 { border-color: rgba(255,255,255,0.08) !important; }
+.dark .dark\:border-slate-700 { border-color: rgba(255,255,255,0.12) !important; }
+.dark .dark\:border-slate-800\/50 { border-color: rgba(255,255,255,0.05) !important; }
+.dark .dark\:border-slate-50 { border-color: rgba(255,255,255,0.06) !important; }
+.dark .dark\:text-slate-100 { color: #f0f0f0 !important; }
+.dark .dark\:text-slate-200 { color: #e0e0e0 !important; }
+.dark .dark\:text-slate-300 { color: #c0c0c0 !important; }
+.dark .dark\:text-slate-400 { color: #909090 !important; }
+
+/* ============================================================
    ACCESIBILIDAD
    ============================================================ */
 html.high-contrast body { background-color: #000 !important; color: #fff !important; }
 html.high-contrast h1, html.high-contrast h2, html.high-contrast h3 { font-weight: 900 !important; }
-html.high-contrast p, html.high-contrast span, html.high-contrast li, html.high-contrast label, html.high-contrast a { font-weight: 700 !important; }
+html.high-contrast p, html.high-contrast span, html.high-contrast li { font-weight: 700 !important; }
 
 /* ============================================================
    PROPERTY CARD HOVER
@@ -124,24 +136,6 @@ html.high-contrast p, html.high-contrast span, html.high-contrast li, html.high-
     box-shadow: 0 10px 20px rgba(0,0,0,0.4);
 }
 .whatsapp-icon { width: 32px; }
-
-/* ============================================================
-   OVERRIDE: neutralizar los slate azulados de Tailwind en dark mode
-   Tailwind slate-900 = #0f172a (azul), lo reemplazamos por neutro
-   ============================================================ */
-.dark .dark\:bg-slate-950 { background-color: #0f0f0f !important; }
-.dark .dark\:bg-slate-900 { background-color: #1c1c1e !important; }
-.dark .dark\:bg-slate-800 { background-color: #252528 !important; }
-.dark .dark\:bg-slate-800\/50 { background-color: rgba(37,37,40,0.5) !important; }
-.dark .dark\:bg-\[#0a192f\] { background-color: #0f0f0f !important; }
-.dark .dark\:border-slate-800 { border-color: rgba(255,255,255,0.08) !important; }
-.dark .dark\:border-slate-700 { border-color: rgba(255,255,255,0.12) !important; }
-.dark .dark\:border-slate-800\/50 { border-color: rgba(255,255,255,0.05) !important; }
-.dark .dark\:border-slate-50 { border-color: rgba(255,255,255,0.06) !important; }
-.dark .dark\:text-slate-100 { color: #f0f0f0 !important; }
-.dark .dark\:text-slate-200 { color: #e0e0e0 !important; }
-.dark .dark\:text-slate-300 { color: #c0c0c0 !important; }
-.dark .dark\:text-slate-400 { color: #909090 !important; }
 
 /* ============================================================
    RESPONSIVE

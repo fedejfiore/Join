@@ -18,9 +18,11 @@ export default function ServiciosJoin({ servicios = [] }) {
 
   return (
     <section id="servicios" className="section-dynamic overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-14">
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#5D9CEC] mb-3">Servicios</p>
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
+        <div className="text-center mb-16">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-4" style={{ color: '#cc0044' }}>
+            Servicios
+          </p>
           <h2 className="text-4xl md:text-5xl font-bold text-white">
             Servicios Jurídicos e Inmobiliarios Integrados
           </h2>
@@ -54,7 +56,9 @@ export default function ServiciosJoin({ servicios = [] }) {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent z-[2]" />
                   <div className="absolute bottom-0 left-0 p-8 text-white z-[10] w-full">
                     <h3 className="text-xl font-bold mb-2 text-white">{s.Titulo}</h3>
-                    <p className="text-sm text-white/70 leading-relaxed">{s.Detalle || s.Descripcion}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                      {s.Detalle || s.Descripcion}
+                    </p>
                   </div>
                 </div>
               </SwiperSlide>

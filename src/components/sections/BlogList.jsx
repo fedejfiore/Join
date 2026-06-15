@@ -108,7 +108,7 @@ export default function BlogList({ noticias }) {
                 />
                 {nota.Categoría && (
                   <span className="absolute top-4 left-4 text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full"
-                    style={{ background: '#0D3B66', color: '#fff' }}>
+                    style={{ background: '#660033', color: '#fff' }}>
                     {nota.Categoría}
                   </span>
                 )}
@@ -130,13 +130,13 @@ export default function BlogList({ noticias }) {
                 <div className="mt-auto pt-5 flex items-center justify-between" style={{ borderTop: '1px solid #f0f0f0' }}>
                   <button onClick={() => openNota(nota)}
                     className="text-xs font-bold flex items-center gap-1.5 transition-opacity hover:opacity-70"
-                    style={{ color: '#0D3B66' }}>
+                    style={{ color: '#660033' }}>
                     Leer más →
                   </button>
                   <div className="flex items-center gap-3">
                     <button onClick={(e) => handleShare('ws', nota, e)} className="transition-colors hover:text-[#25D366]" style={{ color: '#ccc' }}><MessageCircle size={16} /></button>
                     <button onClick={(e) => handleShare('copy', nota, e)} className="transition-colors relative" style={{ color: '#ccc' }}>
-                      {copiedId === nota.Titulo && <span className="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] py-1 px-2 rounded animate-bounce whitespace-nowrap" style={{ background: '#0D3B66', color: '#fff' }}>Copiado</span>}
+                      {copiedId === nota.Titulo && <span className="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] py-1 px-2 rounded animate-bounce whitespace-nowrap" style={{ background: '#660033', color: '#fff' }}>Copiado</span>}
                       <LinkIcon size={16} />
                     </button>
                   </div>
@@ -168,7 +168,7 @@ export default function BlogList({ noticias }) {
             <div className="px-8 md:px-16 pb-16 -mt-16 relative">
               <div className="flex flex-wrap gap-3 mb-6">
                 <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full"
-                  style={{ background: '#0D3B66', color: '#fff' }}>
+                  style={{ background: '#660033', color: '#fff' }}>
                   <Tag size={12} /> {selectedNota.Categoría || 'General'}
                 </span>
                 <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest px-4 py-2"
@@ -197,7 +197,7 @@ export default function BlogList({ noticias }) {
                   <button onClick={() => handleShare('tg', selectedNota)} className="bg-[#0088cc] text-white p-3.5 rounded-full hover:scale-110 shadow-md transition-all"><Send size={20} /></button>
                   <button onClick={(e) => handleShare('copy', selectedNota, e)} className="p-3.5 rounded-full hover:scale-110 relative transition-all"
                     style={{ background: '#eee', color: '#333' }}>
-                    {copiedId === selectedNota.Titulo && <span className="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] py-1 px-2 rounded animate-bounce whitespace-nowrap" style={{ background: '#0D3B66', color: '#fff' }}>Copiado</span>}
+                    {copiedId === selectedNota.Titulo && <span className="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] py-1 px-2 rounded animate-bounce whitespace-nowrap" style={{ background: '#660033', color: '#fff' }}>Copiado</span>}
                     <LinkIcon size={20} />
                   </button>
                 </div>

@@ -15,8 +15,6 @@ export default function HeroJoin({ config, brand }) {
   useEffect(() => setMounted(true), []);
 
   const videoSrc = config?.video_fondo?.valor || config?.Video_fondo?.valor || '/hero-mobile.mp4';
-  const ctaTexto = config?.cta_texto?.valor   || config?.Cta_Texto?.valor   || 'Ver propiedades';
-  const ctaUrl   = config?.cta_url?.valor     || config?.Cta_Url?.valor     || '/propiedades';
 
   const typewriterStrings = [
     config?.typewriter_1?.valor || 'Encontramos tu hogar ideal',
@@ -33,20 +31,22 @@ export default function HeroJoin({ config, brand }) {
       <div className="hero-video-overlay" />
 
       {/* CONTENIDO CENTRAL */}
-      <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-6 max-w-5xl mx-auto pb-40 md:pb-48">
-        <p className="text-[9px] font-black tracking-[10px] text-white/50 uppercase mb-6">
+      <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-8 pb-40 md:pb-48"
+        style={{ width: '100%', maxWidth: '1024px', margin: '0 auto' }}>
+        <p className="text-[9px] font-black tracking-[10px] text-white/50 uppercase mb-8">
           INMOBILIARIA &amp; ESTUDIO JURÍDICO · BUENOS AIRES
         </p>
 
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-none tracking-tighter max-w-4xl">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-none tracking-tighter">
           Inmobiliaria y Estudio Jurídico.{' '}
-          <span className="block text-2xl md:text-4xl lg:text-5xl text-white/80 mt-3 font-bold normal-case tracking-normal">
+          <span className="block text-2xl md:text-3xl lg:text-4xl text-white/75 mt-4 font-semibold normal-case tracking-normal">
             Especialistas en Sucesiones y Operaciones Simultáneas.
           </span>
         </h1>
 
         {mounted && typewriterStrings.length > 0 && (
-          <div className="mt-6 text-base md:text-xl font-bold text-[#5D9CEC] tracking-tight min-h-[1.75rem]">
+          <div className="mt-8 text-base md:text-xl font-bold tracking-tight min-h-[1.75rem]"
+            style={{ color: '#cc0044' }}>
             <Typewriter
               options={{ strings: typewriterStrings, autoStart: true, loop: true, delay: 60, deleteSpeed: 30 }}
             />
@@ -56,7 +56,8 @@ export default function HeroJoin({ config, brand }) {
 
       {/* GLASSMORPHISM ACTION CARDS — BOTTOM */}
       <div className="absolute bottom-0 left-0 right-0 z-20 px-4 pb-0">
-        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3"
+          style={{ maxWidth: '960px', margin: '0 auto' }}>
           {HERO_ACTIONS.map((item) => {
             const Icon = item.icon;
             return (
@@ -71,8 +72,8 @@ export default function HeroJoin({ config, brand }) {
                   borderRadius: '1.25rem 1.25rem 0 0',
                 }}
               >
-                <Icon size={30} strokeWidth={1.25} className="text-white/80 group-hover:text-white transition-colors" />
-                <span className="text-[11px] font-bold text-white/70 group-hover:text-white transition-colors text-center leading-tight tracking-wider uppercase">
+                <Icon size={28} strokeWidth={1.25} className="text-white/80 group-hover:text-white transition-colors" />
+                <span className="text-[10px] font-bold text-white/70 group-hover:text-white transition-colors text-center leading-tight tracking-wider uppercase">
                   {item.label}
                 </span>
               </a>

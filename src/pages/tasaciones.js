@@ -70,15 +70,15 @@ function Accordion({ items }) {
             onClick={() => setOpen(open === i ? null : i)}
             className="w-full flex items-center justify-between p-6 text-left gap-4"
           >
-            <span className="font-black italic uppercase text-sm text-slate-800 dark:text-slate-100 leading-tight">
+            <span className="font-bold text-sm leading-tight" style={{ color: 'rgba(255,255,255,0.9)' }}>
               {item.q}
             </span>
-            <span className="text-primary dark:text-accent shrink-0">
+            <span className="shrink-0" style={{ color: '#cc0044' }}>
               {open === i ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
             </span>
           </button>
           {open === i && (
-            <div className="px-6 pb-6 text-slate-500 dark:text-slate-400 text-sm font-medium italic leading-relaxed border-t border-slate-50 dark:border-slate-800 pt-4">
+            <div className="px-6 pb-6 text-sm font-medium leading-relaxed pt-4" style={{ color: 'rgba(255,255,255,0.45)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
               {item.a}
             </div>
           )}
@@ -96,41 +96,43 @@ export default function TasacionesPage({ data }) {
       <div className="min-h-screen pt-32 pb-24">
 
         {/* HEADER */}
-        <header className="max-w-7xl mx-auto px-6 mb-20 text-center">
-          <span className="text-primary dark:text-accent font-black text-[10px] uppercase tracking-[0.3em]">Servicios</span>
-          <h1 className="text-5xl md:text-7xl font-black italic text-primary dark:text-accent uppercase leading-none tracking-tighter mt-2">
+        <header className="text-center mb-28" style={{ maxWidth: '1280px', margin: '0 auto 7rem', padding: '0 1.5rem' }}>
+          <span className="font-black text-[10px] uppercase tracking-[0.3em]" style={{ color: '#cc0044' }}>Servicios</span>
+          <h1 className="text-5xl md:text-7xl font-black text-white leading-none tracking-tighter mt-4">
             ¿Querés vender o alquilar tu propiedad?
           </h1>
-          <div className="w-24 h-2 bg-primary dark:bg-accent mx-auto mt-6 rounded-full" />
-          <p className="text-slate-500 dark:text-slate-400 mt-8 max-w-3xl mx-auto font-medium italic leading-relaxed">
+          <div className="w-24 h-1.5 mx-auto mt-8 rounded-full" style={{ background: '#660033' }} />
+          <p className="mt-8 max-w-3xl mx-auto font-medium leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
             Todos prometen lo mismo: "vendemos rápido", "trato personalizado", pero tu propiedad no se vende con frases hechas. Para vender es necesario contar con una tasación correcta, una clara estrategia de comercialización y conocimientos legales para redactar acuerdos.
           </p>
-          <p className="text-slate-500 dark:text-slate-400 mt-4 max-w-3xl mx-auto font-medium italic leading-relaxed">
+          <p className="mt-4 max-w-3xl mx-auto font-medium leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
             En JOIN analizamos propiedades comparables y su tiempo en el mercado, revisamos métricas de visitas, efectuamos un seguimiento semanal y ejecutamos correcciones para lograr resultados concretos. No es magia. Es experiencia, análisis y trabajo.
           </p>
           <a href="#contacto"
-            className="inline-block mt-8 bg-primary dark:bg-accent text-white dark:text-slate-900 px-10 py-4 rounded-full font-black uppercase tracking-widest hover:scale-105 transition-all shadow-lg text-xs">
+            className="inline-block mt-10 px-10 py-4 rounded-full font-black uppercase tracking-widest hover:scale-105 transition-all shadow-lg text-xs text-white"
+            style={{ background: '#660033' }}>
             Conocé el valor de tu propiedad →
           </a>
         </header>
 
         {/* DOCUMENTACIÓN NECESARIA */}
-        <section className="max-w-7xl mx-auto px-6 mb-24">
-          <h2 className="text-3xl md:text-4xl text-center mb-4">Documentación y gestiones para vender</h2>
-          <p className="text-slate-500 dark:text-slate-400 text-center max-w-2xl mx-auto mb-12 font-medium italic">
+        <section className="mb-24" style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">Documentación y gestiones para vender</h2>
+          <p className="text-center max-w-2xl mx-auto mb-12 font-medium" style={{ color: 'rgba(255,255,255,0.45)' }}>
             Desde el inicio elaboramos una carpeta con la documentación necesaria para que no haya sorpresas al momento de la venta.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {DOC_ITEMS.map((item, i) => {
               const Icon = item.icon;
               return (
-                <div key={i} className="rounded-2xl p-7 border border-white/8 flex gap-5 items-start hover:shadow-lg transition-all">
-                  <div className="p-3 rounded-xl shrink-0">
-                    <Icon size={22} />
+                <div key={i} className="rounded-2xl p-7 flex gap-5 items-start hover:shadow-lg transition-all"
+                  style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div className="p-3 rounded-xl shrink-0" style={{ background: '#660033', color: '#fff' }}>
+                    <Icon size={20} />
                   </div>
                   <div>
-                    <p className="font-black italic uppercase text-sm text-slate-800 dark:text-slate-100 mb-1">{item.titulo}</p>
-                    <p className="text-xs text-slate-400 font-medium italic leading-relaxed">{item.texto}</p>
+                    <p className="font-bold text-sm mb-1" style={{ color: 'rgba(255,255,255,0.9)' }}>{item.titulo}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>{item.texto}</p>
                   </div>
                 </div>
               );
@@ -139,26 +141,27 @@ export default function TasacionesPage({ data }) {
         </section>
 
         {/* PROPUESTA DE VALOR */}
-        <section className="max-w-7xl mx-auto px-6 mb-24">
-          <h2 className="text-3xl md:text-4xl text-center mb-4">¿Qué incluye nuestra propuesta de valor?</h2>
-          <p className="text-slate-500 dark:text-slate-400 text-center max-w-2xl mx-auto mb-12 font-medium italic">
+        <section className="mb-24" style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">¿Qué incluye nuestra propuesta de valor?</h2>
+          <p className="text-center max-w-2xl mx-auto mb-12 font-medium" style={{ color: 'rgba(255,255,255,0.45)' }}>
             En el mercado actual es imprescindible contar con una clara propuesta de comercialización y producción multimedia que destaque el potencial de tu propiedad.
           </p>
-          <div className="space-y-6">
+          <div className="space-y-5">
             {PROPUESTA_ITEMS.map((item, i) => {
               const Icon = item.icon;
               return (
-                <div key={i} className="rounded-2xl p-8 md:p-10 flex flex-col md:flex-row gap-6 items-start hover:shadow-xl transition-all">
-                  <div className="p-4 rounded-xl shrink-0">
-                    <Icon size={28} />
+                <div key={i} className="rounded-2xl p-8 md:p-10 flex flex-col md:flex-row gap-6 items-start hover:shadow-xl transition-all"
+                  style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div className="p-4 rounded-xl shrink-0" style={{ background: 'rgba(102,0,51,0.15)', color: '#cc0044' }}>
+                    <Icon size={26} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl mb-2">{item.titulo}</h3>
-                    <p className="text-slate-500 dark:text-slate-400 text-sm font-medium italic leading-relaxed">{item.texto}</p>
+                    <h3 className="text-xl font-bold mb-2 text-white">{item.titulo}</h3>
+                    <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{item.texto}</p>
                   </div>
-                  {/* Placeholder para frame de muestra */}
-                  <div className="w-full md:w-48 h-28 rounded-2xl flex items-center justify-center shrink-0">
-                    <span className="text-[10px] font-black uppercase tracking-widest opacity-30">Muestra</span>
+                  <div className="w-full md:w-44 h-24 rounded-xl flex items-center justify-center shrink-0"
+                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(255,255,255,0.1)' }}>
+                    <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.2)' }}>Muestra</span>
                   </div>
                 </div>
               );
@@ -167,18 +170,18 @@ export default function TasacionesPage({ data }) {
         </section>
 
         {/* FAQ */}
-        <section className="max-w-4xl mx-auto px-6 mb-24">
-          <h2 className="text-3xl md:text-4xl text-center mb-4">Preguntas frecuentes sobre el proceso de venta</h2>
-          <p className="text-slate-500 dark:text-slate-400 text-center max-w-xl mx-auto mb-12 font-medium italic">
+        <section style={{ maxWidth: '800px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">Preguntas frecuentes sobre el proceso de venta</h2>
+          <p className="text-center max-w-xl mx-auto mb-12 font-medium" style={{ color: 'rgba(255,255,255,0.45)' }}>
             Sabemos que vender una propiedad es una de las decisiones financieras más importantes. Aquí respondemos las dudas más comunes.
           </p>
           <Accordion items={FAQ_ITEMS} />
         </section>
 
         {/* CONTACTO */}
-        <div id="contacto" className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl">Pedí tu tasación y conocé el valor de tu propiedad</h2>
+        <div id="contacto" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-white">Pedí tu tasación y conocé el valor de tu propiedad</h2>
           </div>
           <ContactoJoin brand={data.brand} defaultTema="Pedir una tasación" />
         </div>

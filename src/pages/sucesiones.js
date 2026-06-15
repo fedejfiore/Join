@@ -89,13 +89,13 @@ function Accordion({ items }) {
             onClick={() => setOpen(open === i ? null : i)}
             className="w-full flex items-center justify-between p-6 text-left gap-4"
           >
-            <span className="font-black italic uppercase text-sm text-slate-800 dark:text-slate-100 leading-tight">{item.q}</span>
-            <span className="text-primary dark:text-accent shrink-0">
+            <span className="font-bold text-sm leading-tight" style={{ color: 'rgba(255,255,255,0.9)' }}>{item.q}</span>
+            <span className="shrink-0" style={{ color: '#cc0044' }}>
               {open === i ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
             </span>
           </button>
           {open === i && (
-            <div className="px-6 pb-6 text-slate-500 dark:text-slate-400 text-sm font-medium italic leading-relaxed border-t border-slate-50 dark:border-slate-800 pt-4">
+            <div className="px-6 pb-6 text-sm font-medium leading-relaxed pt-4" style={{ color: 'rgba(255,255,255,0.45)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
               {item.a}
             </div>
           )}
@@ -113,34 +113,35 @@ export default function SucesionesPage({ data }) {
       <div className="min-h-screen pt-32 pb-24">
 
         {/* HEADER */}
-        <header className="max-w-7xl mx-auto px-6 mb-20 text-center">
-          <span className="text-primary dark:text-accent font-black text-[10px] uppercase tracking-[0.3em]">Estudio Jurídico</span>
-          <h1 className="text-5xl md:text-7xl font-black italic text-primary dark:text-accent uppercase leading-none tracking-tighter mt-2">
+        <header className="text-center mb-28" style={{ maxWidth: '1280px', margin: '0 auto 7rem', padding: '0 1.5rem' }}>
+          <span className="font-black text-[10px] uppercase tracking-[0.3em]" style={{ color: '#cc0044' }}>Estudio Jurídico</span>
+          <h1 className="text-5xl md:text-7xl font-black text-white leading-none tracking-tighter mt-4">
             Tu Sucesión, resuelta para vender.
           </h1>
-          <div className="w-24 h-2 bg-primary dark:bg-accent mx-auto mt-6 rounded-full" />
-          <p className="text-slate-500 dark:text-slate-400 mt-8 max-w-3xl mx-auto font-medium italic leading-relaxed">
+          <div className="w-24 h-1.5 mx-auto mt-8 rounded-full" style={{ background: '#660033' }} />
+          <p className="mt-8 max-w-3xl mx-auto font-medium leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
             En JOIN unificamos la gestión legal y la comercialización inmobiliaria, para que vender una propiedad heredada sea un proceso ágil, recuperes tu tranquilidad y el valor de tu patrimonio.
           </p>
         </header>
 
         {/* POR QUÉ ELEGIRNOS */}
-        <section className="max-w-7xl mx-auto px-6 mb-24">
-          <h2 className="text-3xl md:text-4xl text-center mb-4">¿Por qué elegirnos para tramitar la sucesión?</h2>
-          <p className="text-slate-500 dark:text-slate-400 text-center max-w-2xl mx-auto mb-12 font-medium italic">
+        <section style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">¿Por qué elegirnos para tramitar la sucesión?</h2>
+          <p className="text-center max-w-2xl mx-auto mb-12 font-medium" style={{ color: 'rgba(255,255,255,0.45)' }}>
             La mayoría de las personas se ven obligadas a coordinar con un abogado por un lado y una inmobiliaria por otro, lo que genera demoras y desinteligencias. En JOIN, somos un solo equipo con una visión dual.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {POR_QUE_ITEMS.map((item, i) => {
               const Icon = item.icon;
               return (
-                <div key={i} className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all flex flex-col gap-5">
-                  <div className="p-4 rounded-xl w-fit">
+                <div key={i} className="rounded-2xl p-8 hover:shadow-xl transition-all flex flex-col gap-6"
+                  style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div className="p-4 rounded-xl w-fit" style={{ background: 'rgba(102,0,51,0.15)', color: '#cc0044' }}>
                     <Icon size={26} />
                   </div>
                   <div>
-                    <h3 className="text-xl mb-2">{item.titulo}</h3>
-                    <p className="text-slate-500 dark:text-slate-400 text-sm font-medium italic leading-relaxed">{item.texto}</p>
+                    <h3 className="text-xl font-bold text-white mb-2">{item.titulo}</h3>
+                    <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{item.texto}</p>
                   </div>
                 </div>
               );
@@ -149,39 +150,41 @@ export default function SucesionesPage({ data }) {
         </section>
 
         {/* PROCESO PASO A PASO */}
-        <section className="max-w-7xl mx-auto px-6 mb-24">
-          <h2 className="text-3xl md:text-4xl text-center mb-12">Nuestro proceso paso a paso</h2>
+        <section style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">Nuestro proceso paso a paso</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {PROCESO_ITEMS.map((step, i) => (
-              <div key={i} className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-slate-800 shadow-sm relative group hover:shadow-xl transition-all">
-                <span className="absolute top-6 right-8 text-5xl font-black italic text-slate-100 dark:text-slate-800 group-hover:text-primary/10 dark:group-hover:text-accent/10 transition-colors select-none">
+              <div key={i} className="rounded-2xl p-8 relative group hover:shadow-xl transition-all"
+                style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.07)' }}>
+                <span className="absolute top-6 right-8 text-5xl font-black select-none" style={{ color: 'rgba(102,0,51,0.25)' }}>
                   {step.num}
                 </span>
-                <h3 className="text-lg mb-3 pr-8">{step.titulo}</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-xs font-medium italic leading-relaxed">{step.texto}</p>
+                <h3 className="text-lg font-bold text-white mb-3 pr-8">{step.titulo}</h3>
+                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>{step.texto}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* DOCUMENTACIÓN */}
-        <section className="max-w-4xl mx-auto px-6 mb-24">
-          <h2 className="text-3xl md:text-4xl text-center mb-4">¿Qué documentación necesitás para comenzar?</h2>
-          <p className="text-slate-500 dark:text-slate-400 text-center max-w-xl mx-auto mb-12 font-medium italic">
+        <section style={{ maxWidth: '800px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">¿Qué documentación necesitás para comenzar?</h2>
+          <p className="text-center max-w-xl mx-auto mb-12 font-medium" style={{ color: 'rgba(255,255,255,0.45)' }}>
             Para iniciar el análisis de forma inmediata, te solicitaremos:
           </p>
-          <div className="bg-white dark:bg-slate-900 rounded-[3rem] p-10 border border-slate-100 dark:border-slate-800 shadow-xl">
+          <div className="rounded-2xl p-8 md:p-10" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.07)' }}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               {DOC_ITEMS.map((doc, i) => {
                 const Icon = doc.icon;
                 return (
-                  <div key={i} className="flex items-start gap-4 p-5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700/50">
-                    <div className="p-3 bg-primary dark:bg-accent rounded-xl text-white dark:text-slate-900 shrink-0">
+                  <div key={i} className="flex items-start gap-4 p-5 rounded-2xl"
+                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div className="p-3 rounded-xl shrink-0" style={{ background: '#660033', color: '#fff' }}>
                       <Icon size={18} />
                     </div>
                     <div>
-                      <p className="font-black italic uppercase text-xs text-slate-800 dark:text-slate-100 mb-1">{doc.titulo}</p>
-                      <p className="text-xs text-slate-400 font-medium italic leading-relaxed">{doc.texto}</p>
+                      <p className="font-bold text-xs mb-1" style={{ color: 'rgba(255,255,255,0.9)' }}>{doc.titulo}</p>
+                      <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>{doc.texto}</p>
                     </div>
                   </div>
                 );
@@ -191,16 +194,16 @@ export default function SucesionesPage({ data }) {
         </section>
 
         {/* FAQ */}
-        <section className="max-w-4xl mx-auto px-6 mb-24">
-          <h2 className="text-3xl md:text-4xl text-center mb-12">Preguntas frecuentes en sucesiones</h2>
+        <section style={{ maxWidth: '800px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">Preguntas frecuentes en sucesiones</h2>
           <Accordion items={FAQ_ITEMS} />
         </section>
 
         {/* CONTACTO */}
-        <div id="contacto" className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl">No dejes que la burocracia detenga tus proyectos.</h2>
-            <p className="text-slate-500 dark:text-slate-400 mt-4 font-medium italic">Contactanos para analizar tu caso.</p>
+        <div id="contacto" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-white">No dejes que la burocracia detenga tus proyectos.</h2>
+            <p className="mt-4 font-medium" style={{ color: 'rgba(255,255,255,0.45)' }}>Contactanos para analizar tu caso.</p>
           </div>
           <ContactoJoin brand={data.brand} defaultTema="Consultar por sucesión" />
         </div>

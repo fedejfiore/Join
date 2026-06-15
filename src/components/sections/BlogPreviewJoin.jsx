@@ -12,9 +12,9 @@ export default function BlogPreviewJoin({ noticias = [] }) {
 
   return (
     <section className="section-light">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-14">
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-3" style={{ color: '#0D3B66' }}>Blog</p>
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
+        <div className="text-center mb-16">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-4" style={{ color: '#660033' }}>Blog</p>
           <h2 className="text-4xl md:text-5xl font-bold" style={{ color: '#111111' }}>
             Artículos que te pueden interesar
           </h2>
@@ -28,7 +28,6 @@ export default function BlogPreviewJoin({ noticias = [] }) {
               style={{ background: '#fff', border: '1px solid #e8e8e8' }}
               onClick={() => handleNotaClick(nota.Clave)}
             >
-              {/* IMAGEN */}
               <div className="aspect-[16/9] overflow-hidden relative">
                 <img
                   src={nota.Imagen?.startsWith('http') ? nota.Imagen : `/images/${nota.Imagen}`}
@@ -37,25 +36,24 @@ export default function BlogPreviewJoin({ noticias = [] }) {
                 />
                 {nota.Categoría && (
                   <span className="absolute top-4 left-4 text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full"
-                    style={{ background: '#0D3B66', color: '#fff' }}>
+                    style={{ background: '#660033', color: '#fff' }}>
                     {nota.Categoría}
                   </span>
                 )}
               </div>
 
-              {/* TEXTO */}
               <div className="p-7 flex-grow flex flex-col">
                 <p className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: '#999' }}>
                   {nota.Fecha}
                 </p>
-                <h3 className="text-lg font-bold leading-snug mb-3 transition-colors group-hover:text-[#0D3B66]"
+                <h3 className="text-lg font-bold leading-snug mb-3 transition-colors group-hover:text-[#660033]"
                   style={{ color: '#111' }}>
                   {nota.Titulo}
                 </h3>
                 <p className="text-sm leading-relaxed line-clamp-3 mb-6" style={{ color: '#666' }}>
                   {nota.Copete}
                 </p>
-                <div className="mt-auto flex items-center gap-2 text-xs font-bold" style={{ color: '#0D3B66' }}>
+                <div className="mt-auto flex items-center gap-2 text-xs font-bold" style={{ color: '#660033' }}>
                   Leer más <ArrowRight size={14} />
                 </div>
               </div>
@@ -63,11 +61,11 @@ export default function BlogPreviewJoin({ noticias = [] }) {
           ))}
         </div>
 
-        <div className="mt-14 text-center">
+        <div className="mt-16 text-center">
           <button
             onClick={() => router.push('/blog')}
             className="inline-flex items-center gap-3 px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest transition-all hover:scale-105 shadow-lg"
-            style={{ background: '#0D3B66', color: '#fff' }}
+            style={{ background: '#660033', color: '#fff' }}
           >
             Ver todos los artículos <ArrowRight size={16} />
           </button>

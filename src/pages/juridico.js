@@ -62,34 +62,40 @@ function FlipCard({ item }) {
         className={`relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}
       >
         {/* FRONTAL */}
-        <div className="absolute inset-0 h-full w-full rounded-[2.5rem] bg-white dark:bg-slate-900 text-center flex flex-col items-center justify-center p-8 shadow-sm hover:shadow-xl transition-all duration-300 [backface-visibility:hidden] border border-slate-100 dark:border-slate-800">
-          <div className="p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl text-primary dark:text-accent mb-6">
+        <div className="absolute inset-0 h-full w-full rounded-2xl text-center flex flex-col items-center justify-center p-8 hover:shadow-xl transition-all duration-300 [backface-visibility:hidden]"
+          style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="p-4 rounded-2xl mb-6" style={{ background: 'rgba(102,0,51,0.15)', color: '#cc0044' }}>
             <Icon size={32} />
           </div>
-          <h3 className="text-lg font-black italic uppercase leading-tight mb-6 text-slate-800 dark:text-slate-100">
+          <h3 className="text-lg font-bold leading-tight mb-6 text-white">
             {item.title}
           </h3>
           <button
             onClick={() => setIsFlipped(true)}
-            className="bg-primary dark:bg-accent text-white dark:text-slate-900 px-6 py-2.5 rounded-full font-black uppercase text-[10px] tracking-widest hover:scale-105 transition-all shadow-md"
+            className="px-6 py-2.5 rounded-full font-black uppercase text-[10px] tracking-widest hover:scale-105 transition-all shadow-md text-white"
+            style={{ background: '#660033' }}
           >
             Saber Más
           </button>
         </div>
 
-        {/* TRASERO — muestra título en negrita arriba y descripción abajo */}
-        <div className="absolute inset-0 h-full w-full rounded-[2.5rem] bg-primary dark:bg-slate-800 text-white p-8 flex flex-col items-center justify-center gap-4 [transform:rotateY(180deg)] [backface-visibility:hidden] z-[20]">
-          <p className="font-black italic uppercase text-sm text-center leading-tight text-white">
+        {/* TRASERO */}
+        <div className="absolute inset-0 h-full w-full rounded-2xl p-8 flex flex-col items-center justify-center gap-4 [transform:rotateY(180deg)] [backface-visibility:hidden] z-[20]"
+          style={{ background: '#660033' }}>
+          <p className="font-black uppercase text-sm text-center leading-tight text-white">
             {item.title}
           </p>
-          <div className="w-10 h-0.5 bg-white/30 rounded-full" />
-          <p className="text-sm leading-relaxed text-center font-medium italic text-white/85 flex-1 flex items-center">
+          <div className="w-10 h-0.5 rounded-full" style={{ background: 'rgba(255,255,255,0.3)' }} />
+          <p className="text-sm leading-relaxed text-center font-medium flex-1 flex items-center" style={{ color: 'rgba(255,255,255,0.85)' }}>
             {item.description}
           </p>
           <button
             type="button"
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsFlipped(false); }}
-            className="border-2 border-white/50 text-white px-6 py-2 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-white hover:text-primary transition-all"
+            className="px-6 py-2 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all text-white"
+            style={{ border: '2px solid rgba(255,255,255,0.5)' }}
+            onMouseEnter={e => { e.target.style.color = '#660033'; }}
+            onMouseLeave={e => { e.target.style.color = '#fff'; }}
           >
             Volver
           </button>
@@ -107,21 +113,21 @@ export default function JuridicoPage({ data }) {
       <div className="min-h-screen pt-32 pb-24">
 
         {/* HEADER */}
-        <header className="max-w-7xl mx-auto px-6 mb-16 text-center">
-          <span className="text-primary dark:text-accent font-black text-[10px] uppercase tracking-[0.3em]">
+        <header className="text-center mb-20" style={{ maxWidth: '1280px', margin: '0 auto 5rem', padding: '0 1.5rem' }}>
+          <span className="font-black text-[10px] uppercase tracking-[0.3em]" style={{ color: '#cc0044' }}>
             Estudio Jurídico
           </span>
-          <h1 className="text-5xl md:text-7xl font-black italic text-primary dark:text-accent uppercase leading-none tracking-tighter mt-2">
+          <h1 className="text-5xl md:text-7xl font-black text-white leading-none tracking-tighter mt-4">
             Áreas de Práctica Legal
           </h1>
-          <div className="w-24 h-2 bg-primary dark:bg-accent mx-auto mt-6 rounded-full" />
-          <p className="text-slate-500 dark:text-slate-400 mt-6 max-w-2xl mx-auto font-medium italic">
+          <div className="w-24 h-1.5 mx-auto mt-8 rounded-full" style={{ background: '#660033' }} />
+          <p className="mt-6 max-w-2xl mx-auto font-medium" style={{ color: 'rgba(255,255,255,0.5)' }}>
             Asesoramiento legal integral con un enfoque preventivo y soluciones estratégicas para particulares, inversores y empresas. Hacé click en cada área para conocer más.
           </p>
         </header>
 
         {/* GRILLA FLIP CARDS */}
-        <section className="max-w-7xl mx-auto px-6 mb-24">
+        <section style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {AREAS.map((area, i) => (
               <FlipCard key={i} item={area} />
@@ -130,10 +136,10 @@ export default function JuridicoPage({ data }) {
         </section>
 
         {/* CONTACTO */}
-        <div id="contacto" className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl">¿Tenés una consulta legal?</h2>
-            <p className="text-slate-500 dark:text-slate-400 mt-4 font-medium italic">Contanos tu caso y te orientamos sin compromiso.</p>
+        <div id="contacto" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-white">¿Tenés una consulta legal?</h2>
+            <p className="mt-4 font-medium" style={{ color: 'rgba(255,255,255,0.45)' }}>Contanos tu caso y te orientamos sin compromiso.</p>
           </div>
           <ContactoJoin brand={data.brand} defaultTema="Otra consulta legal" />
         </div>

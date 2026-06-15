@@ -18,46 +18,54 @@ export default function NosotrosJoin({ data }) {
 
   return (
     <section id="nosotros" className="section-dynamic">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
 
-        {/* TEXTO */}
-        <div className="space-y-6 order-2 lg:order-1">
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#5D9CEC]">Quiénes Somos</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">Nosotros</h2>
-          <p className="text-lg md:text-xl font-semibold text-white/70 leading-snug">{subtitulo}</p>
-          <div className="space-y-4 text-white/55 leading-relaxed text-sm md:text-base">
-            {texto.split('\n\n').map((p, i) => (
-              <p key={i} className="font-medium">{p}</p>
-            ))}
-          </div>
-
-          {stats.length > 0 && (
-            <div className="flex gap-10 pt-6 border-t border-white/10">
-              {stats.map((s, i) => (
-                <div key={i}>
-                  <p className="text-3xl md:text-4xl font-black text-[#5D9CEC]">{s.value}</p>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mt-1">{s.label}</p>
-                </div>
+          {/* TEXTO */}
+          <div className="space-y-7 order-2 lg:order-1">
+            <p className="text-[10px] font-black uppercase tracking-[0.3em]" style={{ color: '#cc0044' }}>
+              Quiénes Somos
+            </p>
+            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">Nosotros</h2>
+            <p className="text-lg md:text-xl font-semibold leading-snug" style={{ color: 'rgba(255,255,255,0.65)' }}>
+              {subtitulo}
+            </p>
+            <div className="space-y-5 leading-relaxed text-sm md:text-base" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              {texto.split('\n\n').map((p, i) => (
+                <p key={i} className="font-medium">{p}</p>
               ))}
             </div>
-          )}
-        </div>
 
-        {/* IMAGEN */}
-        <div className="order-1 lg:order-2 relative">
-          <div className="aspect-[4/5] rounded-2xl overflow-hidden"
-            style={{ border: '1px solid rgba(93,156,236,0.3)', boxShadow: '0 0 60px rgba(93,156,236,0.08)' }}>
-            {imagen ? (
-              <img src={imagen} alt="Nosotros JOIN" className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center"
-                style={{ background: '#1c1c1e' }}>
-                <span className="font-black text-6xl tracking-[12px]" style={{ color: 'rgba(93,156,236,0.2)' }}>JOIN</span>
+            {stats.length > 0 && (
+              <div className="flex gap-12 pt-8" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                {stats.map((s, i) => (
+                  <div key={i}>
+                    <p className="text-3xl md:text-4xl font-black" style={{ color: '#cc0044' }}>{s.value}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest mt-1" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                      {s.label}
+                    </p>
+                  </div>
+                ))}
               </div>
             )}
           </div>
-        </div>
 
+          {/* IMAGEN */}
+          <div className="order-1 lg:order-2 relative">
+            <div className="aspect-[4/5] rounded-2xl overflow-hidden"
+              style={{ border: '1px solid rgba(102,0,51,0.3)', boxShadow: '0 0 60px rgba(102,0,51,0.08)' }}>
+              {imagen ? (
+                <img src={imagen} alt="Nosotros JOIN" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center"
+                  style={{ background: '#1c1c1e' }}>
+                  <span className="font-black text-6xl tracking-[12px]" style={{ color: 'rgba(102,0,51,0.25)' }}>JOIN</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
   );
