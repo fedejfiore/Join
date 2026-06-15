@@ -1,6 +1,6 @@
 import Papa from 'papaparse';
 
-const SHEET_PUB_ID = '2PACX-1vSa70-en_DydT5om9rcNvlszYkqkwEEnHLWpFVxclUYw7veSacLywMwkJ9EitNZKYhlJFAK7YifJiva';
+const SHEET_PUB_ID = '2PACX-1vRZuKDtaB1ZFqMScvYY_skOimJ2p2cUwKwMf2WGnJOrDbVtgMy4Yndefext0tbhVpGQM7mBo_7FClca';
 
 const GIDS = {
   brand: '0',
