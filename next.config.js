@@ -2,6 +2,7 @@
 const nextConfig = {
   poweredByHeader: false,
   turbopack: {},
+  transpilePackages: ['lucide-react'],
 
   webpack: (config, { isServer, nextRuntime }) => {
     if (isServer && nextRuntime === 'edge') {
