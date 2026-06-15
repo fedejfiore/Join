@@ -2,8 +2,9 @@
 
 import { useState, useMemo } from 'react';
 
+const BUENOS_AIRES_MAP = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d210325.25739999998!2d-58.6265!3d-34.6132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcc422562d9d7f%3A0x8b54ab46e71c73b7!2sBuenos%20Aires%2C%20Argentina!5e0!3m2!1ses!2sar!4v1717000000000!5m2!1ses!2sar";
+
 export default function PropiedadesList({ propiedades = [] }) {
-  // Estados para filtros
   const [operacion, setOperacion] = useState('Todos');
   const [tipo, setTipo] = useState('Todos');
   const [ambientes, setAmbientes] = useState('Todos');
@@ -12,7 +13,6 @@ export default function PropiedadesList({ propiedades = [] }) {
   const [precioMaxARS, setPrecioMaxARS] = useState('');
   const [barrio, setBarrio] = useState('Todos');
 
-  // Listar barrios dinámicamente
   const barriosDisponibles = useMemo(() => {
     const list = propiedades
       .map(p => p.Barrio)
@@ -20,109 +20,83 @@ export default function PropiedadesList({ propiedades = [] }) {
     return ['Todos', ...list];
   }, [propiedades]);
 
-  // Tipos de propiedad fijos
   const tiposDisponibles = ['Todos', 'Departamento', 'Casa', 'PH', 'Local', 'Oficina', 'Terreno', 'Cochera'];
 
-  // Limpiar filtros
   const handleClearFilters = () => {
-    setOperacion('Todos');
-    setTipo('Todos');
-    setAmbientes('Todos');
-    setDormitorios('Todos');
-    setPrecioMaxUSD('');
-    setPrecioMaxARS('');
-    setBarrio('Todos');
+    setOperacion('Todos'); setTipo('Todos'); setAmbientes('Todos');
+    setDormitorios('Todos'); setPrecioMaxUSD(''); setPrecioMaxARS(''); setBarrio('Todos');
   };
 
-  // Lógica de filtrado
   const filteredProperties = useMemo(() => {
     let result = [...propiedades];
-
-    // 1. Filtrar por Operación
-    if (operacion !== 'Todos') {
-      result = result.filter(p => p.Operacion?.toLowerCase() === operacion.toLowerCase());
-    }
-
-    // 2. Filtrar por Tipo
-    if (tipo !== 'Todos') {
-      result = result.filter(p => p.Tipo?.toLowerCase() === tipo.toLowerCase());
-    }
-
-    // 3. Filtrar por Barrio
-    if (barrio !== 'Todos') {
-      result = result.filter(p => p.Barrio?.toLowerCase() === barrio.toLowerCase());
-    }
-
-    // 4. Filtrar por Ambientes
+    if (operacion !== 'Todos') result = result.filter(p => p.Operacion?.toLowerCase() === operacion.toLowerCase());
+    if (tipo !== 'Todos') result = result.filter(p => p.Tipo?.toLowerCase() === tipo.toLowerCase());
+    if (barrio !== 'Todos') result = result.filter(p => p.Barrio?.toLowerCase() === barrio.toLowerCase());
     if (ambientes !== 'Todos') {
-      if (ambientes === '5+') {
-        result = result.filter(p => parseInt(p.Ambientes) >= 5);
-      } else {
-        result = result.filter(p => p.Ambientes === ambientes);
-      }
+      if (ambientes === '5+') result = result.filter(p => parseInt(p.Ambientes) >= 5);
+      else result = result.filter(p => p.Ambientes === ambientes);
     }
-
-    // 5. Filtrar por Dormitorios
     if (dormitorios !== 'Todos') {
-      if (dormitorios === '4+') {
-        result = result.filter(p => parseInt(p.Dormitorios) >= 4);
-      } else {
-        result = result.filter(p => p.Dormitorios === dormitorios);
-      }
+      if (dormitorios === '4+') result = result.filter(p => parseInt(p.Dormitorios) >= 4);
+      else result = result.filter(p => p.Dormitorios === dormitorios);
     }
-
-    // 6. Filtrar por Precio USD
     if (precioMaxUSD !== '') {
       const maxUSD = parseFloat(precioMaxUSD);
-      result = result.filter(p => {
-        if (p.Moneda === 'USD') {
-          return parseFloat(p.Precio) <= maxUSD;
-        }
-        return true; // No descartamos ARS a menos que se implemente conversión
-      });
+      result = result.filter(p => p.Moneda === 'USD' ? parseFloat(p.Precio) <= maxUSD : true);
     }
-
-    // 7. Filtrar por Precio ARS
     if (precioMaxARS !== '') {
       const maxARS = parseFloat(precioMaxARS);
-      result = result.filter(p => {
-        if (p.Moneda === 'ARS') {
-          return parseFloat(p.Precio) <= maxARS;
-        }
-        return true; // No descartamos USD
-      });
+      result = result.filter(p => p.Moneda === 'ARS' ? parseFloat(p.Precio) <= maxARS : true);
     }
-
-    // Ordenar: Las destacadas primero
-    return result.sort((a, b) => {
-      const destA = a.Destacada === 'SI' ? 1 : 0;
-      const destB = b.Destacada === 'SI' ? 1 : 0;
-      return destB - destA;
-    });
-
+    return result.sort((a, b) => (b.Destacada === 'SI' ? 1 : 0) - (a.Destacada === 'SI' ? 1 : 0));
   }, [propiedades, operacion, tipo, barrio, ambientes, dormitorios, precioMaxUSD, precioMaxARS]);
 
+  const selectStyle = {
+    width: '100%',
+    background: 'var(--card-inner-bg)',
+    border: '1px solid var(--card-inner-border)',
+    color: 'var(--text-strong)',
+    padding: '0.75rem 1rem',
+    borderRadius: '0.75rem',
+    fontSize: '12px',
+    fontWeight: 700,
+    outline: 'none',
+    fontFamily: 'inherit',
+  };
+
+  const inputStyle = {
+    ...selectStyle,
+    width: '100%',
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-6">
-      
+    <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 1.5rem' }}>
+
       {/* BARRA DE FILTROS */}
-      <div className="bg-white dark:bg-slate-900 rounded-[2rem] p-6 md:p-8 shadow-md border border-slate-100 dark:border-slate-800 mb-10 sticky top-28 z-40 transition-colors">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          
-          {/* OPERACION */}
-          <div>
-            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">Operación</label>
-            <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+      <div style={{
+        background: 'var(--card-bg)',
+        border: '1px solid var(--card-border)',
+        borderRadius: '1.25rem',
+        padding: '1.75rem 2rem',
+        marginBottom: '2rem',
+        position: 'sticky',
+        top: '88px',
+        zIndex: 40,
+      }}>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+
+          {/* OPERACIÓN */}
+          <div className="col-span-2 md:col-span-1">
+            <label style={{ fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)', display: 'block', marginBottom: '0.5rem' }}>
+              Operación
+            </label>
+            <div style={{ display: 'flex', background: 'var(--card-inner-bg)', border: '1px solid var(--card-inner-border)', padding: '3px', borderRadius: '0.6rem' }}>
               {['Todos', 'Venta', 'Alquiler'].map(op => (
-                <button
-                  key={op}
-                  onClick={() => setOperacion(op)}
-                  className={`flex-1 text-center py-2 rounded-lg text-xs font-bold transition-all ${
-                    operacion === op 
-                      ? 'bg-primary text-white dark:bg-accent dark:text-slate-950 shadow-sm' 
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                  }`}
-                >
+                <button key={op} onClick={() => setOperacion(op)} style={{
+                  flex: 1, textAlign: 'center', padding: '0.5rem', borderRadius: '0.45rem', fontSize: '11px', fontWeight: 700, border: 'none', cursor: 'pointer', transition: 'all 0.2s',
+                  background: operacion === op ? '#660033' : 'transparent',
+                  color: operacion === op ? '#fff' : 'var(--text-secondary)',
+                }}>
                   {op}
                 </button>
               ))}
@@ -131,96 +105,49 @@ export default function PropiedadesList({ propiedades = [] }) {
 
           {/* TIPO */}
           <div>
-            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">Tipo de Propiedad</label>
-            <select
-              value={tipo}
-              onChange={(e) => setTipo(e.target.value)}
-              className="w-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white p-3 rounded-xl border border-transparent focus:border-primary dark:focus:border-accent text-xs font-bold outline-none"
-            >
-              {tiposDisponibles.map(t => (
-                <option key={t} value={t}>{t}</option>
-              ))}
+            <label style={{ fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)', display: 'block', marginBottom: '0.5rem' }}>Tipo</label>
+            <select value={tipo} onChange={e => setTipo(e.target.value)} style={selectStyle}>
+              {tiposDisponibles.map(t => <option key={t} value={t}>{t}</option>)}
             </select>
           </div>
 
           {/* BARRIO */}
           <div>
-            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">Barrio</label>
-            <select
-              value={barrio}
-              onChange={(e) => setBarrio(e.target.value)}
-              className="w-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white p-3 rounded-xl border border-transparent focus:border-primary dark:focus:border-accent text-xs font-bold outline-none"
-            >
-              {barriosDisponibles.map(b => (
-                <option key={b} value={b}>{b}</option>
-              ))}
+            <label style={{ fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)', display: 'block', marginBottom: '0.5rem' }}>Barrio</label>
+            <select value={barrio} onChange={e => setBarrio(e.target.value)} style={selectStyle}>
+              {barriosDisponibles.map(b => <option key={b} value={b}>{b}</option>)}
             </select>
-          </div>
-
-          {/* PRECIO HASTA */}
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">Hasta USD</label>
-              <input
-                type="number"
-                placeholder="Monto"
-                value={precioMaxUSD}
-                onChange={(e) => setPrecioMaxUSD(e.target.value)}
-                className="w-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white p-3 rounded-xl text-xs font-bold outline-none placeholder-slate-400"
-              />
-            </div>
-            <div>
-              <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">Hasta ARS</label>
-              <input
-                type="number"
-                placeholder="Monto"
-                value={precioMaxARS}
-                onChange={(e) => setPrecioMaxARS(e.target.value)}
-                className="w-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white p-3 rounded-xl text-xs font-bold outline-none placeholder-slate-400"
-              />
-            </div>
           </div>
 
           {/* AMBIENTES */}
           <div>
-            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">Ambientes</label>
-            <select
-              value={ambientes}
-              onChange={(e) => setAmbientes(e.target.value)}
-              className="w-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white p-3 rounded-xl border border-transparent focus:border-primary dark:focus:border-accent text-xs font-bold outline-none"
-            >
+            <label style={{ fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)', display: 'block', marginBottom: '0.5rem' }}>Ambientes</label>
+            <select value={ambientes} onChange={e => setAmbientes(e.target.value)} style={selectStyle}>
               <option value="Todos">Todos</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
-              <option value="5+">5 o más</option>
+              <option value="5+">5+</option>
             </select>
           </div>
 
-          {/* DORMITORIOS */}
-          <div>
-            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">Dormitorios</label>
-            <select
-              value={dormitorios}
-              onChange={(e) => setDormitorios(e.target.value)}
-              className="w-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white p-3 rounded-xl border border-transparent focus:border-primary dark:focus:border-accent text-xs font-bold outline-none"
-            >
-              <option value="Todos">Todos</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4+">4 o más</option>
-            </select>
+          {/* PRECIO + LIMPIAR */}
+          <div className="col-span-2 md:col-span-1">
+            <label style={{ fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)', display: 'block', marginBottom: '0.5rem' }}>Hasta</label>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <input type="number" placeholder="USD" value={precioMaxUSD} onChange={e => setPrecioMaxUSD(e.target.value)} style={{ ...inputStyle, flex: 1 }} />
+              <input type="number" placeholder="ARS" value={precioMaxARS} onChange={e => setPrecioMaxARS(e.target.value)} style={{ ...inputStyle, flex: 1 }} />
+            </div>
           </div>
 
-          {/* BOTON RESET */}
-          <div className="lg:col-span-2 flex items-end">
-            <button
-              onClick={handleClearFilters}
-              className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-850 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 py-3 rounded-xl text-xs font-bold transition-all uppercase tracking-wider"
-            >
-              Limpiar Filtros
+          <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+            <button onClick={handleClearFilters} style={{
+              width: '100%', background: 'var(--card-inner-bg)', border: '1px solid var(--card-inner-border)',
+              color: 'var(--text-secondary)', padding: '0.75rem', borderRadius: '0.75rem',
+              fontSize: '11px', fontWeight: 700, cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em',
+            }}>
+              Limpiar
             </button>
           </div>
 
@@ -228,90 +155,105 @@ export default function PropiedadesList({ propiedades = [] }) {
       </div>
 
       {/* CONTADOR */}
-      <div className="mb-8 text-center md:text-left">
-        <p className="text-sm text-slate-500 dark:text-slate-400 font-bold italic">
-          {filteredProperties.length} {filteredProperties.length === 1 ? 'propiedad encontrada' : 'propiedades encontradas'}
-        </p>
-      </div>
+      <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '1.5rem', fontStyle: 'italic' }}>
+        {filteredProperties.length} {filteredProperties.length === 1 ? 'propiedad encontrada' : 'propiedades encontradas'}
+      </p>
 
-      {/* GRID DE CARDS */}
-      {filteredProperties.length === 0 ? (
-        <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800">
-          <p className="text-slate-400 dark:text-slate-500 font-black italic text-lg uppercase tracking-wider">No se encontraron propiedades que coincidan con los filtros.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {filteredProperties.map((prop) => (
-            <article 
-              key={prop.ID} 
-              className="property-card bg-white dark:bg-slate-900 rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all group flex flex-col justify-between"
-            >
-              {/* GALERÍA: imagen principal con overlay de badges */}
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <img 
-                  src={prop.Foto_1 || "https://images.unsplash.com/photo-1564013799919-ab600027ffc6"} 
-                  alt={prop.Titulo}
-                  className="property-card-img w-full h-full object-cover" 
-                />
-                <div className="absolute top-4 left-4 flex gap-2">
-                  <span className="bg-primary text-white text-[9px] font-black uppercase px-3 py-1 rounded-full">
-                    {prop.Operacion}
-                  </span>
-                  {prop.Destacada === 'SI' && (
-                    <span className="bg-amber-400 text-slate-900 text-[9px] font-black uppercase px-3 py-1 rounded-full">
-                      ★ Destacada
-                    </span>
-                  )}
-                </div>
-                {/* BADGES de multimedia en esquina inferior */}
-                <div className="absolute bottom-4 right-4 flex gap-1.5">
-                  {prop.URL_Video && <span className="bg-black/60 text-white text-[8px] font-black px-2 py-1 rounded-lg backdrop-blur-sm">▶ VIDEO</span>}
-                  {prop.URL_Tour360 && <span className="bg-black/60 text-white text-[8px] font-black px-2 py-1 rounded-lg backdrop-blur-sm">360°</span>}
-                  {prop.URL_Plano && <span className="bg-black/60 text-white text-[8px] font-black px-2 py-1 rounded-lg backdrop-blur-sm">PLANO</span>}
-                </div>
-              </div>
+      {/* LAYOUT: LISTA IZQUIERDA + MAPA DERECHA */}
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-8">
 
-              {/* DATOS PRINCIPALES */}
-              <div className="p-6 flex-grow flex flex-col justify-between">
-                <div>
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                        {prop.Tipo} · {prop.Barrio}
-                      </p>
-                      <h3 className="text-lg leading-tight mt-1 line-clamp-2">{prop.Titulo}</h3>
+        {/* LISTA */}
+        <div>
+          {filteredProperties.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '5rem 2rem', background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem' }}>
+              <p style={{ color: 'var(--text-muted)', fontWeight: 700, fontSize: '15px' }}>No se encontraron propiedades con esos filtros.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filteredProperties.map((prop) => (
+                <article
+                  key={prop.ID}
+                  className="property-card group"
+                  style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', overflow: 'hidden', display: 'flex', flexDirection: 'column', transition: 'box-shadow 0.3s' }}
+                >
+                  {/* IMAGEN */}
+                  <div style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden' }}>
+                    <img
+                      src={prop.Foto_1 || "https://images.unsplash.com/photo-1564013799919-ab600027ffc6"}
+                      alt={prop.Titulo}
+                      className="property-card-img"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    <div style={{ position: 'absolute', top: '1rem', left: '1rem', display: 'flex', gap: '0.5rem' }}>
+                      <span style={{ background: '#660033', color: '#fff', fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', padding: '3px 10px', borderRadius: '9999px' }}>
+                        {prop.Operacion}
+                      </span>
+                      {prop.Destacada === 'SI' && (
+                        <span style={{ background: '#f59e0b', color: '#111', fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', padding: '3px 10px', borderRadius: '9999px' }}>
+                          ★ Destacada
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ position: 'absolute', bottom: '0.75rem', right: '0.75rem', display: 'flex', gap: '0.375rem' }}>
+                      {prop.URL_Video && <span style={{ background: 'rgba(0,0,0,0.65)', color: '#fff', fontSize: '8px', fontWeight: 900, padding: '3px 7px', borderRadius: '6px', backdropFilter: 'blur(4px)' }}>▶ VIDEO</span>}
+                      {prop.URL_Tour360 && <span style={{ background: 'rgba(0,0,0,0.65)', color: '#fff', fontSize: '8px', fontWeight: 900, padding: '3px 7px', borderRadius: '6px', backdropFilter: 'blur(4px)' }}>360°</span>}
                     </div>
                   </div>
-                  <p className="text-2xl font-black text-primary dark:text-accent mt-2">
-                    {prop.Moneda} {Number(prop.Precio).toLocaleString('es-AR')}
-                  </p>
-                  {prop.Expensas && (
-                    <p className="text-[10px] text-slate-400 font-bold">+ ${Number(prop.Expensas).toLocaleString('es-AR')} expensas</p>
-                  )}
 
-                  {/* ICONOS DE CARACTERÍSTICAS */}
-                  <div className="flex flex-wrap gap-4 mt-4 text-[11px] font-bold text-slate-500 dark:text-slate-400">
-                    {prop.Sup_Cubierta && <span>📐 {prop.Sup_Cubierta} m²</span>}
-                    {prop.Ambientes && <span>🏠 {prop.Ambientes} amb.</span>}
-                    {prop.Dormitorios && <span>🛏 {prop.Dormitorios} dorm.</span>}
-                    {prop.Banos && <span>🚿 {prop.Banos} baños</span>}
-                    {prop.Cocheras && prop.Cocheras !== '0' && <span>🚗 {prop.Cocheras} coch.</span>}
+                  {/* DATOS */}
+                  <div style={{ padding: '1.5rem', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div>
+                      <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>
+                        {prop.Tipo} · {prop.Barrio}
+                      </p>
+                      <h3 style={{ fontSize: '1rem', fontWeight: 700, lineHeight: 1.35, color: 'var(--text-strong)', marginBottom: '0.75rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                        {prop.Titulo}
+                      </h3>
+                      <p style={{ fontSize: '1.375rem', fontWeight: 900, color: '#660033', marginBottom: '2px' }}>
+                        {prop.Moneda} {Number(prop.Precio).toLocaleString('es-AR')}
+                      </p>
+                      {prop.Expensas && (
+                        <p style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600 }}>
+                          + ${Number(prop.Expensas).toLocaleString('es-AR')} expensas
+                        </p>
+                      )}
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem', marginTop: '1rem', fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                        {prop.Sup_Cubierta && <span>📐 {prop.Sup_Cubierta} m²</span>}
+                        {prop.Ambientes && <span>🏠 {prop.Ambientes} amb.</span>}
+                        {prop.Dormitorios && <span>🛏 {prop.Dormitorios} dorm.</span>}
+                        {prop.Banos && <span>🚿 {prop.Banos} baños</span>}
+                        {prop.Cocheras && prop.Cocheras !== '0' && <span>🚗 {prop.Cocheras} coch.</span>}
+                      </div>
+                    </div>
+                    <a
+                      href={`/propiedades/${prop.Slug}`}
+                      style={{ display: 'block', textAlign: 'center', background: '#660033', color: '#fff', padding: '0.75rem', borderRadius: '0.75rem', fontWeight: 900, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.1em', textDecoration: 'none', marginTop: '1.25rem', transition: 'transform 0.2s' }}
+                      onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
+                      onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                    >
+                      Ver propiedad
+                    </a>
                   </div>
-                </div>
-
-                {/* CTA */}
-                <a 
-                  href={`/propiedades/${prop.Slug}`}
-                  className="mt-6 block w-full text-center bg-primary dark:bg-accent text-white dark:text-slate-900 py-3 rounded-xl font-black uppercase text-[11px] tracking-widest hover:scale-[1.02] transition-all"
-                >
-                  Ver propiedad
-                </a>
-              </div>
-            </article>
-          ))}
+                </article>
+              ))}
+            </div>
+          )}
         </div>
-      )}
 
+        {/* MAPA — sticky, oculto en mobile */}
+        <div className="hidden lg:block" style={{ position: 'sticky', top: '180px', height: 'calc(100vh - 200px)', borderRadius: '1.25rem', overflow: 'hidden', border: '1px solid var(--card-border)' }}>
+          <iframe
+            src={BUENOS_AIRES_MAP}
+            width="100%"
+            height="100%"
+            style={{ border: 0, display: 'block' }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+
+      </div>
     </div>
   );
 }

@@ -43,18 +43,18 @@ export default function BlogPreviewJoin({ noticias = [] }) {
                 )}
               </div>
 
-              <div className="p-7 flex-grow flex flex-col">
-                <p className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: '#999' }}>
+              <div style={{ padding: '2rem 2.25rem 2.25rem', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                <p style={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#999', marginBottom: '0.875rem' }}>
                   {nota.Fecha}
                 </p>
-                <h3 className="text-lg font-bold leading-snug mb-3 transition-colors group-hover:text-[#660033]"
-                  style={{ color: '#111' }}>
+                <h3 style={{ fontSize: '1.0625rem', fontWeight: 700, lineHeight: 1.4, marginBottom: '0.875rem', color: '#111', transition: 'color 0.2s' }}
+                  className="group-hover:text-[#660033]">
                   {nota.Titulo}
                 </h3>
-                <p className="text-sm leading-relaxed line-clamp-3 mb-6" style={{ color: '#666' }}>
+                <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#555', marginBottom: '1.75rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                   {nota.Copete}
                 </p>
-                <div className="mt-auto flex items-center gap-2 text-xs font-bold" style={{ color: '#660033' }}>
+                <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '12px', fontWeight: 700, color: '#660033' }}>
                   Leer más <ArrowRight size={14} />
                 </div>
               </div>

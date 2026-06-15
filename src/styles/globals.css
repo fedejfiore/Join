@@ -157,6 +157,25 @@ html:not(.dark) h3 {
 }
 
 /* ============================================================
+   FORMULARIOS — texto visible en ambos modos
+   ============================================================ */
+input, textarea, select {
+  color: var(--text-strong);
+  background-color: var(--card-inner-bg);
+}
+input::placeholder, textarea::placeholder { color: var(--text-muted); }
+
+/* Opciones del select nativo */
+select option {
+  background: #1c1c1e;
+  color: rgba(255,255,255,0.88);
+}
+html:not(.dark) select option {
+  background: #ffffff;
+  color: rgba(0,0,0,0.88);
+}
+
+/* ============================================================
    WHATSAPP FLOTANTE
    ============================================================ */
 .whatsapp-float {
