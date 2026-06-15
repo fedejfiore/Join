@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --webpack",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -12,10 +12,10 @@
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.4",
     "lucide-react": "<1.0.0",
-    "next": "latest",
+    "next": "^15.0.0",
     "papaparse": "^5.5.3",
-    "react": "latest",
-    "react-dom": "latest",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
     "react-google-recaptcha": "^3.1.0",
     "react-markdown": "^8.0.7",
     "remark-breaks": "^3.0.3",
