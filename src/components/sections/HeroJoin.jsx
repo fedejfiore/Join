@@ -92,41 +92,41 @@ export default function HeroJoin({ config, brand }) {
         )}
       </div>
 
-      {/* ACTION CARDS — en el flujo normal del flex, siempre visible */}
+      {/* ACTION CARDS — fila única, siempre visible */}
       <div style={{ position: 'relative', zIndex: 20, flexShrink: 0, padding: '0 1rem' }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
+          gridTemplateColumns: 'repeat(4, 1fr)',
           gap: '2px',
-          maxWidth: '960px',
+          maxWidth: '860px',
           margin: '0 auto',
-        }} className="md:grid-cols-4">
+        }}>
           {HERO_ACTIONS.map((item) => {
             const Icon = item.icon;
             return (
               <a key={item.label} href={item.href}
                 style={{
                   display: 'flex', flexDirection: 'column',
-                  alignItems: 'center', gap: '0.75rem',
-                  padding: '1.5rem 1rem 1.75rem',
+                  alignItems: 'center', gap: '0.5rem',
+                  padding: '1rem 0.75rem 1.125rem',
                   background: 'rgba(255,255,255,0.1)',
                   backdropFilter: 'blur(16px)',
                   WebkitBackdropFilter: 'blur(16px)',
                   border: '1px solid rgba(255,255,255,0.18)',
                   borderBottom: 'none',
-                  borderRadius: '1rem 1rem 0 0',
+                  borderRadius: '0.875rem 0.875rem 0 0',
                   textDecoration: 'none',
                   transition: 'background 0.2s',
                 }}
                 onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.18)'}
                 onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
               >
-                <Icon size={28} strokeWidth={1.25} style={{ color: 'rgba(255,255,255,0.85)' }} />
+                <Icon size={22} strokeWidth={1.25} style={{ color: 'rgba(255,255,255,0.85)' }} />
                 <span style={{
-                  fontSize: '10px', fontWeight: 700,
+                  fontSize: '9px', fontWeight: 700,
                   color: 'rgba(255,255,255,0.75)',
                   textAlign: 'center', lineHeight: 1.3,
-                  textTransform: 'uppercase', letterSpacing: '0.1em',
+                  textTransform: 'uppercase', letterSpacing: '0.08em',
                 }}>
                   {item.label}
                 </span>

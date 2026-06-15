@@ -73,9 +73,6 @@ export default function PorQueElegirnos() {
 
         {/* ENCABEZADO */}
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.3em', color: '#cc0044', marginBottom: '1rem' }}>
-            Diferencial
-          </p>
           <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 800, color: 'var(--text-strong)', marginBottom: '1.25rem' }}>
             ¿Por qué elegirnos?
           </h2>

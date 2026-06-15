@@ -29,6 +29,22 @@ export default function PropertyDetail({ property, data }) {
     return url;
   };
 
+  const getMapEmbedUrl = (prop) => {
+    if (prop.LAT && prop.LONG) {
+      return `https://maps.google.com/maps?q=${prop.LAT},${prop.LONG}&z=16&output=embed`;
+    }
+    const url = prop.URL_Maps || prop.Direccion_maps || '';
+    if (!url) return '';
+    if (url.includes('maps/embed')) return url;
+    if (url.includes('maps.google.com/maps?') && url.includes('output=embed')) return url;
+    // Convertir URL de compartir a embed
+    if (url.includes('google.com/maps')) {
+      const coordMatch = url.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+      if (coordMatch) return `https://maps.google.com/maps?q=${coordMatch[1]},${coordMatch[2]}&z=16&output=embed`;
+    }
+    return url;
+  };
+
   const videoEmbed = getEmbedUrl(property.URL_Video);
   const prevPhoto = (e) => { e.stopPropagation(); setLightboxIndex(prev => prev === 0 ? photos.length - 1 : prev - 1); };
   const nextPhoto = (e) => { e.stopPropagation(); setLightboxIndex(prev => prev === photos.length - 1 ? 0 : prev + 1); };
@@ -200,16 +216,19 @@ export default function PropertyDetail({ property, data }) {
               )}
 
               {/* MAPA */}
-              {(property.URL_Maps || property.Direccion_maps) && (
-                <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2rem' }}>
-                  <h3 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#660033', marginBottom: '1.25rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--divider)' }}>
-                    Ubicación aproximada
-                  </h3>
-                  <div style={{ borderRadius: '0.875rem', overflow: 'hidden', height: '360px', border: '1px solid var(--card-border)' }}>
-                    <iframe src={property.URL_Maps || property.Direccion_maps} width="100%" height="100%" style={{ border: 0, display: 'block' }} allowFullScreen loading="lazy" />
+              {(property.LAT || property.LONG || property.URL_Maps || property.Direccion_maps) && (() => {
+                const mapSrc = getMapEmbedUrl(property);
+                return mapSrc ? (
+                  <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2rem' }}>
+                    <h3 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#660033', marginBottom: '1.25rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--divider)' }}>
+                      Ubicación aproximada
+                    </h3>
+                    <div style={{ borderRadius: '0.875rem', overflow: 'hidden', height: '360px', border: '1px solid var(--card-border)' }}>
+                      <iframe src={mapSrc} width="100%" height="100%" style={{ border: 0, display: 'block' }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+                    </div>
                   </div>
-                </div>
-              )}
+                ) : null;
+              })()}
 
             </div>
 

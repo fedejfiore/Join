@@ -23,9 +23,6 @@ export default function NosotrosJoin({ data }) {
 
           {/* TEXTO */}
           <div className="order-2 lg:order-1" style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-            <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.3em', color: '#cc0044' }}>
-              Quiénes Somos
-            </p>
             <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 800, color: 'var(--text-strong)', lineHeight: 1.15 }}>
               Nosotros
             </h2>
