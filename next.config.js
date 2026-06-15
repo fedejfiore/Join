@@ -2,15 +2,6 @@
 const nextConfig = {
   poweredByHeader: false,
   transpilePackages: ['lucide-react', 'swiper'],
-
-  webpack: (config, { isServer, nextRuntime }) => {
-    if (isServer && nextRuntime === 'edge') {
-      config.node = {
-        __dirname: true, // Le provee un contexto seguro de __dirname al bundle del middleware
-      };
-    }
-    return config;
-  },
 }
 
 module.exports = nextConfig;
