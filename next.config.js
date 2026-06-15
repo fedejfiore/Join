@@ -2,7 +2,7 @@
 const nextConfig = {
   poweredByHeader: false,
   turbopack: {},
-  transpilePackages: ['lucide-react'],
+  transpilePackages: ['lucide-react', 'swiper'],
 
   webpack: (config, { isServer, nextRuntime }) => {
     if (isServer && nextRuntime === 'edge') {
