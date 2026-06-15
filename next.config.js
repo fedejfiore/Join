@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
-  
-  // SOLUCCIÓN QUIRÚRGICA: Neutraliza el ReferenceError en el Edge Runtime de Vercel
+  turbopack: {},
+
   webpack: (config, { isServer, nextRuntime }) => {
     if (isServer && nextRuntime === 'edge') {
       config.node = {
