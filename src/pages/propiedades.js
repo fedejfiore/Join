@@ -7,14 +7,14 @@ export default function PropiedadesPage({ data }) {
   return (
     <Layout data={data}>
       <div className="min-h-screen pt-32 pb-24">
-        <header className="max-w-7xl mx-auto px-6 mb-10 text-center md:text-left">
-          <span className="text-primary dark:text-accent font-black text-[10px] uppercase tracking-[0.3em] transition-colors">
+        <header style={{ maxWidth: '1280px', margin: '0 auto 3rem', padding: '0 1.5rem', textAlign: 'center' }}>
+          <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.3em', color: '#cc0044' }}>
             Catálogo
           </span>
-          <h1 className="text-5xl md:text-7xl font-black italic text-primary dark:text-accent uppercase leading-none tracking-tighter mt-2 transition-colors">
+          <h1 style={{ fontSize: 'clamp(2.25rem, 6vw, 4rem)', fontWeight: 800, color: 'var(--text-strong)', lineHeight: 1.1, marginTop: '1rem', letterSpacing: '-0.02em' }}>
             Encontrá la propiedad que buscás
           </h1>
-          <div className="w-24 h-2 bg-primary dark:bg-accent mt-6 rounded-full md:mx-0 mx-auto transition-colors"></div>
+          <div style={{ width: '96px', height: '4px', background: '#660033', margin: '1.5rem auto 0', borderRadius: '2px' }} />
         </header>
         <PropiedadesList propiedades={data.propiedades} />
       </div>

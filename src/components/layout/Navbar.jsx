@@ -1,15 +1,24 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, Accessibility } from 'lucide-react';
 import AccessibilityHub from '../ui/AccessibilityHub';
 import ThemeToggle from '../ui/ThemeToggle';
 
 export default function Navbar({ brand, setup, accConfig }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [showAcc, setShowAcc] = useState(false);
+  const [isOpen, setIsOpen]       = useState(false);
+  const [showAcc, setShowAcc]     = useState(false);
   const [logoError, setLogoError] = useState(false);
+  const [isDark, setIsDark]       = useState(true);
+
+  useEffect(() => {
+    const check = () => setIsDark(document.documentElement.classList.contains('dark'));
+    check();
+    const obs = new MutationObserver(check);
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => obs.disconnect();
+  }, []);
 
   const menuItems = [
     { id: 'tasaciones',  label: setup?.tasaciones?.valor  || 'TASACIONES',  href: '/tasaciones' },
@@ -19,47 +28,52 @@ export default function Navbar({ brand, setup, accConfig }) {
     { id: 'blog',        label: setup?.blog?.valor        || 'BLOG',        href: '/blog' },
   ].filter(item => setup?.[item.id]?.status !== 'OFF');
 
+  const logoBlancoSrc = brand?.Logo_Blanco?.valor || brand?.logo_blanco?.valor || '/images/JOIN-Blanco.png';
+  const logoColorSrc  = brand?.Logo_Color?.valor  || brand?.logo_color?.valor  || '/images/JOIN---Burdeos (1).png';
+  const logoSrc = isDark ? logoBlancoSrc : logoColorSrc;
+
   return (
-    <nav className="sticky top-0 w-full z-50 transition-colors duration-300"
-      style={{ backgroundColor: '#111111', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <nav style={{ position: 'sticky', top: 0, width: '100%', zIndex: 50, backgroundColor: '#111111', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
         {/* LOGO */}
-        <Link href="/" className="h-full py-4 shrink-0 flex items-center">
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
           {logoError ? (
-            <span className="font-black text-xl tracking-[10px] text-white select-none">JOIN</span>
+            <span style={{ fontWeight: 900, fontSize: '1.25rem', letterSpacing: '8px', color: '#ffffff' }}>JOIN</span>
           ) : (
-            <>
-              <img
-                src="/images/join-logo-blanco.png"
-                alt="Logo Join"
-                onError={() => setLogoError(true)}
-                className="h-full w-auto object-contain max-h-[48px]"
-              />
-            </>
+            <img
+              key={logoSrc}
+              src={logoSrc}
+              alt="JOIN"
+              onError={() => setLogoError(true)}
+              style={{ height: '42px', width: 'auto', objectFit: 'contain' }}
+            />
           )}
         </Link>
 
         {/* NAVEGACIÓN DESKTOP */}
-        <div className="hidden md:flex items-center gap-10">
+        <div className="hidden md:flex items-center" style={{ gap: '2.5rem' }}>
           {menuItems.map(item => (
             <Link
               key={item.id}
               href={item.href}
-              className="relative font-bold uppercase text-[11px] tracking-[0.2em] text-white/60 hover:text-white transition-colors duration-200 group"
+              className="group relative"
+              style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.18em', color: 'rgba(255,255,255,0.6)', transition: 'color 0.2s' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'}
             >
               {item.label}
-              <span className="absolute left-0 -bottom-1 w-0 h-px bg-white transition-all duration-300 group-hover:w-full" />
+              <span style={{ position: 'absolute', bottom: '-4px', left: 0, height: '1px', background: '#ffffff', width: 0, transition: 'width 0.3s ease' }}
+                className="group-hover:w-full" />
             </Link>
           ))}
 
-          <div className="flex items-center gap-3 ml-2 pl-6 border-l border-white/10">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingLeft: '24px', borderLeft: '1px solid rgba(255,255,255,0.1)' }}>
             <ThemeToggle />
             {setup?.config_accesibilidad?.status === 'ON' && (
               <button
                 onClick={() => setShowAcc(!showAcc)}
-                className="text-white/40 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
-                aria-label="Accesibilidad"
+                style={{ color: 'rgba(255,255,255,0.4)', padding: '8px', borderRadius: '50%' }}
               >
                 <Accessibility size={18} />
               </button>
@@ -68,10 +82,10 @@ export default function Navbar({ brand, setup, accConfig }) {
         </div>
 
         {/* BOTONES MÓVIL */}
-        <div className="md:hidden flex items-center gap-2">
+        <div className="md:hidden" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <ThemeToggle />
           <button
-            className="text-white/70 hover:text-white p-2 transition-all"
+            style={{ color: 'rgba(255,255,255,0.7)', padding: '8px' }}
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -89,14 +103,13 @@ export default function Navbar({ brand, setup, accConfig }) {
 
       {/* MENÚ MÓVIL */}
       {isOpen && (
-        <div className="md:hidden border-t border-white/8 p-8 flex flex-col gap-6 animate-in slide-in-from-top-5"
-          style={{ backgroundColor: '#111111' }}>
+        <div className="md:hidden" style={{ backgroundColor: '#111111', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {menuItems.map(item => (
             <Link
               key={item.id}
               href={item.href}
               onClick={() => setIsOpen(false)}
-              className="font-black uppercase text-lg text-white/70 hover:text-white transition-colors tracking-widest"
+              style={{ fontWeight: 900, textTransform: 'uppercase', fontSize: '1.125rem', color: 'rgba(255,255,255,0.7)', letterSpacing: '0.15em' }}
             >
               {item.label}
             </Link>

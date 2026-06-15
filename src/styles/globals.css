@@ -8,92 +8,130 @@
 }
 
 /* ============================================================
-   VARIABLES BASE
+   CSS CUSTOM PROPERTIES — ADAPTAN AUTOMÁTICAMENTE LIGHT/DARK
    ============================================================ */
 :root {
-    --color-primary: #660033;
-    --color-accent: #cc0044;
+  --color-primary: #660033;
+  --color-accent:  #cc0044;
+
+  /* Cards y paneles */
+  --card-bg:           #1c1c1e;
+  --card-border:       rgba(255,255,255,0.08);
+  --card-inner-bg:     rgba(255,255,255,0.04);
+  --card-inner-border: rgba(255,255,255,0.06);
+
+  /* Texto */
+  --text-strong:    rgba(255,255,255,0.92);
+  --text-secondary: rgba(255,255,255,0.50);
+  --text-muted:     rgba(255,255,255,0.35);
+  --text-faint:     rgba(255,255,255,0.22);
+
+  /* Separadores */
+  --divider: rgba(255,255,255,0.08);
+}
+
+/* Modo claro — todo cambia automáticamente */
+html:not(.dark) {
+  --color-primary: #660033;
+  --color-accent:  #cc0044;
+
+  --card-bg:           #ffffff;
+  --card-border:       rgba(0,0,0,0.09);
+  --card-inner-bg:     rgba(0,0,0,0.035);
+  --card-inner-border: rgba(0,0,0,0.07);
+
+  --text-strong:    rgba(0,0,0,0.88);
+  --text-secondary: rgba(0,0,0,0.55);
+  --text-muted:     rgba(0,0,0,0.42);
+  --text-faint:     rgba(0,0,0,0.28);
+
+  --divider: rgba(0,0,0,0.08);
 }
 
 .dark {
-    --color-primary: #cc0044;
-    --color-accent: #ff4477;
+  --color-primary: #cc0044;
+  --color-accent:  #ff4477;
 }
 
+/* ============================================================
+   RESET
+   ============================================================ */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 /* ============================================================
    BODY — DARK POR DEFECTO
    ============================================================ */
 body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #0f0f0f;
-    color: #f0f0f0;
-    transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #0f0f0f;
+  color: var(--text-strong);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 html:not(.dark) body {
-    background-color: #f5f5f5;
-    color: #111111;
+  background-color: #f2f2f2;
 }
 
 /* ============================================================
    TIPOGRAFÍA
    ============================================================ */
-h2 {
-    @apply font-bold tracking-tight transition-colors duration-300;
-}
-h3 {
-    @apply font-semibold tracking-tight transition-colors duration-300;
-}
+h2 { @apply font-bold tracking-tight transition-colors duration-300; }
+h3 { @apply font-semibold tracking-tight transition-colors duration-300; }
 
 /* ============================================================
    SECCIONES
    ============================================================ */
 .section-dynamic {
-    @apply py-28 px-6 transition-colors duration-300;
-    background-color: #0f0f0f;
+  @apply py-32 px-6 transition-colors duration-300;
+  background-color: #0f0f0f;
 }
 
 html:not(.dark) .section-dynamic {
-    background-color: #f5f5f5;
+  background-color: #f2f2f2;
 }
 
 /* Sección clara (blog): SIEMPRE blanca */
 .section-light {
-    @apply py-28 px-6;
-    background-color: #ffffff;
-    color: #111111;
+  @apply py-32 px-6;
+  background-color: #ffffff;
+  color: #111111;
+}
+
+/* Wrapper centrado estándar */
+.section-inner {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  padding: 2rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
 }
 
 /* ============================================================
    HERO VIDEO
    ============================================================ */
 .hero-video-section {
-    position: relative; height: 100vh; width: 100%;
-    overflow: hidden; background-color: #0a0a0a;
+  position: relative; height: 100vh; width: 100%;
+  overflow: hidden; background-color: #0a0a0a;
 }
 
 .hero-video-overlay {
-    position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.72) 100%);
-}
-
-/* ============================================================
-   BOTONES
-   ============================================================ */
-.btn-submit {
-    @apply font-black uppercase transition-all;
-    background-color: #660033;
-    color: #ffffff;
-}
-
-/* ============================================================
-   TEXTO SOBRE IMÁGENES
-   ============================================================ */
-.text-on-image {
-    color: #ffffff !important;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 100%);
 }
 
 /* ============================================================
@@ -106,19 +144,27 @@ html:not(.dark) .section-dynamic {
 .dark .dark\:bg-\[#0a192f\] { background-color: #0f0f0f !important; }
 .dark .dark\:border-slate-800 { border-color: rgba(255,255,255,0.08) !important; }
 .dark .dark\:border-slate-700 { border-color: rgba(255,255,255,0.12) !important; }
-.dark .dark\:border-slate-800\/50 { border-color: rgba(255,255,255,0.05) !important; }
-.dark .dark\:border-slate-50 { border-color: rgba(255,255,255,0.06) !important; }
 .dark .dark\:text-slate-100 { color: #f0f0f0 !important; }
 .dark .dark\:text-slate-200 { color: #e0e0e0 !important; }
 .dark .dark\:text-slate-300 { color: #c0c0c0 !important; }
 .dark .dark\:text-slate-400 { color: #909090 !important; }
 
+/* Light mode heading color */
+html:not(.dark) h1,
+html:not(.dark) h2,
+html:not(.dark) h3 {
+  color: #111111;
+}
+
 /* ============================================================
-   ACCESIBILIDAD
+   WHATSAPP FLOTANTE
    ============================================================ */
-html.high-contrast body { background-color: #000 !important; color: #fff !important; }
-html.high-contrast h1, html.high-contrast h2, html.high-contrast h3 { font-weight: 900 !important; }
-html.high-contrast p, html.high-contrast span, html.high-contrast li { font-weight: 700 !important; }
+.whatsapp-float {
+  position: fixed; bottom: 30px; right: 30px; z-index: 100;
+  width: 60px; height: 60px; background: #25d366; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
 
 /* ============================================================
    PROPERTY CARD HOVER
@@ -127,19 +173,8 @@ html.high-contrast p, html.high-contrast span, html.high-contrast li { font-weig
 .property-card:hover .property-card-img { transform: scale(1.04); }
 
 /* ============================================================
-   WHATSAPP FLOTANTE
-   ============================================================ */
-.whatsapp-float {
-    position: fixed; bottom: 30px; right: 30px; z-index: 100;
-    width: 60px; height: 60px; background: #25d366; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-}
-.whatsapp-icon { width: 32px; }
-
-/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 768px) {
-    body { overflow-y: auto; }
+  body { overflow-y: auto; }
 }

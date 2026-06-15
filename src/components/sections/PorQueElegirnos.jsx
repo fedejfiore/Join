@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Shield, Camera, Users } from 'lucide-react';
 
 const RAZONES = [
@@ -22,9 +22,7 @@ const RAZONES = [
     items: [
       { titulo: 'Fotografía de Alta Calidad', texto: 'Capturamos la esencia y los mejores ángulos de tu propiedad con equipos de nivel editorial, garantizando una primera impresión inmejorable.' },
       { titulo: 'Video Recorrido', texto: 'Realizamos piezas audiovisuales dinámicas que permiten al interesado "caminar" la propiedad desde su dispositivo, generando un vínculo emocional inmediato.' },
-      { titulo: 'Plano Ilustrativo', texto: 'Aportamos claridad técnica. Un plano claro ayuda al comprador a visualizar la distribución y el potencial del espacio, filtrando consultas poco calificadas.' },
       { titulo: 'Tour Virtual 360°', texto: 'Permitimos inspeccionar cada rincón de la propiedad con total libertad, las 24 horas del día, desde cualquier lugar del mundo.' },
-      { titulo: 'Amoblamiento Virtual', texto: '¿La propiedad está vacía o requiere refacciones? Utilizamos tecnología 3D para mostrar todo su potencial de habitabilidad.' },
     ],
   },
   {
@@ -35,50 +33,78 @@ const RAZONES = [
     items: [
       { titulo: 'Interlocutor Único', texto: 'Se evitan los "teléfonos descompuestos" entre profesionales. Nos encargamos de todo el ciclo: desde el inicio de la sucesión hasta la firma de la escritura traslativa de dominio.' },
       { titulo: 'Facilidad de Honorarios', texto: 'Apostamos al resultado y alineamos nuestros incentivos con los tuyos. Nuestros honorarios profesionales se cancelan al concretar la operación inmobiliaria.' },
-      { titulo: 'Especialización', texto: 'No somos generalistas. Somos expertos en el mercado de sucesiones, lo que nos permite anticiparnos a los conflictos y acelerar los plazos mediante herramientas como el tracto abreviado.' },
+      { titulo: 'Especialización', texto: 'No somos generalistas. Somos expertos en sucesiones, lo que nos permite anticiparnos a los conflictos y acelerar los plazos mediante herramientas como el tracto abreviado.' },
     ],
   },
 ];
 
+const INTERVAL = 5000;
+
 export default function PorQueElegirnos() {
   const [active, setActive] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const timerRef = useRef(null);
+
+  // Auto-rotate cada 5s, se pausa al hover
+  useEffect(() => {
+    if (isPaused) return;
+    timerRef.current = setInterval(() => {
+      setActive(prev => (prev + 1) % RAZONES.length);
+    }, INTERVAL);
+    return () => clearInterval(timerRef.current);
+  }, [isPaused, active]);
+
+  const selectTab = (i) => {
+    setActive(i);
+    // Reiniciar timer al seleccionar manualmente
+    setIsPaused(true);
+    setTimeout(() => setIsPaused(false), 500);
+  };
+
   const razon = RAZONES[active];
   const { Icon } = razon;
 
   return (
-    <section id="valores" className="section-dynamic">
-      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
+    <section id="valores" className="section-dynamic"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}>
+      <div className="section-inner">
 
         {/* ENCABEZADO */}
-        <div className="text-center mb-16">
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-4" style={{ color: '#cc0044' }}>
+        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.3em', color: '#cc0044', marginBottom: '1rem' }}>
             Diferencial
           </p>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-5">¿Por qué elegirnos?</h2>
-          <p className="max-w-2xl mx-auto text-sm md:text-base leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>
+          <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 800, color: 'var(--text-strong)', marginBottom: '1.25rem' }}>
+            ¿Por qué elegirnos?
+          </h2>
+          <p style={{ maxWidth: '560px', margin: '0 auto', fontSize: '15px', lineHeight: 1.7, color: 'var(--text-secondary)' }}>
             Porque ofrecemos un servicio integrador y profesional que es escaso en el mercado inmobiliario y genera ahorros y agilidad a nuestros clientes.
           </p>
         </div>
 
         {/* TABS */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-10 justify-center flex-wrap">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', marginBottom: '2.5rem' }}>
           {RAZONES.map((r, i) => {
             const I = r.Icon;
             const isActive = active === i;
             return (
               <button
                 key={i}
-                onClick={() => setActive(i)}
-                className="flex items-center gap-3 px-7 py-4 rounded-xl transition-all duration-300 text-left"
+                onClick={() => selectTab(i)}
                 style={{
-                  background: isActive ? '#660033' : 'rgba(255,255,255,0.05)',
-                  border: isActive ? '1px solid #660033' : '1px solid rgba(255,255,255,0.1)',
-                  color: isActive ? '#ffffff' : 'rgba(255,255,255,0.6)',
-                  transform: isActive ? 'scale(1.03)' : 'scale(1)',
+                  display: 'flex', alignItems: 'center', gap: '10px',
+                  padding: '14px 24px', borderRadius: '12px',
+                  transition: 'all 0.3s ease', cursor: 'pointer',
+                  background: isActive ? '#660033' : 'var(--card-inner-bg)',
+                  border: `1px solid ${isActive ? '#660033' : 'var(--card-inner-border)'}`,
+                  color: isActive ? '#ffffff' : 'var(--text-secondary)',
+                  transform: isActive ? 'scale(1.04)' : 'scale(1)',
+                  boxShadow: isActive ? '0 4px 20px rgba(102,0,51,0.4)' : 'none',
                 }}
               >
-                <I size={18} className="shrink-0" />
-                <span className="font-black uppercase text-[11px] tracking-wider leading-tight">
+                <I size={17} style={{ flexShrink: 0 }} />
+                <span style={{ fontWeight: 800, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.12em', lineHeight: 1.3 }}>
                   {r.num}. {r.titulo}
                 </span>
               </button>
@@ -86,35 +112,43 @@ export default function PorQueElegirnos() {
           })}
         </div>
 
+        {/* INDICADOR DE PROGRESO */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '2rem' }}>
+          {RAZONES.map((_, i) => (
+            <div key={i} onClick={() => selectTab(i)} style={{
+              width: active === i ? '28px' : '8px', height: '4px', borderRadius: '2px',
+              background: active === i ? '#660033' : 'var(--card-inner-border)',
+              transition: 'all 0.4s ease', cursor: 'pointer',
+            }} />
+          ))}
+        </div>
+
         {/* PANEL DE CONTENIDO */}
-        <div className="rounded-2xl p-8 md:p-12 transition-all duration-300"
-          style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}>
-          <div className="flex items-start gap-6 mb-10 pb-8"
-            style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="p-4 rounded-xl shrink-0"
-              style={{ background: 'rgba(102,0,51,0.15)', color: '#cc0044' }}>
+        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2.5rem 3rem', transition: 'all 0.3s ease' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem', marginBottom: '2.5rem', paddingBottom: '2rem', borderBottom: '1px solid var(--divider)' }}>
+            <div style={{ padding: '14px', borderRadius: '12px', flexShrink: 0, background: 'rgba(102,0,51,0.12)', color: '#cc0044' }}>
               <Icon size={28} />
             </div>
             <div>
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">{razon.titulo}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{razon.intro}</p>
+              <h3 style={{ fontSize: 'clamp(1.25rem, 3vw, 1.75rem)', fontWeight: 800, color: 'var(--text-strong)', marginBottom: '10px' }}>
+                {razon.titulo}
+              </h3>
+              <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text-secondary)', maxWidth: '700px' }}>
+                {razon.intro}
+              </p>
             </div>
           </div>
 
-          <div className={`grid grid-cols-1 gap-5 ${razon.items.length <= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {razon.items.map((item, i) => (
-              <div key={i} className="rounded-xl p-6"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black shrink-0"
-                    style={{ background: '#660033', color: '#ffffff' }}>
+              <div key={i} style={{ background: 'var(--card-inner-bg)', border: '1px solid var(--card-inner-border)', borderRadius: '12px', padding: '1.5rem 1.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 900, flexShrink: 0, background: '#660033', color: '#ffffff' }}>
                     {String(i + 1).padStart(2, '0')}
                   </div>
-                  <p className="font-bold text-[12px] leading-tight" style={{ color: 'rgba(255,255,255,0.85)' }}>
-                    {item.titulo}
-                  </p>
+                  <p style={{ fontWeight: 700, fontSize: '12px', color: 'var(--text-strong)', lineHeight: 1.3 }}>{item.titulo}</p>
                 </div>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>{item.texto}</p>
+                <p style={{ fontSize: '12px', lineHeight: 1.7, color: 'var(--text-secondary)' }}>{item.texto}</p>
               </div>
             ))}
           </div>

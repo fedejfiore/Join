@@ -83,14 +83,14 @@ export default function Layout({ children, data }) {
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDesc} />
         <meta property="og:type" content="website" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" href="/images/JOIN---Burdeos (1).png" />
+        <link rel="apple-touch-icon" href="/images/JOIN---Burdeos (1).png" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content={themePrimary} />
+        <meta name="theme-color" content="#660033" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="JOIN" />
-        <link rel="apple-touch-icon" href="/favicon.png" />
       </Head>
 
       {mkt?.google_tag_manager?.status === 'ON' && gtmId && (

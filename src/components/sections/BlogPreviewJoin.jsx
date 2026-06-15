@@ -13,11 +13,12 @@ export default function BlogPreviewJoin({ noticias = [] }) {
   return (
     <section className="section-light">
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
-        <div className="text-center mb-16">
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-4" style={{ color: '#660033' }}>Blog</p>
-          <h2 className="text-4xl md:text-5xl font-bold" style={{ color: '#111111' }}>
+        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.3em', color: '#660033', marginBottom: '1rem' }}>Blog</p>
+          <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3.25rem)', fontWeight: 800, color: '#111111', lineHeight: 1.15, letterSpacing: '-0.02em' }}>
             Artículos que te pueden interesar
           </h2>
+          <div style={{ width: '64px', height: '3px', background: '#660033', margin: '1.25rem auto 0', borderRadius: '2px' }} />
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">

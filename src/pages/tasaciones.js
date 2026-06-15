@@ -63,22 +63,22 @@ const FAQ_ITEMS = [
 function Accordion({ items }) {
   const [open, setOpen] = useState(null);
   return (
-    <div className="space-y-3">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       {items.map((item, i) => (
-        <div key={i} className="rounded-2xl overflow-hidden" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}>
+        <div key={i} style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1rem', overflow: 'hidden' }}>
           <button
             onClick={() => setOpen(open === i ? null : i)}
-            className="w-full flex items-center justify-between p-6 text-left gap-4"
+            style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem 1.5rem', textAlign: 'left', gap: '1rem', background: 'none', border: 'none', cursor: 'pointer' }}
           >
-            <span className="font-bold text-sm leading-tight" style={{ color: 'rgba(255,255,255,0.9)' }}>
+            <span style={{ fontWeight: 700, fontSize: '14px', lineHeight: 1.4, color: 'var(--text-strong)' }}>
               {item.q}
             </span>
-            <span className="shrink-0" style={{ color: '#cc0044' }}>
+            <span style={{ color: '#cc0044', flexShrink: 0 }}>
               {open === i ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
             </span>
           </button>
           {open === i && (
-            <div className="px-6 pb-6 text-sm font-medium leading-relaxed pt-4" style={{ color: 'rgba(255,255,255,0.45)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+            <div style={{ padding: '0 1.5rem 1.25rem', fontSize: '14px', fontWeight: 500, lineHeight: 1.75, color: 'var(--text-secondary)', borderTop: '1px solid var(--divider)', paddingTop: '1rem' }}>
               {item.a}
             </div>
           )}

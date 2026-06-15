@@ -35,9 +35,12 @@ export default function Footer({ brand }) {
   const showYt = (brand?.youtube?.status   || brand?.Youtube?.status)   === 'ON' && ytUrl;
   const showWa = (brand?.whatsapp?.status  || brand?.whatsapp_flotante?.status) === 'ON';
 
+  // Logo desde Sheet o fallback
+  const logoSrc = brand?.Logo_Blanco?.valor || brand?.logo_blanco?.valor || '/images/JOIN-Blanco.png';
+
   return (
     <footer style={{ background: '#111111', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-      <div className="max-w-7xl mx-auto px-6 py-16">
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '4rem 1.5rem' }}>
 
         {/* GRID 4 COLUMNAS */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -45,18 +48,17 @@ export default function Footer({ brand }) {
           {/* COL 1 — LOGO + DESCRIPCION */}
           <div className="flex flex-col gap-5">
             {logoError ? (
-              <span className="font-black text-2xl tracking-[10px] text-white">{nombre}</span>
+              <span style={{ fontWeight: 900, fontSize: '1.5rem', letterSpacing: '8px', color: '#ffffff' }}>{nombre}</span>
             ) : (
-              <img src="/images/join-logo-blanco.png" alt={nombre}
+              <img src={logoSrc} alt={nombre}
                 onError={() => setLogoError(true)}
-                className="h-12 w-auto object-contain object-left" />
+                style={{ height: '44px', width: 'auto', objectFit: 'contain', objectPosition: 'left' }} />
             )}
-            <p className="text-[11px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>
+            <p style={{ fontSize: '11px', lineHeight: 1.7, color: 'rgba(255,255,255,0.4)' }}>
               Inmobiliaria y Estudio Jurídico especializado en Sucesiones y Operaciones Simultáneas en Buenos Aires.
             </p>
             {(cucicba || cpacf) && (
-              <div className="text-[9px] font-bold uppercase tracking-widest space-y-1"
-                style={{ color: 'rgba(255,255,255,0.3)' }}>
+              <div style={{ fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.3)', lineHeight: 1.8 }}>
                 {cucicba && <p>CUCICBA {cucicba}</p>}
                 {cpacf   && <p>CPACF {cpacf}</p>}
               </div>
@@ -65,21 +67,24 @@ export default function Footer({ brand }) {
 
           {/* COL 2 — CONTACTO */}
           <div className="flex flex-col gap-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/60 mb-1">Contactanos</p>
-            <a href={`tel:${waNum}`} className="text-sm font-medium text-white/50 hover:text-white transition-colors flex items-center gap-2">
+            <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(255,255,255,0.55)', marginBottom: '4px' }}>Contactanos</p>
+            <a href={`tel:${waNum}`} className="flex items-center gap-2 transition-colors hover:text-white"
+              style={{ fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)' }}>
               <MessageCircle size={14} /> {waRaw}
             </a>
-            <a href={`mailto:${email}`} className="text-sm font-medium text-white/50 hover:text-white transition-colors flex items-center gap-2">
+            <a href={`mailto:${email}`} className="flex items-center gap-2 transition-colors hover:text-white"
+              style={{ fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)' }}>
               <Mail size={14} /> {email}
             </a>
-            <p className="text-sm font-medium text-white/50 flex items-start gap-2">
-              <span className="mt-0.5 shrink-0">📍</span> {direccion}
+            <p className="flex items-start gap-2"
+              style={{ fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)' }}>
+              <span style={{ marginTop: '2px', flexShrink: 0 }}>📍</span> {direccion}
             </p>
           </div>
 
           {/* COL 3 — REDES SOCIALES */}
           <div className="flex flex-col gap-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/60 mb-1">Redes Sociales</p>
+            <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(255,255,255,0.55)', marginBottom: '4px' }}>Redes Sociales</p>
             <div className="flex flex-wrap gap-3">
               {showWa && (
                 <a href={`https://wa.me/${waNum}`} target="_blank" rel="noopener noreferrer"
@@ -119,10 +124,11 @@ export default function Footer({ brand }) {
 
           {/* COL 4 — ACCESOS RÁPIDOS */}
           <div className="flex flex-col gap-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/60 mb-1">Accesos rápidos</p>
+            <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(255,255,255,0.55)', marginBottom: '4px' }}>Accesos rápidos</p>
             {NAV_LINKS.map(link => (
               <a key={link.href} href={link.href}
-                className="text-sm font-medium text-white/50 hover:text-white transition-colors">
+                className="transition-colors hover:text-white"
+                style={{ fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)' }}>
                 {link.label}
               </a>
             ))}
@@ -133,10 +139,10 @@ export default function Footer({ brand }) {
         {/* BOTTOM BAR */}
         <div className="mt-14 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
           style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <p className="text-[10px] font-medium" style={{ color: 'rgba(255,255,255,0.25)' }}>
+          <p style={{ fontSize: '10px', fontWeight: 500, color: 'rgba(255,255,255,0.25)' }}>
             © {year} {nombre} — Todos los derechos reservados
           </p>
-          <p className="text-[10px] font-medium" style={{ color: 'rgba(255,255,255,0.2)' }}>
+          <p style={{ fontSize: '10px', fontWeight: 500, color: 'rgba(255,255,255,0.2)' }}>
             Inmobiliaria y Estudio Jurídico en Buenos Aires
           </p>
         </div>
