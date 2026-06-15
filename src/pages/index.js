@@ -22,12 +22,12 @@ export default function Home({ data }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     const data = await getAllSiteData();
-    return { props: { data }, revalidate: 10 };
+    return { props: { data } };
   } catch (e) {
-    console.error("Error at getStaticProps of Home:", e);
+    console.error("Error at getServerSideProps of Home:", e);
     return { props: { data: null } };
   }
 }

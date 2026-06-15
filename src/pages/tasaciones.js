@@ -90,12 +90,12 @@ export default function TasacionesPage({ data }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     const data = await getAllSiteData();
-    return { props: { data }, revalidate: 10 };
+    return { props: { data } };
   } catch (e) {
-    console.error("Error at tasaciones getStaticProps:", e);
+    console.error("Error at tasaciones getServerSideProps:", e);
     return { props: { data: null } };
   }
 }

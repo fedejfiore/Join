@@ -344,20 +344,7 @@ export default function PropertyDetail({ property, data }) {
   );
 }
 
-export async function getStaticPaths() {
-  try {
-    const data = await getAllSiteData();
-    const paths = (data.propiedades || []).map(p => ({
-      params: { slug: p.Slug }
-    }));
-    return { paths, fallback: 'blocking' };
-  } catch (e) {
-    console.error("Error at getStaticPaths of property detail:", e);
-    return { paths: [], fallback: 'blocking' };
-  }
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   try {
     const data = await getAllSiteData();
     const property = (data.propiedades || []).find(p => p.Slug === params.slug);
@@ -366,12 +353,9 @@ export async function getStaticProps({ params }) {
       return { notFound: true };
     }
 
-    return { 
-      props: { property, data }, 
-      revalidate: 10 
-    };
+    return { props: { property, data } };
   } catch (e) {
-    console.error("Error at getStaticProps of property detail:", e);
+    console.error("Error at getServerSideProps of property detail:", e);
     return { notFound: true };
   }
 }
