@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { 
-  Search, MessageCircle, Facebook, Send, 
+import { useState, useEffect, useMemo } from 'react';
+import {
+  Search, MessageCircle, Facebook, Send,
   X as CloseIcon, Calendar, Tag, Link as LinkIcon, Linkedin
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -9,16 +9,16 @@ import remarkBreaks from 'remark-breaks';
 
 const XIcon = ({ size = 20 }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
-    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
   </svg>
 );
 
-export default function BlogList({ noticias }) {
-  const [search, setSearch] = useState("");
+export default function BlogList({ noticias = [] }) {
+  const [search, setSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('Todos');
   const [selectedNota, setSelectedNota] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
 
-  // Lógica para abrir nota si entran con un link directo (ej: #nota-1)
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
@@ -27,37 +27,37 @@ export default function BlogList({ noticias }) {
         if (notaHash) setSelectedNota(notaHash);
       }
     };
-
-    handleHashChange(); // Ejecutar al cargar
-    window.addEventListener('hashchange', handleHashChange); // Escuchar cambios manuales
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, [noticias]);
 
-  const filtered = noticias.filter(n => 
-    n.Titulo?.toLowerCase().includes(search.toLowerCase()) || 
-    n.Cuerpo?.toLowerCase().includes(search.toLowerCase()) ||
-    n.Categoría?.toLowerCase().includes(search.toLowerCase())
-  );
+  const categories = useMemo(() => {
+    const cats = noticias.map(n => n.Categoría).filter(Boolean);
+    return ['Todos', ...Array.from(new Set(cats))];
+  }, [noticias]);
+
+  const filtered = useMemo(() => noticias.filter(n => {
+    const matchSearch = !search ||
+      n.Titulo?.toLowerCase().includes(search.toLowerCase()) ||
+      n.Cuerpo?.toLowerCase().includes(search.toLowerCase()) ||
+      n.Categoría?.toLowerCase().includes(search.toLowerCase());
+    const matchCat = selectedCategory === 'Todos' || n.Categoría === selectedCategory;
+    return matchSearch && matchCat;
+  }), [noticias, search, selectedCategory]);
 
   const handleShare = (platform, nota, event = null) => {
     if (event) event.stopPropagation();
-    
-    // CONSTRUCCIÓN DE URL ROBUSTA
     const origin = window.location.origin;
-    // IMPORTANTE: URL + UTM + HASH (en ese orden exacto para Analytics)
     const shareUrl = `${origin}/blog?utm_source=user_share&utm_medium=social#${nota.Clave}`;
-    
     const text = `Mira esta nota en Join: ${nota.Titulo}`;
-    
     const links = {
-      ws: `https://wa.me/?text=${encodeURIComponent(text + " " + shareUrl)}`,
+      ws: `https://wa.me/?text=${encodeURIComponent(text + ' ' + shareUrl)}`,
       fb: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
       tg: `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(text)}`,
       x: `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`,
-      th: `https://www.threads.net/intent/post?text=${encodeURIComponent(text + " " + shareUrl)}`,
-      in: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`
+      in: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
     };
-    
     if (platform === 'copy') {
       navigator.clipboard.writeText(shareUrl);
       setCopiedId(nota.Titulo);
@@ -67,77 +67,122 @@ export default function BlogList({ noticias }) {
     window.open(links[platform], '_blank');
   };
 
-  const openNota = (nota) => {
-    setSelectedNota(nota);
-    // Cambia la URL visualmente al instante
-    window.location.hash = nota.Clave;
-  };
-
-  const closeNota = () => {
-    setSelectedNota(null);
-    // Limpia la URL sin recargar la página
-    window.history.pushState(null, null, window.location.pathname);
-  };
+  const openNota = (nota) => { setSelectedNota(nota); window.location.hash = nota.Clave; };
+  const closeNota = () => { setSelectedNota(null); window.history.pushState(null, null, window.location.pathname); };
 
   return (
-    <section className="section-light">
-      <div className="max-w-7xl mx-auto">
-        <div className="relative max-w-xl mx-auto mb-14">
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2" size={20} style={{ color: '#aaa' }} />
-          <input
-            type="text"
-            placeholder="Buscar por título o categoría..."
-            className="w-full pl-14 pr-6 py-4 rounded-full outline-none font-medium transition-all"
-            style={{ background: '#f5f5f5', border: '1px solid #e0e0e0', color: '#111', fontSize: '14px' }}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
+    <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem 5rem' }}>
 
+      {/* BÚSQUEDA */}
+      <div style={{ position: 'relative', maxWidth: '600px', margin: '0 auto 2rem' }}>
+        <Search style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} size={18} />
+        <input
+          type="text"
+          placeholder="Buscar por título o categoría..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          style={{
+            width: '100%', paddingLeft: '3rem', paddingRight: '1.5rem',
+            paddingTop: '0.875rem', paddingBottom: '0.875rem',
+            borderRadius: '9999px', outline: 'none',
+            background: 'var(--card-inner-bg)', border: '1px solid var(--card-inner-border)',
+            color: 'var(--text-strong)', fontSize: '14px', fontWeight: 500,
+          }}
+        />
+      </div>
+
+      {/* FILTROS POR CATEGORÍA */}
+      {categories.length > 2 && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', justifyContent: 'center', marginBottom: '3rem' }}>
+          {categories.map(cat => (
+            <button key={cat} onClick={() => setSelectedCategory(cat)} style={{
+              padding: '0.5rem 1.25rem', borderRadius: '9999px', border: 'none', cursor: 'pointer',
+              fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em',
+              background: selectedCategory === cat ? '#660033' : 'var(--card-inner-bg)',
+              color: selectedCategory === cat ? '#fff' : 'var(--text-secondary)',
+              boxShadow: selectedCategory === cat ? '0 2px 8px rgba(102,0,51,0.35)' : 'none',
+              transition: 'all 0.2s',
+            }}>
+              {cat}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* CONTADOR */}
+      <p style={{ textAlign: 'center', fontSize: '13px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '2.5rem' }}>
+        {filtered.length} {filtered.length === 1 ? 'artículo' : 'artículos'}
+        {selectedCategory !== 'Todos' ? ` en "${selectedCategory}"` : ''}
+      </p>
+
+      {/* GRID DE CARDS */}
+      {filtered.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '5rem 2rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '15px', fontWeight: 600 }}>No se encontraron artículos.</p>
+        </div>
+      ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filtered.map((nota, index) => (
             <article
               key={index}
-              className="rounded-xl overflow-hidden flex flex-col group transition-all duration-300 hover:shadow-xl cursor-pointer"
-              style={{ background: '#fff', border: '1px solid #e8e8e8' }}
+              className="group"
+              style={{ background: '#fff', border: '1px solid #e8e8e8', borderRadius: '1rem', overflow: 'hidden', display: 'flex', flexDirection: 'column', transition: 'box-shadow 0.3s', cursor: 'pointer' }}
+              onClick={() => openNota(nota)}
             >
-              <div className="aspect-[16/9] overflow-hidden relative" onClick={() => openNota(nota)}>
+              {/* IMAGEN */}
+              <div style={{ aspectRatio: '16/9', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
                 <img
                   src={nota.Imagen?.startsWith('http') ? nota.Imagen : `/images/${nota.Imagen}`}
                   alt={nota.Titulo}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s' }}
+                  className="group-hover:scale-105"
                 />
                 {nota.Categoría && (
-                  <span className="absolute top-4 left-4 text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full"
-                    style={{ background: '#660033', color: '#fff' }}>
+                  <span style={{
+                    position: 'absolute', top: '1rem', left: '1rem',
+                    background: '#660033', color: '#fff',
+                    fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.12em',
+                    padding: '5px 12px', borderRadius: '9999px', whiteSpace: 'nowrap',
+                  }}>
                     {nota.Categoría}
                   </span>
                 )}
               </div>
 
-              <div className="p-7 flex-grow flex flex-col">
-                <span className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: '#999' }}>{nota.Fecha}</span>
-                <h3
-                  className="text-lg font-bold leading-snug mb-3 transition-colors cursor-pointer"
-                  style={{ color: '#111' }}
-                  onClick={() => openNota(nota)}
-                >
+              {/* CONTENIDO */}
+              <div style={{ padding: '1.75rem 2rem', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                <span style={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#999', marginBottom: '0.75rem', display: 'block' }}>
+                  {nota.Fecha}
+                </span>
+                <h3 style={{ fontSize: '1.0625rem', fontWeight: 700, lineHeight: 1.4, color: '#111', marginBottom: '0.875rem', transition: 'color 0.2s' }}
+                  className="group-hover:text-[#660033]">
                   {nota.Titulo}
                 </h3>
-                <p className="text-sm leading-relaxed line-clamp-3 mb-6" style={{ color: '#666' }}>
+                <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#555', marginBottom: '1.5rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                   {nota.Copete}
                 </p>
 
-                <div className="mt-auto pt-5 flex items-center justify-between" style={{ borderTop: '1px solid #f0f0f0' }}>
-                  <button onClick={() => openNota(nota)}
-                    className="text-xs font-bold flex items-center gap-1.5 transition-opacity hover:opacity-70"
-                    style={{ color: '#660033' }}>
+                <div style={{ marginTop: 'auto', paddingTop: '1.25rem', borderTop: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <button
+                    onClick={e => { e.stopPropagation(); openNota(nota); }}
+                    style={{ fontSize: '12px', fontWeight: 800, color: '#660033', textTransform: 'uppercase', letterSpacing: '0.1em', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                  >
                     Leer más →
                   </button>
-                  <div className="flex items-center gap-3">
-                    <button onClick={(e) => handleShare('ws', nota, e)} className="transition-colors hover:text-[#25D366]" style={{ color: '#ccc' }}><MessageCircle size={16} /></button>
-                    <button onClick={(e) => handleShare('copy', nota, e)} className="transition-colors relative" style={{ color: '#ccc' }}>
-                      {copiedId === nota.Titulo && <span className="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] py-1 px-2 rounded animate-bounce whitespace-nowrap" style={{ background: '#660033', color: '#fff' }}>Copiado</span>}
-                      <LinkIcon size={16} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <button onClick={e => handleShare('ws', nota, e)} style={{ color: '#ccc', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.2s', display: 'flex' }}
+                      onMouseEnter={e => e.currentTarget.style.color = '#25D366'}
+                      onMouseLeave={e => e.currentTarget.style.color = '#ccc'}
+                    >
+                      <MessageCircle size={17} />
+                    </button>
+                    <button onClick={e => handleShare('copy', nota, e)} style={{ color: '#ccc', background: 'none', border: 'none', cursor: 'pointer', position: 'relative', display: 'flex' }}>
+                      {copiedId === nota.Titulo && (
+                        <span style={{ position: 'absolute', bottom: '1.75rem', left: '50%', transform: 'translateX(-50%)', background: '#660033', color: '#fff', fontSize: '10px', padding: '3px 8px', borderRadius: '6px', whiteSpace: 'nowrap' }}>
+                          Copiado
+                        </span>
+                      )}
+                      <LinkIcon size={17} />
                     </button>
                   </div>
                 </div>
@@ -145,59 +190,80 @@ export default function BlogList({ noticias }) {
             </article>
           ))}
         </div>
-      </div>
+      )}
 
+      {/* MODAL NOTA COMPLETA */}
       {selectedNota && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10">
-          <div className="absolute inset-0 backdrop-blur-md" style={{ background: 'rgba(0,0,0,0.88)' }} onClick={closeNota} />
-          <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl animate-in zoom-in-95 duration-300"
-            style={{ background: '#fff', color: '#111' }}>
-
-            <button onClick={closeNota}
-              className="absolute top-5 right-5 z-10 p-2.5 rounded-full hover:rotate-90 transition-all"
-              style={{ background: 'rgba(0,0,0,0.15)', color: '#fff' }}>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem 1rem' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(8px)' }} onClick={closeNota} />
+          <div style={{
+            position: 'relative', width: '100%', maxWidth: '900px', maxHeight: '90vh',
+            overflowY: 'auto', borderRadius: '1.25rem', background: '#fff', color: '#111',
+            boxShadow: '0 32px 80px rgba(0,0,0,0.5)',
+          }}>
+            <button onClick={closeNota} style={{
+              position: 'absolute', top: '1.25rem', right: '1.25rem', zIndex: 10,
+              background: 'rgba(0,0,0,0.2)', color: '#fff', border: 'none', cursor: 'pointer',
+              padding: '0.625rem', borderRadius: '50%', display: 'flex', transition: 'transform 0.2s',
+            }}
+              onMouseEnter={e => e.currentTarget.style.transform = 'rotate(90deg)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'rotate(0deg)'}
+            >
               <CloseIcon size={22} />
             </button>
 
-            <div className="h-56 md:h-80 relative">
+            <div style={{ height: '280px', position: 'relative' }}>
               <img src={selectedNota.Imagen?.startsWith('http') ? selectedNota.Imagen : `/images/${selectedNota.Imagen}`}
-                className="w-full h-full object-cover" alt="" />
-              <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="" />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #fff 0%, transparent 50%)' }} />
             </div>
 
-            <div className="px-8 md:px-16 pb-16 -mt-16 relative">
-              <div className="flex flex-wrap gap-3 mb-6">
-                <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full"
-                  style={{ background: '#660033', color: '#fff' }}>
-                  <Tag size={12} /> {selectedNota.Categoría || 'General'}
+            <div style={{ padding: '0 2.5rem 4rem', marginTop: '-3rem', position: 'relative' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#660033', color: '#fff', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', padding: '5px 14px', borderRadius: '9999px' }}>
+                  <Tag size={11} /> {selectedNota.Categoría || 'General'}
                 </span>
-                <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest px-4 py-2"
-                  style={{ color: '#999' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#999', fontSize: '11px', fontWeight: 600 }}>
                   <Calendar size={12} /> {selectedNota.Fecha}
                 </span>
               </div>
 
-              <h2 className="text-3xl md:text-5xl font-bold leading-tight mb-8" style={{ color: '#111' }}>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 800, lineHeight: 1.2, color: '#111', marginBottom: '2rem', letterSpacing: '-0.02em' }}>
                 {selectedNota.Titulo}
               </h2>
 
-              <div className="prose prose-slate max-w-none text-lg leading-relaxed whitespace-pre-wrap">
+              <div style={{ fontSize: '16px', lineHeight: 1.8, color: '#333' }}>
                 <ReactMarkdown remarkPlugins={[remarkBreaks]}>
                   {selectedNota.Cuerpo}
                 </ReactMarkdown>
               </div>
 
-              <div className="mt-14 pt-8 flex flex-col items-center gap-5" style={{ borderTop: '1px solid #eee' }}>
-                <p className="font-bold uppercase tracking-widest text-[11px]" style={{ color: '#999' }}>Compartir</p>
-                <div className="flex flex-wrap justify-center gap-3">
-                  <button onClick={() => handleShare('ws', selectedNota)} className="bg-[#25D366] text-white p-3.5 rounded-full hover:scale-110 shadow-md transition-all"><MessageCircle size={20} /></button>
-                  <button onClick={() => handleShare('fb', selectedNota)} className="bg-[#1877F2] text-white p-3.5 rounded-full hover:scale-110 shadow-md transition-all"><Facebook size={20} /></button>
-                  <button onClick={() => handleShare('in', selectedNota)} className="bg-[#0077B5] text-white p-3.5 rounded-full hover:scale-110 shadow-md transition-all"><Linkedin size={20} /></button>
-                  <button onClick={() => handleShare('x', selectedNota)} className="bg-black text-white p-3.5 rounded-full hover:scale-110 shadow-md transition-all"><XIcon size={20} /></button>
-                  <button onClick={() => handleShare('tg', selectedNota)} className="bg-[#0088cc] text-white p-3.5 rounded-full hover:scale-110 shadow-md transition-all"><Send size={20} /></button>
-                  <button onClick={(e) => handleShare('copy', selectedNota, e)} className="p-3.5 rounded-full hover:scale-110 relative transition-all"
-                    style={{ background: '#eee', color: '#333' }}>
-                    {copiedId === selectedNota.Titulo && <span className="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] py-1 px-2 rounded animate-bounce whitespace-nowrap" style={{ background: '#660033', color: '#fff' }}>Copiado</span>}
+              <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #eee', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem' }}>
+                <p style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#999' }}>Compartir</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem' }}>
+                  {[
+                    { key: 'ws', bg: '#25D366', icon: <MessageCircle size={20} /> },
+                    { key: 'fb', bg: '#1877F2', icon: <Facebook size={20} /> },
+                    { key: 'in', bg: '#0077B5', icon: <Linkedin size={20} /> },
+                    { key: 'x',  bg: '#000000', icon: <XIcon size={20} /> },
+                    { key: 'tg', bg: '#0088cc', icon: <Send size={20} /> },
+                  ].map(s => (
+                    <button key={s.key} onClick={() => handleShare(s.key, selectedNota)} style={{ background: s.bg, color: '#fff', padding: '0.875rem', borderRadius: '50%', border: 'none', cursor: 'pointer', display: 'flex', transition: 'transform 0.2s' }}
+                      onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+                      onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                    >
+                      {s.icon}
+                    </button>
+                  ))}
+                  <button onClick={e => handleShare('copy', selectedNota, e)} style={{ background: '#eee', color: '#333', padding: '0.875rem', borderRadius: '50%', border: 'none', cursor: 'pointer', position: 'relative', display: 'flex', transition: 'transform 0.2s' }}
+                    onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+                    onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                  >
+                    {copiedId === selectedNota.Titulo && (
+                      <span style={{ position: 'absolute', bottom: '3.5rem', left: '50%', transform: 'translateX(-50%)', background: '#660033', color: '#fff', fontSize: '10px', padding: '3px 8px', borderRadius: '6px', whiteSpace: 'nowrap' }}>
+                        Copiado
+                      </span>
+                    )}
                     <LinkIcon size={20} />
                   </button>
                 </div>
@@ -206,6 +272,6 @@ export default function BlogList({ noticias }) {
           </div>
         </div>
       )}
-    </section>
+    </div>
   );
 }

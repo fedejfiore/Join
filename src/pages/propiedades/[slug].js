@@ -200,13 +200,13 @@ export default function PropertyDetail({ property, data }) {
               )}
 
               {/* MAPA */}
-              {property.Direccion_maps && (
+              {(property.URL_Maps || property.Direccion_maps) && (
                 <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2rem' }}>
                   <h3 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#660033', marginBottom: '1.25rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--divider)' }}>
                     Ubicación aproximada
                   </h3>
                   <div style={{ borderRadius: '0.875rem', overflow: 'hidden', height: '360px', border: '1px solid var(--card-border)' }}>
-                    <iframe src={property.Direccion_maps} width="100%" height="100%" style={{ border: 0, display: 'block' }} allowFullScreen loading="lazy" />
+                    <iframe src={property.URL_Maps || property.Direccion_maps} width="100%" height="100%" style={{ border: 0, display: 'block' }} allowFullScreen loading="lazy" />
                   </div>
                 </div>
               )}

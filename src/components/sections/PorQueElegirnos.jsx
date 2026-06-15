@@ -38,7 +38,7 @@ const RAZONES = [
   },
 ];
 
-const INTERVAL = 5000;
+const INTERVAL = 9000;
 
 export default function PorQueElegirnos() {
   const [active, setActive] = useState(0);
@@ -56,9 +56,10 @@ export default function PorQueElegirnos() {
 
   const selectTab = (i) => {
     setActive(i);
-    // Reiniciar timer al seleccionar manualmente
+    // Pausa larga tras click manual
+    clearInterval(timerRef.current);
     setIsPaused(true);
-    setTimeout(() => setIsPaused(false), 500);
+    setTimeout(() => setIsPaused(false), INTERVAL * 2);
   };
 
   const razon = RAZONES[active];

@@ -7,15 +7,15 @@ export default function BlogPage({ data }) {
 
   return (
     <Layout data={data}>
-      <div className="min-h-screen pt-32 pb-24">
-        <header className="max-w-7xl mx-auto px-6 mb-16 text-center md:text-left">
-          <span className="text-primary dark:text-accent font-black text-[10px] uppercase tracking-[0.3em] transition-colors">
+      <div className="min-h-screen" style={{ paddingTop: '7rem', paddingBottom: '6rem' }}>
+        <header style={{ maxWidth: '1280px', margin: '0 auto 4rem', padding: '0 1.5rem', textAlign: 'center' }}>
+          <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.3em', color: '#cc0044' }}>
             Actualidad
           </span>
-          <h1 className="text-6xl md:text-8xl font-black italic text-primary dark:text-accent uppercase leading-none tracking-tighter mt-2 transition-colors">
+          <h1 style={{ fontSize: 'clamp(3.5rem, 10vw, 6.5rem)', fontWeight: 900, color: 'var(--text-strong)', lineHeight: 0.95, letterSpacing: '-0.04em', marginTop: '0.625rem' }}>
             Blog
           </h1>
-          <div className="w-24 h-2 bg-primary dark:bg-accent mt-6 rounded-full md:mx-0 mx-auto transition-colors"></div>
+          <div style={{ width: '6rem', height: '5px', background: '#660033', margin: '2rem auto 0', borderRadius: '3px' }} />
         </header>
 
         <BlogList noticias={data.noticias} />

@@ -56,7 +56,7 @@ export default function ServiciosJoin({ servicios = [] }) {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent z-[2]" />
                   <div className="absolute bottom-0 left-0 text-white z-[10] w-full text-center"
                     style={{ padding: '2.5rem 2rem 2rem' }}>
-                    <h3 className="font-bold mb-3 text-white" style={{ fontSize: '1.2rem', lineHeight: 1.3 }}>{s.Titulo}</h3>
+                    <h3 className="font-bold mb-3" style={{ fontSize: '1.2rem', lineHeight: 1.3, color: '#ffffff' }}>{s.Titulo}</h3>
                     <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)', maxWidth: '280px', margin: '0 auto' }}>
                       {s.Detalle || s.Descripcion}
                     </p>

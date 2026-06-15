@@ -26,8 +26,8 @@ export default function HeroJoin({ config, brand }) {
     <section style={{
       position: 'relative',
       width: '100%',
-      height: '100vh',
-      minHeight: '600px',
+      height: 'calc(100vh - 80px)',
+      minHeight: '520px',
       overflow: 'hidden',
       background: '#0a0a0a',
       display: 'flex',
