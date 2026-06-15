@@ -9,86 +9,78 @@ import ContactoJoin from '../../components/sections/ContactoJoin';
 import { getAllSiteData } from '../../lib/google-sheets';
 import { ChevronLeft, ChevronRight, X, Grid, Film, Compass, MapPin } from 'lucide-react';
 
+const containerStyle = { maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' };
+
 export default function PropertyDetail({ property, data }) {
   if (!property) return null;
 
   const [activeTab, setActiveTab] = useState('fotos');
   const [lightboxIndex, setLightboxIndex] = useState(null);
 
-  // Recolectar fotos no vacías
   const photos = [
     property.Foto_1, property.Foto_2, property.Foto_3, property.Foto_4, property.Foto_5,
     property.Foto_6, property.Foto_7, property.Foto_8, property.Foto_9, property.Foto_10
   ].filter(Boolean);
 
-  // Helper para convertir urls de Youtube
   const getEmbedUrl = (url) => {
     if (!url) return '';
-    if (url.includes('youtube.com/watch?v=')) {
-      const id = url.split('v=')[1]?.split('&')[0];
-      return `https://www.youtube.com/embed/${id}`;
-    }
-    if (url.includes('youtu.be/')) {
-      const id = url.split('youtu.be/')[1]?.split('?')[0];
-      return `https://www.youtube.com/embed/${id}`;
-    }
+    if (url.includes('youtube.com/watch?v=')) return `https://www.youtube.com/embed/${url.split('v=')[1]?.split('&')[0]}`;
+    if (url.includes('youtu.be/')) return `https://www.youtube.com/embed/${url.split('youtu.be/')[1]?.split('?')[0]}`;
     return url;
   };
 
   const videoEmbed = getEmbedUrl(property.URL_Video);
-
-  // Navegar en Lightbox
-  const prevPhoto = (e) => {
-    e.stopPropagation();
-    setLightboxIndex(prev => (prev === 0 ? photos.length - 1 : prev - 1));
-  };
-
-  const nextPhoto = (e) => {
-    e.stopPropagation();
-    setLightboxIndex(prev => (prev === photos.length - 1 ? 0 : prev + 1));
-  };
-
+  const prevPhoto = (e) => { e.stopPropagation(); setLightboxIndex(prev => prev === 0 ? photos.length - 1 : prev - 1); };
+  const nextPhoto = (e) => { e.stopPropagation(); setLightboxIndex(prev => prev === photos.length - 1 ? 0 : prev + 1); };
   const propiedadInfo = `${property.Titulo} (${property.Direccion || property.Barrio})`;
+
+  const tabActiveStyle = { background: '#660033', color: '#fff', boxShadow: '0 2px 8px rgba(102,0,51,0.35)' };
+  const tabInactiveStyle = { background: 'var(--card-inner-bg)', color: 'var(--text-secondary)', border: '1px solid var(--card-inner-border)' };
 
   return (
     <Layout data={data}>
-      <div className="min-h-screen pt-32 pb-24">
-        
-        {/* HEADER Y BREADCRUMB */}
-        <div className="max-w-7xl mx-auto px-6 mb-8">
-          <Link 
-            href="/propiedades" 
-            className="inline-flex items-center text-xs font-black uppercase tracking-wider text-slate-400 hover:text-primary dark:hover:text-accent transition-colors mb-6"
+      <div className="min-h-screen" style={{ paddingTop: '7rem', paddingBottom: '6rem' }}>
+
+        {/* BREADCRUMB + HEADER */}
+        <div style={{ ...containerStyle, marginBottom: '2.5rem' }}>
+          <Link href="/propiedades" style={{
+            display: 'inline-flex', alignItems: 'center', gap: '4px',
+            fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.12em',
+            color: 'var(--text-muted)', textDecoration: 'none', marginBottom: '2rem',
+            transition: 'color 0.2s',
+          }}
+            onMouseEnter={e => e.currentTarget.style.color = '#660033'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}
           >
             <ChevronLeft size={16} /> Volver a Propiedades
           </Link>
-          
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 border-b border-slate-200 dark:border-slate-800 pb-8">
-            <div>
-              <div className="flex items-center gap-3">
-                <span className="bg-primary text-white text-[9px] font-black uppercase px-3 py-1 rounded-full">
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-start', gap: '2rem', borderBottom: '1px solid var(--divider)', paddingBottom: '2rem' }}>
+            <div style={{ flex: 1, minWidth: '240px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.75rem' }}>
+                <span style={{ background: '#660033', color: '#fff', fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', padding: '3px 10px', borderRadius: '9999px' }}>
                   {property.Operacion}
                 </span>
                 {property.Destacada === 'SI' && (
-                  <span className="bg-amber-400 text-slate-900 text-[9px] font-black uppercase px-3 py-1 rounded-full">
+                  <span style={{ background: '#f59e0b', color: '#111', fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', padding: '3px 10px', borderRadius: '9999px' }}>
                     ★ Destacada
                   </span>
                 )}
               </div>
-              <h1 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-slate-900 dark:text-accent mt-4 leading-none">
+              <h1 style={{ fontSize: 'clamp(1.625rem, 4vw, 2.75rem)', fontWeight: 800, color: 'var(--text-strong)', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
                 {property.Titulo}
               </h1>
-              <p className="flex items-center gap-1.5 text-sm font-bold text-slate-500 dark:text-slate-400 mt-2">
-                <MapPin size={16} /> {property.Direccion ? `${property.Direccion}, ` : ''}{property.Barrio}
+              <p style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', fontWeight: 600, color: 'var(--text-muted)', marginTop: '0.625rem' }}>
+                <MapPin size={15} /> {property.Direccion ? `${property.Direccion}, ` : ''}{property.Barrio}
               </p>
             </div>
-            <div className="text-left lg:text-right shrink-0">
-              <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Valor de publicación</p>
-              <p className="text-4xl md:text-5xl font-black text-primary dark:text-accent mt-1 transition-colors">
+            <div style={{ textAlign: 'right', flexShrink: 0 }}>
+              <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Valor de publicación</p>
+              <p style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', fontWeight: 900, color: '#660033', marginTop: '4px' }}>
                 {property.Moneda} {Number(property.Precio).toLocaleString('es-AR')}
               </p>
               {property.Expensas && (
-                <p className="text-xs text-slate-400 font-bold mt-1">
+                <p style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600, marginTop: '4px' }}>
                   + ${Number(property.Expensas).toLocaleString('es-AR')} expensas
                 </p>
               )}
@@ -96,244 +88,203 @@ export default function PropertyDetail({ property, data }) {
           </div>
         </div>
 
-        {/* CONTENEDOR MULTIMEDIA CON PESTAÑAS */}
-        <div className="max-w-7xl mx-auto px-6 mb-12">
-          {/* Pestañas Selectoras */}
-          <div className="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-4 mb-6">
-            <button 
-              onClick={() => setActiveTab('fotos')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-black uppercase tracking-wider transition-all ${
-                activeTab === 'fotos'
-                  ? 'bg-primary text-white dark:bg-accent dark:text-slate-950 shadow-md'
-                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100'
-              }`}
-            >
-              <Grid size={16} /> Fotos ({photos.length})
-            </button>
-            {videoEmbed && (
-              <button 
-                onClick={() => setActiveTab('video')}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-black uppercase tracking-wider transition-all ${
-                  activeTab === 'video'
-                    ? 'bg-primary text-white dark:bg-accent dark:text-slate-950 shadow-md'
-                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100'
-                }`}
-              >
-                <Film size={16} /> Video Tour
+        {/* PESTAÑAS MULTIMEDIA */}
+        <div style={{ ...containerStyle, marginBottom: '2rem' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', borderBottom: '1px solid var(--divider)', paddingBottom: '1.25rem', marginBottom: '1.5rem' }}>
+            {[
+              { key: 'fotos', label: `Fotos (${photos.length})`, icon: <Grid size={15} />, show: true },
+              { key: 'video', label: 'Video Tour',              icon: <Film size={15} />, show: !!videoEmbed },
+              { key: 'tour',  label: 'Tour 360°',               icon: <Compass size={15} />, show: !!property.URL_Tour360 },
+              { key: 'plano', label: 'Plano',                   icon: <span>📐</span>, show: !!property.URL_Plano },
+            ].filter(t => t.show).map(tab => (
+              <button key={tab.key} onClick={() => setActiveTab(tab.key)} style={{
+                display: 'flex', alignItems: 'center', gap: '6px',
+                padding: '0.625rem 1.25rem', borderRadius: '9999px',
+                fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em',
+                border: 'none', cursor: 'pointer', transition: 'all 0.2s',
+                ...(activeTab === tab.key ? tabActiveStyle : tabInactiveStyle),
+              }}>
+                {tab.icon} {tab.label}
               </button>
-            )}
-            {property.URL_Tour360 && (
-              <button 
-                onClick={() => setActiveTab('tour')}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-black uppercase tracking-wider transition-all ${
-                  activeTab === 'tour'
-                    ? 'bg-primary text-white dark:bg-accent dark:text-slate-950 shadow-md'
-                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100'
-                }`}
-              >
-                <Compass size={16} /> Tour 360°
-              </button>
-            )}
-            {property.URL_Plano && (
-              <button 
-                onClick={() => setActiveTab('plano')}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-black uppercase tracking-wider transition-all ${
-                  activeTab === 'plano'
-                    ? 'bg-primary text-white dark:bg-accent dark:text-slate-950 shadow-md'
-                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100'
-                }`}
-              >
-                📐 Plano
-              </button>
-            )}
+            ))}
           </div>
 
-          {/* Renderizado de multimedia según pestaña activa */}
-          <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-4 md:p-6 border border-slate-100 dark:border-slate-800 shadow-md min-h-[400px]">
+          {/* CONTENIDO MULTIMEDIA */}
+          <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '1.25rem', minHeight: '360px' }}>
             {activeTab === 'fotos' && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {photos.map((url, i) => (
-                  <div 
-                    key={i} 
-                    onClick={() => setLightboxIndex(i)}
-                    className="relative cursor-pointer aspect-[4/3] rounded-[2rem] overflow-hidden group shadow-sm border border-slate-100 dark:border-slate-800 hover:shadow-lg transition-all"
-                  >
-                    <img src={url} alt={`Foto ${i + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                    <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
+                  <div key={i} onClick={() => setLightboxIndex(i)} style={{ position: 'relative', aspectRatio: '4/3', borderRadius: '0.875rem', overflow: 'hidden', cursor: 'pointer', border: '1px solid var(--card-border)' }}>
+                    <img src={url} alt={`Foto ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s' }}
+                      onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+                      onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                    />
                   </div>
                 ))}
               </div>
             )}
-
             {activeTab === 'video' && videoEmbed && (
-              <div className="aspect-video w-full rounded-[2rem] overflow-hidden">
-                <iframe 
-                  src={videoEmbed} 
-                  className="w-full h-full border-0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                  allowFullScreen 
-                />
+              <div style={{ aspectRatio: '16/9', borderRadius: '0.875rem', overflow: 'hidden' }}>
+                <iframe src={videoEmbed} style={{ width: '100%', height: '100%', border: 0 }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
               </div>
             )}
-
             {activeTab === 'tour' && property.URL_Tour360 && (
-              <div className="w-full h-[500px] md:h-[600px] rounded-[2rem] overflow-hidden">
-                <iframe 
-                  src={property.URL_Tour360} 
-                  className="w-full h-full border-0" 
-                  allowFullScreen 
-                />
+              <div style={{ height: '500px', borderRadius: '0.875rem', overflow: 'hidden' }}>
+                <iframe src={property.URL_Tour360} style={{ width: '100%', height: '100%', border: 0 }} allowFullScreen />
               </div>
             )}
-
             {activeTab === 'plano' && property.URL_Plano && (
-              <div className="max-w-3xl mx-auto flex justify-center p-4">
-                <img 
-                  src={property.URL_Plano} 
-                  alt="Plano de la propiedad" 
-                  onClick={() => setLightboxIndex(999)} // Abre plano en Lightbox
-                  className="max-h-[500px] object-contain rounded-2xl cursor-pointer hover:shadow-xl transition-shadow border border-slate-200 dark:border-slate-800" 
-                />
+              <div style={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
+                <img src={property.URL_Plano} alt="Plano" style={{ maxHeight: '500px', objectFit: 'contain', borderRadius: '0.875rem', cursor: 'pointer', border: '1px solid var(--card-border)' }} onClick={() => setLightboxIndex(999)} />
               </div>
             )}
           </div>
         </div>
 
-        {/* DOS COLUMNAS: DETALLES Y FORMULARIO */}
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
-          
-          {/* DETALLES DE LA PROPIEDAD */}
-          <div className="lg:col-span-2 space-y-10">
-            {/* Características rápidas en cuadrícula */}
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-slate-800 shadow-sm grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              <div>
-                <p className="text-[10px] font-black uppercase text-slate-400 tracking-wider">Superficie Cubierta</p>
-                <p className="text-xl font-black text-slate-800 dark:text-white mt-1">{property.Sup_Cubierta || '-'} m²</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-black uppercase text-slate-400 tracking-wider">Ambientes</p>
-                <p className="text-xl font-black text-slate-800 dark:text-white mt-1">{property.Ambientes || '-'} amb</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-black uppercase text-slate-400 tracking-wider">Dormitorios</p>
-                <p className="text-xl font-black text-slate-800 dark:text-white mt-1">{property.Dormitorios || '-'} dorm</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-black uppercase text-slate-400 tracking-wider">Baños</p>
-                <p className="text-xl font-black text-slate-800 dark:text-white mt-1">{property.Banos || '-'} baños</p>
-              </div>
-            </div>
+        {/* DOS COLUMNAS: DETALLES + SIDEBAR */}
+        <div style={{ ...containerStyle }}>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-            {/* Ficha técnica detallada */}
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 md:p-10 border border-slate-100 dark:border-slate-800 shadow-sm space-y-6">
-              <h3 className="text-xl font-black uppercase tracking-wider text-slate-800 dark:text-accent border-b pb-4 border-slate-100 dark:border-slate-800">Ficha Técnica</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm font-medium">
-                {property.Sup_Total && <div className="flex justify-between border-b border-slate-100 dark:border-slate-800 pb-2"><span className="text-slate-400">Sup. Total</span><span className="text-slate-800 dark:text-white">{property.Sup_Total} m²</span></div>}
-                {property.Cocheras && <div className="flex justify-between border-b border-slate-100 dark:border-slate-800 pb-2"><span className="text-slate-400">Cochera</span><span className="text-slate-800 dark:text-white">{property.Cocheras === '0' ? 'No tiene' : `${property.Cocheras}`}</span></div>}
-                {property.Antiguedad && <div className="flex justify-between border-b border-slate-100 dark:border-slate-800 pb-2"><span className="text-slate-400">Antigüedad</span><span className="text-slate-800 dark:text-white">{property.Antiguedad} años</span></div>}
-                {property.Orientacion && <div className="flex justify-between border-b border-slate-100 dark:border-slate-800 pb-2"><span className="text-slate-400">Orientación</span><span className="text-slate-800 dark:text-white">{property.Orientacion}</span></div>}
-                {property.Disposicion && <div className="flex justify-between border-b border-slate-100 dark:border-slate-800 pb-2"><span className="text-slate-400">Disposición</span><span className="text-slate-800 dark:text-white">{property.Disposicion}</span></div>}
-                {property.Apto_Profesional && <div className="flex justify-between border-b border-slate-100 dark:border-slate-800 pb-2"><span className="text-slate-400">Apto Profesional</span><span className="text-slate-800 dark:text-white">{property.Apto_Profesional}</span></div>}
-              </div>
-            </div>
+            {/* DETALLES */}
+            <div className="lg:col-span-2" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 
-            {/* Descripción */}
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 md:p-10 border border-slate-100 dark:border-slate-800 shadow-sm space-y-6">
-              <h3 className="text-xl font-black uppercase tracking-wider text-slate-800 dark:text-accent border-b pb-4 border-slate-100 dark:border-slate-800">Descripción</h3>
-              <div className="text-slate-600 dark:text-slate-300 prose prose-slate dark:prose-invert max-w-none leading-relaxed text-justify text-base">
-                <ReactMarkdown remarkPlugins={[remarkBreaks]}>
-                  {property.Descripcion || ""}
-                </ReactMarkdown>
+              {/* STATS RÁPIDOS */}
+              <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '1.75rem 2rem', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', textAlign: 'center' }} className="sm:grid-cols-4">
+                {[
+                  { label: 'Superficie Cubierta', val: property.Sup_Cubierta ? `${property.Sup_Cubierta} m²` : '-' },
+                  { label: 'Ambientes',           val: property.Ambientes   ? `${property.Ambientes} amb`   : '-' },
+                  { label: 'Dormitorios',         val: property.Dormitorios ? `${property.Dormitorios} dorm` : '-' },
+                  { label: 'Baños',               val: property.Banos       ? `${property.Banos} baños`     : '-' },
+                ].map((s, i) => (
+                  <div key={i}>
+                    <p style={{ fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>{s.label}</p>
+                    <p style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-strong)', marginTop: '6px' }}>{s.val}</p>
+                  </div>
+                ))}
               </div>
-            </div>
 
-            {/* Ubicación (Mapa) */}
-            {property.Direccion_maps && (
-              <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 md:p-10 border border-slate-100 dark:border-slate-800 shadow-sm space-y-6">
-                <h3 className="text-xl font-black uppercase tracking-wider text-slate-800 dark:text-accent border-b pb-4 border-slate-100 dark:border-slate-800">Ubicación aproximada</h3>
-                <div className="rounded-2xl overflow-hidden h-96 border border-slate-200 dark:border-slate-800 bg-slate-100">
-                  <iframe 
-                    src={property.Direccion_maps} 
-                    width="100%" height="100%" style={{ border: 0 }} allowFullScreen="" loading="lazy">
-                  </iframe>
+              {/* FICHA TÉCNICA */}
+              <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2rem' }}>
+                <h3 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#660033', marginBottom: '1.25rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--divider)' }}>
+                  Ficha Técnica
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    ['Sup. Total', property.Sup_Total ? `${property.Sup_Total} m²` : null],
+                    ['Cochera', property.Cocheras === '0' ? 'No tiene' : property.Cocheras || null],
+                    ['Antigüedad', property.Antiguedad ? `${property.Antiguedad} años` : null],
+                    ['Orientación', property.Orientacion || null],
+                    ['Disposición', property.Disposicion || null],
+                    ['Apto Profesional', property.Apto_Profesional || null],
+                  ].filter(([, v]) => v).map(([label, val], i) => (
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px solid var(--divider)' }}>
+                      <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-muted)' }}>{label}</span>
+                      <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-strong)' }}>{val}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            )}
 
-          </div>
+              {/* DESCRIPCIÓN */}
+              {property.Descripcion && (
+                <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2rem' }}>
+                  <h3 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#660033', marginBottom: '1.25rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--divider)' }}>
+                    Descripción
+                  </h3>
+                  <div style={{ fontSize: '15px', lineHeight: 1.8, color: 'var(--text-secondary)', textAlign: 'justify' }}>
+                    <ReactMarkdown remarkPlugins={[remarkBreaks]}>
+                      {property.Descripcion}
+                    </ReactMarkdown>
+                  </div>
+                </div>
+              )}
 
-          {/* COLUMNA LATERAL (Sticky Form) */}
-          <div className="lg:sticky lg:top-28 space-y-6 z-30">
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-slate-800 shadow-lg text-center">
-              <p className="text-[10px] font-black uppercase text-slate-400 tracking-wider">Contactá con el asesor</p>
-              <p className="font-bold text-slate-800 dark:text-white text-lg mt-2">¿Querés visitar esta propiedad?</p>
-              <p className="text-xs text-slate-500 mt-2 mb-6 font-medium">Dejanos tu información y coordinamos una visita.</p>
-              <a 
-                href="#contacto-directo"
-                className="block w-full text-center bg-primary dark:bg-accent text-white dark:text-slate-900 py-4 rounded-xl font-black uppercase text-xs tracking-widest hover:scale-102 transition-all shadow-md"
-              >
-                Agendar Visita
-              </a>
+              {/* MAPA */}
+              {property.Direccion_maps && (
+                <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2rem' }}>
+                  <h3 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#660033', marginBottom: '1.25rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--divider)' }}>
+                    Ubicación aproximada
+                  </h3>
+                  <div style={{ borderRadius: '0.875rem', overflow: 'hidden', height: '360px', border: '1px solid var(--card-border)' }}>
+                    <iframe src={property.Direccion_maps} width="100%" height="100%" style={{ border: 0, display: 'block' }} allowFullScreen loading="lazy" />
+                  </div>
+                </div>
+              )}
+
             </div>
-          </div>
 
+            {/* SIDEBAR STICKY */}
+            <div style={{ position: 'sticky', top: '100px', alignSelf: 'start', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2rem', textAlign: 'center' }}>
+                <p style={{ fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
+                  Contactá con el asesor
+                </p>
+                <p style={{ fontSize: '1.0625rem', fontWeight: 700, color: 'var(--text-strong)', marginBottom: '0.5rem' }}>
+                  ¿Querés visitar esta propiedad?
+                </p>
+                <p style={{ fontSize: '13px', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '1.5rem', lineHeight: 1.5 }}>
+                  Dejanos tu información y coordinamos una visita.
+                </p>
+                <a href="#contacto-directo" style={{
+                  display: 'block', textAlign: 'center', background: '#660033', color: '#fff',
+                  padding: '1rem', borderRadius: '0.75rem', fontWeight: 900, textTransform: 'uppercase',
+                  fontSize: '11px', letterSpacing: '0.12em', textDecoration: 'none', transition: 'transform 0.2s',
+                }}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                >
+                  Agendar Visita
+                </a>
+              </div>
+
+              {/* Precio en sidebar */}
+              <div style={{ background: 'var(--card-inner-bg)', border: '1px solid var(--card-inner-border)', borderRadius: '1.25rem', padding: '1.5rem', textAlign: 'center' }}>
+                <p style={{ fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Precio</p>
+                <p style={{ fontSize: '1.625rem', fontWeight: 900, color: '#660033' }}>
+                  {property.Moneda} {Number(property.Precio).toLocaleString('es-AR')}
+                </p>
+                {property.Expensas && (
+                  <p style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600, marginTop: '4px' }}>
+                    + ${Number(property.Expensas).toLocaleString('es-AR')} expensas
+                  </p>
+                )}
+              </div>
+            </div>
+
+          </div>
         </div>
 
-        {/* FORMULARIO DE CONTACTO EN ANCLAJE */}
-        <div id="contacto-directo" className="max-w-7xl mx-auto px-6 mt-16 pt-16 border-t border-slate-200 dark:border-slate-800">
-          <ContactoJoin 
-            brand={data.brand} 
-            defaultTema="Me interesa una propiedad" 
-            propiedadInfo={propiedadInfo} 
-          />
+        {/* FORMULARIO */}
+        <div id="contacto-directo" style={{ ...containerStyle, marginTop: '5rem', paddingTop: '4rem', borderTop: '1px solid var(--divider)' }}>
+          <ContactoJoin brand={data.brand} defaultTema="Me interesa una propiedad" propiedadInfo={propiedadInfo} />
         </div>
 
       </div>
 
-      {/* FULLSCREEN LIGHTBOX MODAL */}
+      {/* LIGHTBOX */}
       {lightboxIndex !== null && (
-        <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-slate-950/95 backdrop-blur-md">
-          {/* BOTÓN CERRAR */}
-          <button 
-            onClick={() => setLightboxIndex(null)}
-            className="absolute top-6 right-6 p-3 bg-black/20 text-white rounded-full hover:rotate-90 transition-all backdrop-blur-sm"
+        <div style={{ position: 'fixed', inset: 0, zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', background: 'rgba(0,0,0,0.95)', backdropFilter: 'blur(8px)' }}>
+          <button onClick={() => setLightboxIndex(null)} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', padding: '0.75rem', background: 'rgba(255,255,255,0.1)', color: '#fff', borderRadius: '50%', border: 'none', cursor: 'pointer', transition: 'transform 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'rotate(90deg)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'rotate(0deg)'}
           >
             <X size={24} />
           </button>
-
-          {/* BOTÓN ANTERIOR */}
           {lightboxIndex !== 999 && photos.length > 1 && (
-            <button 
-              onClick={prevPhoto}
-              className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-black/20 hover:bg-black/45 text-white rounded-full transition-all backdrop-blur-sm"
-            >
+            <button onClick={prevPhoto} style={{ position: 'absolute', left: '1.5rem', top: '50%', transform: 'translateY(-50%)', padding: '1rem', background: 'rgba(255,255,255,0.1)', color: '#fff', borderRadius: '50%', border: 'none', cursor: 'pointer' }}>
               <ChevronLeft size={32} />
             </button>
           )}
-
-          {/* CONTENEDOR DE IMAGEN */}
-          <div className="max-w-5xl max-h-[85vh] flex flex-col items-center">
-            <img 
-              src={lightboxIndex === 999 ? property.URL_Plano : photos[lightboxIndex]} 
-              className="max-w-full max-h-[80vh] object-contain rounded-lg" 
-              alt="" 
-            />
+          <div style={{ maxWidth: '1000px', maxHeight: '85vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <img src={lightboxIndex === 999 ? property.URL_Plano : photos[lightboxIndex]} style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', borderRadius: '0.5rem' }} alt="" />
             {lightboxIndex !== 999 && (
-              <p className="text-white text-xs font-bold uppercase tracking-widest mt-4">
+              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', marginTop: '1rem' }}>
                 Foto {lightboxIndex + 1} de {photos.length}
               </p>
             )}
-            {lightboxIndex === 999 && (
-              <p className="text-white text-xs font-bold uppercase tracking-widest mt-4">Plano</p>
-            )}
           </div>
-
-          {/* BOTÓN SIGUIENTE */}
           {lightboxIndex !== 999 && photos.length > 1 && (
-            <button 
-              onClick={nextPhoto}
-              className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-black/20 hover:bg-black/45 text-white rounded-full transition-all backdrop-blur-sm"
-            >
+            <button onClick={nextPhoto} style={{ position: 'absolute', right: '1.5rem', top: '50%', transform: 'translateY(-50%)', padding: '1rem', background: 'rgba(255,255,255,0.1)', color: '#fff', borderRadius: '50%', border: 'none', cursor: 'pointer' }}>
               <ChevronRight size={32} />
             </button>
           )}
@@ -348,11 +299,7 @@ export async function getServerSideProps({ params }) {
   try {
     const data = await getAllSiteData();
     const property = (data.propiedades || []).find(p => p.Slug === params.slug);
-
-    if (!property) {
-      return { notFound: true };
-    }
-
+    if (!property) return { notFound: true };
     return { props: { property, data } };
   } catch (e) {
     console.error("Error at getServerSideProps of property detail:", e);

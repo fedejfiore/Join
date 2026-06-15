@@ -4,10 +4,10 @@ import Typewriter from 'typewriter-effect';
 import { Home, ShoppingBag, Calculator, Scale } from 'lucide-react';
 
 const HERO_ACTIONS = [
-  { icon: Home,        label: '¿Querés vender?',        href: '/tasaciones' },
-  { icon: ShoppingBag, label: '¿Querés comprar?',       href: '/propiedades' },
-  { icon: Calculator,  label: 'Tasá tu propiedad',      href: '/tasaciones' },
-  { icon: Scale,       label: 'Consulta jurídica',      href: '/juridico' },
+  { icon: Home,        label: '¿Querés vender?',   href: '/tasaciones' },
+  { icon: ShoppingBag, label: '¿Querés comprar?',  href: '/propiedades' },
+  { icon: Calculator,  label: 'Tasá tu propiedad', href: '/tasaciones' },
+  { icon: Scale,       label: 'Consulta jurídica', href: '/juridico' },
 ];
 
 export default function HeroJoin({ config, brand }) {
@@ -23,30 +23,68 @@ export default function HeroJoin({ config, brand }) {
   ].filter(Boolean);
 
   return (
-    <section className="hero-video-section">
-      <video autoPlay muted loop playsInline
-        className="absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }}>
+    <section style={{
+      position: 'relative',
+      width: '100%',
+      height: '100vh',
+      minHeight: '600px',
+      overflow: 'hidden',
+      background: '#0a0a0a',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      {/* VIDEO */}
+      <video
+        autoPlay muted loop playsInline
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
+      >
         <source src={videoSrc} type="video/mp4" />
       </video>
-      <div className="hero-video-overlay" />
+
+      {/* OVERLAY */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 1,
+        background: 'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.82) 100%)',
+      }} />
 
       {/* CONTENIDO CENTRAL */}
-      <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-8 pb-40 md:pb-48"
-        style={{ width: '100%', maxWidth: '1024px', margin: '0 auto' }}>
-        <p className="text-[9px] font-black tracking-[10px] text-white/50 uppercase mb-8">
+      <div style={{
+        flex: 1,
+        position: 'relative', zIndex: 10,
+        display: 'flex', flexDirection: 'column',
+        justifyContent: 'center', alignItems: 'center',
+        textAlign: 'center', padding: '4rem 2rem 2rem',
+        maxWidth: '1024px', margin: '0 auto', width: '100%',
+      }}>
+        <p style={{
+          fontSize: '9px', fontWeight: 900, letterSpacing: '10px',
+          color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', marginBottom: '2rem',
+        }}>
           INMOBILIARIA &amp; ESTUDIO JURÍDICO · BUENOS AIRES
         </p>
 
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-none tracking-tighter">
-          Inmobiliaria y Estudio Jurídico.{' '}
-          <span className="block text-2xl md:text-3xl lg:text-4xl text-white/75 mt-4 font-semibold normal-case tracking-normal">
+        <h1 style={{
+          fontSize: 'clamp(2.5rem, 7vw, 5rem)', fontWeight: 900,
+          textTransform: 'uppercase', color: '#ffffff',
+          lineHeight: 1.0, letterSpacing: '-0.03em',
+        }}>
+          Inmobiliaria y Estudio Jurídico.
+          <span style={{
+            display: 'block',
+            fontSize: 'clamp(1.125rem, 2.5vw, 1.75rem)',
+            color: 'rgba(255,255,255,0.75)',
+            marginTop: '1rem', fontWeight: 600,
+            textTransform: 'none', letterSpacing: 'normal',
+          }}>
             Especialistas en Sucesiones y Operaciones Simultáneas.
           </span>
         </h1>
 
         {mounted && typewriterStrings.length > 0 && (
-          <div className="mt-8 text-base md:text-xl font-bold tracking-tight min-h-[1.75rem]"
-            style={{ color: '#cc0044' }}>
+          <div style={{
+            marginTop: '2rem', fontSize: '1rem', fontWeight: 700,
+            letterSpacing: '-0.01em', minHeight: '1.75rem', color: '#cc0044',
+          }}>
             <Typewriter
               options={{ strings: typewriterStrings, autoStart: true, loop: true, delay: 60, deleteSpeed: 30 }}
             />
@@ -54,26 +92,42 @@ export default function HeroJoin({ config, brand }) {
         )}
       </div>
 
-      {/* GLASSMORPHISM ACTION CARDS — BOTTOM */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 px-4 pb-0">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3"
-          style={{ maxWidth: '960px', margin: '0 auto' }}>
+      {/* ACTION CARDS — en el flujo normal del flex, siempre visible */}
+      <div style={{ position: 'relative', zIndex: 20, flexShrink: 0, padding: '0 1rem' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '2px',
+          maxWidth: '960px',
+          margin: '0 auto',
+        }} className="md:grid-cols-4">
           {HERO_ACTIONS.map((item) => {
             const Icon = item.icon;
             return (
               <a key={item.label} href={item.href}
-                className="flex flex-col items-center gap-3 py-6 px-4 transition-all duration-300 group"
                 style={{
-                  background: 'rgba(255,255,255,0.09)',
-                  backdropFilter: 'blur(14px)',
-                  WebkitBackdropFilter: 'blur(14px)',
+                  display: 'flex', flexDirection: 'column',
+                  alignItems: 'center', gap: '0.75rem',
+                  padding: '1.5rem 1rem 1.75rem',
+                  background: 'rgba(255,255,255,0.1)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
                   border: '1px solid rgba(255,255,255,0.18)',
                   borderBottom: 'none',
-                  borderRadius: '1.25rem 1.25rem 0 0',
+                  borderRadius: '1rem 1rem 0 0',
+                  textDecoration: 'none',
+                  transition: 'background 0.2s',
                 }}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.18)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
               >
-                <Icon size={28} strokeWidth={1.25} className="text-white/80 group-hover:text-white transition-colors" />
-                <span className="text-[10px] font-bold text-white/70 group-hover:text-white transition-colors text-center leading-tight tracking-wider uppercase">
+                <Icon size={28} strokeWidth={1.25} style={{ color: 'rgba(255,255,255,0.85)' }} />
+                <span style={{
+                  fontSize: '10px', fontWeight: 700,
+                  color: 'rgba(255,255,255,0.75)',
+                  textAlign: 'center', lineHeight: 1.3,
+                  textTransform: 'uppercase', letterSpacing: '0.1em',
+                }}>
                   {item.label}
                 </span>
               </a>
@@ -82,7 +136,8 @@ export default function HeroJoin({ config, brand }) {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-4 z-10" style={{ background: '#0f0f0f' }} />
+      {/* Línea de transición al fondo de la página */}
+      <div style={{ height: '4px', background: '#0f0f0f', position: 'relative', zIndex: 10, flexShrink: 0 }} />
     </section>
   );
 }

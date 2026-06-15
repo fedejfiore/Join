@@ -81,15 +81,17 @@ export default function Navbar({ brand, setup, accConfig }) {
           </div>
         </div>
 
-        {/* BOTONES MÓVIL */}
-        <div className="md:hidden" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <ThemeToggle />
-          <button
-            style={{ color: 'rgba(255,255,255,0.7)', padding: '8px' }}
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+        {/* BOTONES MÓVIL — el wrapper no tiene inline display para que md:hidden funcione */}
+        <div className="md:hidden">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <ThemeToggle />
+            <button
+              style={{ color: 'rgba(255,255,255,0.7)', padding: '8px' }}
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
         </div>
       </div>
 

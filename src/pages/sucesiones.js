@@ -118,6 +118,38 @@ export default function SucesionesPage({ data }) {
           </div>
         </section>
 
+        {/* PARALLAX BANNER */}
+        <div style={{
+          position: 'relative',
+          height: '300px',
+          margin: '0 0 6rem 0',
+          overflow: 'hidden',
+          background: 'linear-gradient(135deg, #1a0010 0%, #660033 50%, #330019 100%)',
+        }}>
+          {/* Patrón decorativo */}
+          <div style={{
+            position: 'absolute', inset: 0,
+            backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(204,0,68,0.15) 0%, transparent 60%), radial-gradient(circle at 80% 50%, rgba(102,0,51,0.2) 0%, transparent 60%)',
+          }} />
+          <div style={{
+            position: 'absolute', inset: 0,
+            display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center',
+            textAlign: 'center', padding: '2rem',
+          }}>
+            <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.4em', color: 'rgba(255,255,255,0.5)', marginBottom: '1.5rem' }}>
+              Nuestra propuesta
+            </p>
+            <p style={{ fontSize: 'clamp(1.375rem, 3.5vw, 2.25rem)', fontWeight: 900, color: '#ffffff', lineHeight: 1.25, maxWidth: '720px', letterSpacing: '-0.02em' }}>
+              "El tiempo importa. La burocracia no debería ser tu problema."
+            </p>
+            <div style={{ width: '3.5rem', height: '3px', background: 'rgba(255,255,255,0.35)', margin: '1.5rem auto 0', borderRadius: '2px' }} />
+            <p style={{ marginTop: '1.25rem', fontSize: '15px', fontWeight: 500, color: 'rgba(255,255,255,0.65)', maxWidth: '480px', lineHeight: 1.6 }}>
+              Iniciamos los trámites sin honorarios previos. Los cobros se realizan al vender.
+            </p>
+          </div>
+        </div>
+
         {/* PROCESO PASO A PASO */}
         <section style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
           <h2 style={{ fontSize: 'clamp(1.625rem, 3.5vw, 2.375rem)', fontWeight: 800, color: 'var(--text-strong)', textAlign: 'center', marginBottom: '3rem' }}>
