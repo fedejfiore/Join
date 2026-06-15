@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
-  turbopack: {},
   transpilePackages: ['lucide-react', 'swiper'],
 
   webpack: (config, { isServer, nextRuntime }) => {
