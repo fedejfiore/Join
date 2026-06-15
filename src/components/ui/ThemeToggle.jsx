@@ -2,17 +2,27 @@ import { Sun, Moon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export default function ThemeToggle() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
-    if (darkMode) { document.documentElement.classList.add('dark'); } 
-    else { document.documentElement.classList.remove('dark'); }
-  }, [darkMode]);
+    const saved = localStorage.getItem('joinTheme');
+    const isDark = saved !== null ? saved === 'dark' : true;
+    setDarkMode(isDark);
+    document.documentElement.classList.toggle('dark', isDark);
+  }, []);
+
+  const toggle = () => {
+    const next = !darkMode;
+    setDarkMode(next);
+    document.documentElement.classList.toggle('dark', next);
+    localStorage.setItem('joinTheme', next ? 'dark' : 'light');
+  };
 
   return (
-    <button 
-      onClick={() => setDarkMode(!darkMode)}
-      className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors"
+    <button
+      onClick={toggle}
+      className="p-2 rounded-xl bg-white/10 text-white/60 hover:text-white hover:bg-white/20 transition-all"
+      aria-label="Cambiar tema"
     >
       {darkMode ? <Sun size={18} /> : <Moon size={18} />}
     </button>

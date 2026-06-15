@@ -52,7 +52,7 @@ export default function PropertyDetail({ property, data }) {
 
   return (
     <Layout data={data}>
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24 transition-colors duration-500">
+      <div className="min-h-screen pt-32 pb-24">
         
         {/* HEADER Y BREADCRUMB */}
         <div className="max-w-7xl mx-auto px-6 mb-8">

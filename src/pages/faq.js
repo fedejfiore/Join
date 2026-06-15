@@ -8,7 +8,7 @@ export default function FAQPage({ data }) {
 
   return (
     <Layout data={data}>
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24">
+      <div className="min-h-screen pt-32 pb-24">
         
         {/* ENCABEZADO CENTRADO CON COLORES ACCENT */}
         <header className="max-w-7xl mx-auto px-6 mb-16 text-center">

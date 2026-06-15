@@ -65,7 +65,7 @@ function Accordion({ items }) {
   return (
     <div className="space-y-3">
       {items.map((item, i) => (
-        <div key={i} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden shadow-sm">
+        <div key={i} className="rounded-2xl overflow-hidden" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}>
           <button
             onClick={() => setOpen(open === i ? null : i)}
             className="w-full flex items-center justify-between p-6 text-left gap-4"
@@ -93,7 +93,7 @@ export default function TasacionesPage({ data }) {
 
   return (
     <Layout data={data}>
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24 transition-colors duration-500">
+      <div className="min-h-screen pt-32 pb-24">
 
         {/* HEADER */}
         <header className="max-w-7xl mx-auto px-6 mb-20 text-center">
@@ -124,8 +124,8 @@ export default function TasacionesPage({ data }) {
             {DOC_ITEMS.map((item, i) => {
               const Icon = item.icon;
               return (
-                <div key={i} className="bg-white dark:bg-slate-900 rounded-[2rem] p-7 border border-slate-100 dark:border-slate-800 shadow-sm flex gap-5 items-start hover:shadow-lg transition-all">
-                  <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-primary dark:text-accent shrink-0">
+                <div key={i} className="rounded-2xl p-7 border border-white/8 flex gap-5 items-start hover:shadow-lg transition-all">
+                  <div className="p-3 rounded-xl shrink-0">
                     <Icon size={22} />
                   </div>
                   <div>
@@ -148,8 +148,8 @@ export default function TasacionesPage({ data }) {
             {PROPUESTA_ITEMS.map((item, i) => {
               const Icon = item.icon;
               return (
-                <div key={i} className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 md:p-10 border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col md:flex-row gap-6 items-start hover:shadow-xl transition-all">
-                  <div className="p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl text-primary dark:text-accent shrink-0">
+                <div key={i} className="rounded-2xl p-8 md:p-10 flex flex-col md:flex-row gap-6 items-start hover:shadow-xl transition-all">
+                  <div className="p-4 rounded-xl shrink-0">
                     <Icon size={28} />
                   </div>
                   <div className="flex-1">
@@ -157,8 +157,8 @@ export default function TasacionesPage({ data }) {
                     <p className="text-slate-500 dark:text-slate-400 text-sm font-medium italic leading-relaxed">{item.texto}</p>
                   </div>
                   {/* Placeholder para frame de muestra */}
-                  <div className="w-full md:w-48 h-28 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-300 dark:text-slate-600">Muestra</span>
+                  <div className="w-full md:w-48 h-28 rounded-2xl flex items-center justify-center shrink-0">
+                    <span className="text-[10px] font-black uppercase tracking-widest opacity-30">Muestra</span>
                   </div>
                 </div>
               );

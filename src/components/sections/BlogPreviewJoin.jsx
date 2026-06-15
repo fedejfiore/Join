@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from 'next/router';
+import { ArrowRight } from 'lucide-react';
 
 export default function BlogPreviewJoin({ noticias = [] }) {
   const router = useRouter();
@@ -7,70 +8,68 @@ export default function BlogPreviewJoin({ noticias = [] }) {
 
   if (previewList.length === 0) return null;
 
-  const handleNotaClick = (clave) => {
-    router.push('/blog#' + clave);
-  };
+  const handleNotaClick = (clave) => router.push('/blog#' + clave);
 
   return (
-    <section className="section-dynamic">
+    <section className="section-light">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter mb-16 text-center">
-          Artículos que te pueden interesar
-        </h2>
-        
-        <div className="grid md:grid-cols-3 gap-10">
+        <div className="text-center mb-14">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-3" style={{ color: '#0D3B66' }}>Blog</p>
+          <h2 className="text-4xl md:text-5xl font-bold" style={{ color: '#111111' }}>
+            Artículos que te pueden interesar
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
           {previewList.map((nota, index) => (
-            <article 
-              key={index} 
-              className="bg-white dark:bg-slate-900 rounded-[3rem] border border-slate-100 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-2xl dark:hover:shadow-accent/10 transition-all duration-500 group flex flex-col"
+            <article
+              key={index}
+              className="rounded-xl overflow-hidden flex flex-col group transition-all duration-300 hover:shadow-xl cursor-pointer"
+              style={{ background: '#fff', border: '1px solid #e8e8e8' }}
+              onClick={() => handleNotaClick(nota.Clave)}
             >
-              <div 
-                className="aspect-video overflow-hidden relative cursor-pointer" 
-                onClick={() => handleNotaClick(nota.Clave)}
-              >
-                <img 
-                  src={nota.Imagen?.startsWith('http') ? nota.Imagen : `/images/${nota.Imagen}`} 
+              {/* IMAGEN */}
+              <div className="aspect-[16/9] overflow-hidden relative">
+                <img
+                  src={nota.Imagen?.startsWith('http') ? nota.Imagen : `/images/${nota.Imagen}`}
                   alt={nota.Titulo}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute top-6 left-6 bg-primary dark:bg-accent text-white dark:text-slate-950 px-5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">
-                  {nota.Categoría || 'General'}
-                </div>
+                {nota.Categoría && (
+                  <span className="absolute top-4 left-4 text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full"
+                    style={{ background: '#0D3B66', color: '#fff' }}>
+                    {nota.Categoría}
+                  </span>
+                )}
               </div>
 
-              <div className="p-10 flex-grow flex flex-col">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] mb-3">
+              {/* TEXTO */}
+              <div className="p-7 flex-grow flex flex-col">
+                <p className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: '#999' }}>
                   {nota.Fecha}
-                </span>
-                <h3 
-                  className="text-2xl font-black italic uppercase tracking-tighter leading-tight text-slate-800 dark:text-slate-100 group-hover:text-primary dark:group-hover:text-accent cursor-pointer transition-colors mb-4 line-clamp-2" 
-                  onClick={() => handleNotaClick(nota.Clave)}
-                >
+                </p>
+                <h3 className="text-lg font-bold leading-snug mb-3 transition-colors group-hover:text-[#0D3B66]"
+                  style={{ color: '#111' }}>
                   {nota.Titulo}
                 </h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm line-clamp-3 font-medium italic leading-relaxed mb-8">
+                <p className="text-sm leading-relaxed line-clamp-3 mb-6" style={{ color: '#666' }}>
                   {nota.Copete}
                 </p>
-
-                <div className="mt-auto pt-6 border-t border-slate-50 dark:border-slate-800/50 flex items-center justify-between">
-                  <button 
-                    onClick={() => handleNotaClick(nota.Clave)} 
-                    className="text-primary dark:text-accent font-black italic uppercase text-xs tracking-tighter hover:scale-110 transition-transform"
-                  >
-                    Leer más +
-                  </button>
+                <div className="mt-auto flex items-center gap-2 text-xs font-bold" style={{ color: '#0D3B66' }}>
+                  Leer más <ArrowRight size={14} />
                 </div>
               </div>
             </article>
           ))}
         </div>
 
-        <div className="mt-16 text-center">
-          <button 
+        <div className="mt-14 text-center">
+          <button
             onClick={() => router.push('/blog')}
-            className="bg-primary dark:bg-accent text-white dark:text-slate-950 px-10 py-5 rounded-full font-black uppercase tracking-widest hover:scale-105 transition-all shadow-lg text-sm"
+            className="inline-flex items-center gap-3 px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest transition-all hover:scale-105 shadow-lg"
+            style={{ background: '#0D3B66', color: '#fff' }}
           >
-            Ver todos los artículos →
+            Ver todos los artículos <ArrowRight size={16} />
           </button>
         </div>
       </div>

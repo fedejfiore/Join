@@ -84,7 +84,7 @@ function Accordion({ items }) {
   return (
     <div className="space-y-3">
       {items.map((item, i) => (
-        <div key={i} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden shadow-sm">
+        <div key={i} className="rounded-2xl overflow-hidden" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}>
           <button
             onClick={() => setOpen(open === i ? null : i)}
             className="w-full flex items-center justify-between p-6 text-left gap-4"
@@ -110,7 +110,7 @@ export default function SucesionesPage({ data }) {
 
   return (
     <Layout data={data}>
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24 transition-colors duration-500">
+      <div className="min-h-screen pt-32 pb-24">
 
         {/* HEADER */}
         <header className="max-w-7xl mx-auto px-6 mb-20 text-center">
@@ -135,7 +135,7 @@ export default function SucesionesPage({ data }) {
               const Icon = item.icon;
               return (
                 <div key={i} className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all flex flex-col gap-5">
-                  <div className="p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl text-primary dark:text-accent w-fit">
+                  <div className="p-4 rounded-xl w-fit">
                     <Icon size={26} />
                   </div>
                   <div>

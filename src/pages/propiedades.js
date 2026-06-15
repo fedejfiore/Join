@@ -6,7 +6,7 @@ export default function PropiedadesPage({ data }) {
   if (!data) return null;
   return (
     <Layout data={data}>
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24">
+      <div className="min-h-screen pt-32 pb-24">
         <header className="max-w-7xl mx-auto px-6 mb-10 text-center md:text-left">
           <span className="text-primary dark:text-accent font-black text-[10px] uppercase tracking-[0.3em] transition-colors">
             Catálogo

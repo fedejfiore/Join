@@ -104,7 +104,7 @@ export default function JuridicoPage({ data }) {
 
   return (
     <Layout data={data}>
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-24 transition-colors duration-500">
+      <div className="min-h-screen pt-32 pb-24">
 
         {/* HEADER */}
         <header className="max-w-7xl mx-auto px-6 mb-16 text-center">
