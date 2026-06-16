@@ -3,6 +3,7 @@ import Layout from '../components/layout/Layout';
 import ContactoJoin from '../components/sections/ContactoJoin';
 import { getAllSiteData } from '../lib/google-sheets';
 import { getIcon } from '../lib/icon-map';
+import SheetText from '../lib/sheet-text';
 
 // ── Fallbacks ──────────────────────────────────────────────────────────────
 const DEFAULT_CFG = {
@@ -71,7 +72,7 @@ function FlipCard({ item }) {
           </p>
           <div style={{ width: '40px', height: '2px', borderRadius: '1px', background: 'rgba(255,255,255,0.3)' }} />
           <p style={{ fontSize: '14px', lineHeight: 1.75, textAlign: 'center', fontWeight: 500, color: 'rgba(255,255,255,0.88)', flex: 1, display: 'flex', alignItems: 'center' }}>
-            {item.Descripcion}
+            <SheetText text={item.Descripcion} />
           </p>
           <button
             type="button"
@@ -127,7 +128,7 @@ export default function JuridicoPage({ data }) {
               {v('contacto_titulo')}
             </h2>
             {v('contacto_sub') && (
-              <p style={{ marginTop: '1rem', fontWeight: 500, color: 'var(--text-secondary)' }}>{v('contacto_sub')}</p>
+              <p style={{ marginTop: '1rem', fontWeight: 500, color: 'var(--text-secondary)' }}><SheetText text={v('contacto_sub')} /></p>
             )}
           </div>
           <ContactoJoin brand={data.brand} defaultTema="Otra consulta legal" />

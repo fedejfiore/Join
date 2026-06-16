@@ -4,6 +4,7 @@ import ContactoJoin from '../components/sections/ContactoJoin';
 import { getAllSiteData } from '../lib/google-sheets';
 import { getIcon } from '../lib/icon-map';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import SheetText from '../lib/sheet-text';
 
 // ── Fallbacks ──────────────────────────────────────────────────────────────
 const DEFAULT_CFG = {
@@ -60,9 +61,7 @@ function Accordion({ items }) {
             </span>
           </button>
           {open === i && (
-            <div style={{ padding: '1rem 1.5rem 1.25rem', fontSize: '14px', fontWeight: 500, lineHeight: 1.75, color: 'var(--text-secondary)', borderTop: '1px solid var(--divider)' }}>
-              {item.Respuesta}
-            </div>
+            <SheetText text={item.Respuesta} as="div" style={{ padding: '1rem 1.5rem 1.25rem', fontSize: '14px', fontWeight: 500, lineHeight: 1.75, color: 'var(--text-secondary)', borderTop: '1px solid var(--divider)' }} />
           )}
         </div>
       ))}
@@ -86,18 +85,15 @@ export default function TasacionesPage({ data }) {
 
         {/* HEADER */}
         <header style={{ maxWidth: '1280px', margin: '0 auto 7rem', padding: '0 1.5rem', textAlign: 'center' }}>
-          <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.3em', color: '#cc0044' }}>
-            Servicios
-          </span>
-          <h1 style={{ fontSize: 'clamp(2.25rem, 6vw, 4.25rem)', fontWeight: 900, color: 'var(--text-strong)', lineHeight: 1.05, letterSpacing: '-0.03em', marginTop: '1rem' }}>
+          <h1 style={{ fontSize: 'clamp(2.25rem, 6vw, 4.25rem)', fontWeight: 900, color: 'var(--text-strong)', lineHeight: 1.05, letterSpacing: '-0.03em' }}>
             {v('titulo')}
           </h1>
           <div style={{ width: '6rem', height: '5px', background: '#660033', margin: '2rem auto', borderRadius: '3px' }} />
           <p style={{ maxWidth: '720px', margin: '0 auto 1rem', fontWeight: 500, lineHeight: 1.75, color: 'var(--text-secondary)', fontSize: '1.0625rem' }}>
-            {v('subtitulo_1')}
+            <SheetText text={v('subtitulo_1')} />
           </p>
           <p style={{ maxWidth: '720px', margin: '0 auto 2.5rem', fontWeight: 500, lineHeight: 1.75, color: 'var(--text-secondary)', fontSize: '1.0625rem' }}>
-            {v('subtitulo_2')}
+            <SheetText text={v('subtitulo_2')} />
           </p>
           <a href="#contacto"
             style={{ display: 'inline-block', background: '#660033', color: '#fff', padding: '1rem 2.5rem', borderRadius: '9999px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '12px', textDecoration: 'none', transition: 'transform 0.2s' }}
@@ -126,7 +122,7 @@ export default function TasacionesPage({ data }) {
                   </div>
                   <div>
                     <p style={{ fontWeight: 700, fontSize: '14px', marginBottom: '4px', color: 'var(--text-strong)' }}>{item.Titulo}</p>
-                    <p style={{ fontSize: '12px', lineHeight: 1.65, color: 'var(--text-muted)' }}>{item.Texto}</p>
+                    <p style={{ fontSize: '12px', lineHeight: 1.65, color: 'var(--text-muted)' }}><SheetText text={item.Texto} /></p>
                   </div>
                 </div>
               );
@@ -152,7 +148,7 @@ export default function TasacionesPage({ data }) {
                   </div>
                   <div style={{ flex: 1, minWidth: '240px' }}>
                     <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--text-strong)', marginBottom: '0.5rem' }}>{item.Titulo}</h3>
-                    <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text-secondary)' }}>{item.Texto}</p>
+                    <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text-secondary)' }}><SheetText text={item.Texto} /></p>
                   </div>
                 </div>
               );

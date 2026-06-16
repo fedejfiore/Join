@@ -4,6 +4,7 @@ import ContactoJoin from '../components/sections/ContactoJoin';
 import { getAllSiteData } from '../lib/google-sheets';
 import { getIcon } from '../lib/icon-map';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import SheetText from '../lib/sheet-text';
 
 // ── Fallbacks (usados si la pestaña del sheet está vacía) ──────────────────
 const DEFAULT_CFG = {
@@ -66,9 +67,7 @@ function Accordion({ items }) {
             </span>
           </button>
           {open === i && (
-            <div style={{ padding: '1rem 1.5rem 1.25rem', fontSize: '14px', fontWeight: 500, lineHeight: 1.75, color: 'var(--text-secondary)', borderTop: '1px solid var(--divider)' }}>
-              {item.Respuesta}
-            </div>
+            <SheetText text={item.Respuesta} as="div" style={{ padding: '1rem 1.5rem 1.25rem', fontSize: '14px', fontWeight: 500, lineHeight: 1.75, color: 'var(--text-secondary)', borderTop: '1px solid var(--divider)' }} />
           )}
         </div>
       ))}
@@ -98,7 +97,7 @@ export default function SucesionesPage({ data }) {
           </h1>
           <div style={{ width: '6rem', height: '5px', background: '#660033', margin: '2rem auto', borderRadius: '3px' }} />
           <p style={{ maxWidth: '720px', margin: '0 auto', fontWeight: 500, lineHeight: 1.75, color: 'var(--text-secondary)', fontSize: '1.0625rem' }}>
-            {v('subtitulo')}
+            <SheetText text={v('subtitulo')} />
           </p>
         </header>
 
@@ -108,7 +107,7 @@ export default function SucesionesPage({ data }) {
             {v('section_porque_titulo')}
           </h2>
           <p style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-            {v('section_porque_sub')}
+            <SheetText text={v('section_porque_sub')} />
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {porque.map((item, i) => {
@@ -120,7 +119,7 @@ export default function SucesionesPage({ data }) {
                   </div>
                   <div>
                     <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--text-strong)', marginBottom: '0.625rem' }}>{item.Titulo}</h3>
-                    <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text-secondary)' }}>{item.Texto}</p>
+                    <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text-secondary)' }}><SheetText text={item.Texto} /></p>
                   </div>
                 </div>
               );
@@ -155,7 +154,7 @@ export default function SucesionesPage({ data }) {
                   {step.Numero}
                 </span>
                 <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-strong)', marginBottom: '0.75rem', paddingRight: '3rem', lineHeight: 1.4 }}>{step.Titulo}</h3>
-                <p style={{ fontSize: '13px', lineHeight: 1.75, color: 'var(--text-muted)' }}>{step.Texto}</p>
+                <p style={{ fontSize: '13px', lineHeight: 1.75, color: 'var(--text-muted)' }}><SheetText text={step.Texto} /></p>
               </div>
             ))}
           </div>
@@ -180,7 +179,7 @@ export default function SucesionesPage({ data }) {
                     </div>
                     <div>
                       <p style={{ fontWeight: 700, fontSize: '13px', marginBottom: '4px', color: 'var(--text-strong)' }}>{doc.Titulo}</p>
-                      <p style={{ fontSize: '12px', lineHeight: 1.6, color: 'var(--text-muted)' }}>{doc.Texto}</p>
+                      <p style={{ fontSize: '12px', lineHeight: 1.6, color: 'var(--text-muted)' }}><SheetText text={doc.Texto} /></p>
                     </div>
                   </div>
                 );

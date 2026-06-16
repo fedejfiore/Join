@@ -1,4 +1,5 @@
 "use client";
+import SheetText from '../../lib/sheet-text';
 
 export default function NosotrosJoin({ data }) {
   const subtitulo = data?.subtitulo?.valor || data?.Subtitulo?.valor
@@ -26,12 +27,10 @@ export default function NosotrosJoin({ data }) {
             <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 800, color: 'var(--text-strong)', lineHeight: 1.15 }}>
               Nosotros
             </h2>
-            <p style={{ fontSize: '1.1rem', fontWeight: 600, lineHeight: 1.6, color: 'var(--text-secondary)' }}>
-              {subtitulo}
-            </p>
+            <SheetText text={subtitulo} as="p" style={{ fontSize: '1.1rem', fontWeight: 600, lineHeight: 1.6, color: 'var(--text-secondary)' }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', lineHeight: 1.75, fontSize: '14px', color: 'var(--text-secondary)' }}>
               {texto.split('\n\n').map((p, i) => (
-                <p key={i} style={{ fontWeight: 500 }}>{p}</p>
+                <SheetText key={i} text={p} as="p" style={{ fontWeight: 500 }} />
               ))}
             </div>
 
