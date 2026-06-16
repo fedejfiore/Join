@@ -2,9 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import ReactMarkdown from 'react-markdown';
-import remarkBreaks from 'remark-breaks';
 import Layout from '../../components/layout/Layout';
+import SheetText from '../../lib/sheet-text';
 import ContactoJoin from '../../components/sections/ContactoJoin';
 import { getAllSiteData } from '../../lib/google-sheets';
 import { ChevronLeft, ChevronRight, X, Grid, Film, Compass, MapPin } from 'lucide-react';
@@ -226,9 +225,7 @@ export default function PropertyDetail({ property, data }) {
                     Descripción
                   </h3>
                   <div style={{ fontSize: '15px', lineHeight: 1.8, color: 'var(--text-secondary)', textAlign: 'justify' }}>
-                    <ReactMarkdown remarkPlugins={[remarkBreaks]}>
-                      {property.Descripcion}
-                    </ReactMarkdown>
+                    <SheetText as="div" text={property.Descripcion} />
                   </div>
                 </div>
               )}

@@ -4,8 +4,7 @@ import {
   Search, MessageCircle, Facebook, Send,
   X as CloseIcon, Calendar, Tag, Link as LinkIcon, Linkedin
 } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
-import remarkBreaks from 'remark-breaks';
+import SheetText from '../../lib/sheet-text';
 
 const XIcon = ({ size = 20 }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -233,9 +232,7 @@ export default function BlogList({ noticias = [] }) {
               </h2>
 
               <div style={{ fontSize: '16px', lineHeight: 1.8, color: '#333' }}>
-                <ReactMarkdown remarkPlugins={[remarkBreaks]}>
-                  {selectedNota.Cuerpo}
-                </ReactMarkdown>
+                <SheetText as="div" text={selectedNota.Cuerpo} />
               </div>
 
               <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #eee', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem' }}>
