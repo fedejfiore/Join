@@ -1,6 +1,5 @@
 "use client";
-import ReactMarkdown from 'react-markdown';
-import remarkBreaks from 'remark-breaks';
+import SheetText from '../../lib/sheet-text';
 
 export default function Process({ pasos = [] }) {
   const items = Array.isArray(pasos) ? pasos.filter(p => {
@@ -58,7 +57,7 @@ export default function Process({ pasos = [] }) {
                     </div>
                     <h3 className="text-3xl relative">{item.titulo}</h3>
                     <div className="relative prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 font-medium text-left">
-                      <ReactMarkdown remarkPlugins={[remarkBreaks]}>{item.descripcion}</ReactMarkdown>
+                      <SheetText as="div" text={item.descripcion} />
                     </div>
                   </div>
                 </div>

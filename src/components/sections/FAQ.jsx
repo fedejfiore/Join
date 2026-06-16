@@ -1,8 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
-import remarkBreaks from 'remark-breaks';
+import SheetText from '../../lib/sheet-text';
 
 export default function FAQ({ data }) {
   const [openIndex, setOpenIndex] = useState(null);
@@ -56,19 +55,7 @@ export default function FAQ({ data }) {
               >
                 <div className="p-8 md:p-16 pt-0 border-t border-slate-100 dark:border-slate-800/50 text-center">
                   <div className="text-slate-700 dark:text-slate-200 prose prose-slate dark:prose-invert max-w-none leading-relaxed text-xl font-medium italic whitespace-pre-wrap">
-                    <ReactMarkdown 
-                      remarkPlugins={[remarkBreaks]}
-                      components={{
-                        // Forzamos que las negritas (**) sean realmente negras y resalten
-                        strong: ({children}) => (
-                          <strong className="font-black text-slate-900 dark:text-white not-italic underline decoration-primary/30 dark:decoration-accent/30 decoration-4">
-                            {children}
-                          </strong>
-                        )
-                      }}
-                    >
-                      {respuesta?.toString() || ""}
-                    </ReactMarkdown>
+                    <SheetText as="div" text={respuesta?.toString() || ""} />
                   </div>
                 </div>
               </div>

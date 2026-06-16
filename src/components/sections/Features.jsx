@@ -1,7 +1,6 @@
 "use client";
 import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkBreaks from 'remark-breaks';
+import SheetText from '../../lib/sheet-text';
 
 export default function Features({ valores = [] }) {
   const findInArray = (clave) => {
@@ -66,9 +65,7 @@ function FlipCard({ item }) {
         {/* LADO TRASERO */}
         <div className="absolute inset-0 h-full w-full rounded-[2.5rem] bg-primary dark:bg-slate-900 text-white p-10 flex flex-col items-center justify-center [transform:rotateY(180deg)] [backface-visibility:hidden] z-[20]">
           <div className="text-sm leading-relaxed text-center mb-8 font-medium">
-            <ReactMarkdown remarkPlugins={[remarkBreaks]}>
-              {item.descripcion}
-            </ReactMarkdown>
+            <SheetText as="div" text={item.descripcion} />
           </div>
           <button 
             type="button"

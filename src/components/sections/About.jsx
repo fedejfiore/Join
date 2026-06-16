@@ -1,6 +1,5 @@
 "use client";
-import ReactMarkdown from 'react-markdown';
-import remarkBreaks from 'remark-breaks';
+import SheetText from '../../lib/sheet-text';
 
 export default function About({ data }) {
   const titulo = data?.Titulo?.valor || "Sobre Nosotros";
@@ -15,9 +14,7 @@ export default function About({ data }) {
             {titulo}
           </h2>
           <div className="text-slate-600 dark:text-slate-300 prose prose-slate dark:prose-invert max-w-none leading-relaxed text-justify">
-            <ReactMarkdown remarkPlugins={[remarkBreaks]}>
-              {descripcion}
-            </ReactMarkdown>
+            <SheetText as="div" text={descripcion} />
           </div>
         </div>
         
