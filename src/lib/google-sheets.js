@@ -20,19 +20,19 @@ const GIDS = {
   propiedades:         '1902783513',
   contacto:            '1909991166',
 
-  // ── NUEVAS — ejecutar scripts/populate-sheets.gs y reemplazar '' con el GID ──
-  sucesiones:          '',   // config Clave/Valor de la página sucesiones
-  sucesiones_porque:   '',   // cards "¿Por qué elegirnos?"
-  sucesiones_proceso:  '',   // pasos del proceso
-  sucesiones_docs:     '',   // documentación requerida
-  sucesiones_faq:      '',   // FAQ de sucesiones
-  tasaciones:          '',   // config Clave/Valor de la página tasaciones
-  tasaciones_docs:     '',   // documentación para vender
-  tasaciones_propuesta:'',   // propuesta de valor (multimedia)
-  tasaciones_faq:      '',   // FAQ de tasaciones
-  juridico:            '',   // config Clave/Valor de la página juridico
-  juridico_areas:      '',   // áreas legales (flip cards)
-  valores_items:       '',   // sub-items de cada razón de PorQueElegirnos
+  // ── NUEVAS ──────────────────────────────────────────────────
+  sucesiones:          '887481242',
+  sucesiones_porque:   '305090467',
+  sucesiones_proceso:  '411254445',
+  sucesiones_docs:     '330465004',
+  sucesiones_faq:      '2095173442',
+  tasaciones:          '1014940336',
+  tasaciones_docs:     '472687207',
+  tasaciones_propuesta:'1202515012',
+  tasaciones_faq:      '1788356313',
+  juridico:            '329809726',
+  juridico_areas:      '315993655',
+  valores_items:       '695950307',
 };
 
 async function fetchCSV(gid) {

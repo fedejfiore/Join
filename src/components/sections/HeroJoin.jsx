@@ -98,8 +98,8 @@ export default function HeroJoin({ config, brand }) {
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '2px',
-          maxWidth: '860px',
+          gap: '10px',
+          maxWidth: '900px',
           margin: '0 auto',
         }}>
           {BTN_DEFAULTS.map((def, idx) => {
@@ -118,8 +118,7 @@ export default function HeroJoin({ config, brand }) {
                   backdropFilter: 'blur(16px)',
                   WebkitBackdropFilter: 'blur(16px)',
                   border: '1px solid rgba(255,255,255,0.18)',
-                  borderBottom: 'none',
-                  borderRadius: '0.875rem 0.875rem 0 0',
+                  borderRadius: '0.875rem',
                   textDecoration: 'none',
                   transition: 'background 0.2s',
                 }}

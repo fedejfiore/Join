@@ -9,9 +9,6 @@ export default function BlogPage({ data }) {
     <Layout data={data}>
       <div className="min-h-screen" style={{ paddingTop: '7rem', paddingBottom: '6rem' }}>
         <header style={{ maxWidth: '1280px', margin: '0 auto 4rem', padding: '0 1.5rem', textAlign: 'center' }}>
-          <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.3em', color: '#cc0044' }}>
-            Actualidad
-          </span>
           <h1 style={{ fontSize: 'clamp(3.5rem, 10vw, 6.5rem)', fontWeight: 900, color: 'var(--text-strong)', lineHeight: 0.95, letterSpacing: '-0.04em', marginTop: '0.625rem' }}>
             Blog
           </h1>

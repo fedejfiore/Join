@@ -36,13 +36,12 @@ export default function PropertyDetail({ property, data }) {
     const url = prop.URL_Maps || prop.Direccion_maps || '';
     if (!url) return '';
     if (url.includes('maps/embed')) return url;
-    if (url.includes('maps.google.com/maps?') && url.includes('output=embed')) return url;
-    // Convertir URL de compartir a embed
+    if (url.includes('output=embed')) return url;
     if (url.includes('google.com/maps')) {
       const coordMatch = url.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
       if (coordMatch) return `https://maps.google.com/maps?q=${coordMatch[1]},${coordMatch[2]}&z=16&output=embed`;
     }
-    return url;
+    return '';
   };
 
   const videoEmbed = getEmbedUrl(property.URL_Video);
