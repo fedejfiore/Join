@@ -249,6 +249,52 @@ html:not(.dark) .card-hover:hover {
 }
 
 /* ============================================================
+   ALTO CONTRASTE — activa cuando html tiene clase .high-contrast
+   ============================================================ */
+
+/* Dark mode + high contrast: textos grises → blancos */
+html.high-contrast {
+  --text-strong:    #ffffff;
+  --text-secondary: rgba(255,255,255,0.95);
+  --text-muted:     rgba(255,255,255,0.9);
+  --text-faint:     rgba(255,255,255,0.85);
+  --nav-text:       rgba(255,255,255,0.95);
+  --nav-icon:       rgba(255,255,255,0.9);
+  --footer-text-label: rgba(255,255,255,0.95);
+  --footer-text-link:  rgba(255,255,255,0.95);
+  --footer-text-muted: rgba(255,255,255,0.9);
+  --footer-text-copy:  rgba(255,255,255,0.8);
+}
+
+/* Light mode + high contrast: textos grises → negros */
+html.high-contrast:not(.dark) {
+  --text-strong:    #000000;
+  --text-secondary: rgba(0,0,0,0.95);
+  --text-muted:     rgba(0,0,0,0.9);
+  --text-faint:     rgba(0,0,0,0.85);
+  --nav-text:       rgba(0,0,0,0.95);
+  --nav-icon:       rgba(0,0,0,0.85);
+  --footer-text-label: rgba(0,0,0,0.95);
+  --footer-text-link:  rgba(0,0,0,0.95);
+  --footer-text-muted: rgba(0,0,0,0.9);
+  --footer-text-copy:  rgba(0,0,0,0.8);
+}
+
+/* Tipografía más gruesa — trazo fino sobre la letra actual */
+html.high-contrast body {
+  -webkit-font-smoothing: auto;
+}
+html.high-contrast p,
+html.high-contrast span,
+html.high-contrast li,
+html.high-contrast a,
+html.high-contrast label,
+html.high-contrast td,
+html.high-contrast th {
+  -webkit-text-stroke: 0.3px currentColor;
+}
+
+/* ============================================================
    PAGE PROGRESS BAR
    ============================================================ */
 #page-progress {

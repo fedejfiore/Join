@@ -105,7 +105,7 @@ export default function Navbar({ brand, setup, accConfig }) {
 
       {showAcc && (
         <div className="fixed md:absolute inset-0 md:inset-auto md:right-6 md:top-20 z-[100] flex justify-center items-center md:items-start bg-black/70 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none p-6 md:p-0">
-          <div className="w-full max-w-xs animate-in zoom-in-95 duration-200">
+          <div className="w-full max-w-sm">
             <AccessibilityHub close={() => setShowAcc(false)} config={accConfig} />
           </div>
         </div>

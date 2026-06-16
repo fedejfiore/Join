@@ -41,7 +41,7 @@ export default function AccessibilityHub({ close, config = {} }) {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-[2.5rem] shadow-2xl w-72 animate-in fade-in zoom-in-95 duration-200">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-3xl shadow-2xl w-full">
       <div className="flex justify-between items-center mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
         <h4 className="font-black italic uppercase text-[10px] text-slate-400 tracking-widest leading-none">Ajustes del Sitio</h4>
         <button onClick={close} className="text-slate-300 hover:text-red-500 transition-colors">
