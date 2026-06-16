@@ -107,9 +107,7 @@ export default function JuridicoPage({ data }) {
             {v('titulo')}
           </h1>
           <div style={{ width: '6rem', height: '5px', background: '#660033', margin: '2rem auto', borderRadius: '3px' }} />
-          <p style={{ maxWidth: '640px', margin: '0 auto', fontWeight: 500, lineHeight: 1.75, color: 'var(--text-secondary)' }}>
-            {v('subtitulo')}
-          </p>
+          <SheetText as="p" text={v('subtitulo')} style={{ maxWidth: '640px', margin: '0 auto', fontWeight: 500, lineHeight: 1.75, color: 'var(--text-secondary)' }} />
         </header>
 
         {/* GRILLA FLIP CARDS */}

@@ -163,9 +163,7 @@ export default function SucesionesPage({ data }) {
           <h2 style={{ fontSize: 'clamp(1.625rem, 3.5vw, 2.375rem)', fontWeight: 800, color: 'var(--text-strong)', textAlign: 'center', marginBottom: '1rem' }}>
             {v('section_docs_titulo')}
           </h2>
-          <p style={{ textAlign: 'center', maxWidth: '480px', margin: '0 auto 2.5rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-            {v('section_docs_sub')}
-          </p>
+          <SheetText as="p" text={v('section_docs_sub')} style={{ textAlign: 'center', maxWidth: '480px', margin: '0 auto 2.5rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }} />
           <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2.25rem' }}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               {docs.map((doc, i) => {
@@ -201,7 +199,7 @@ export default function SucesionesPage({ data }) {
               {v('contacto_titulo')}
             </h2>
             {v('contacto_sub') && (
-              <p style={{ marginTop: '1rem', fontWeight: 500, color: 'var(--text-secondary)' }}>{v('contacto_sub')}</p>
+              <SheetText as="p" text={v('contacto_sub')} style={{ marginTop: '1rem', fontWeight: 500, color: 'var(--text-secondary)' }} />
             )}
           </div>
           <ContactoJoin brand={data.brand} defaultTema="Consultar por sucesión" />

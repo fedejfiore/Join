@@ -109,9 +109,7 @@ export default function TasacionesPage({ data }) {
           <h2 style={{ fontSize: 'clamp(1.625rem, 3.5vw, 2.375rem)', fontWeight: 800, color: 'var(--text-strong)', textAlign: 'center', marginBottom: '1rem' }}>
             {v('section_docs_titulo')}
           </h2>
-          <p style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-            {v('section_docs_sub')}
-          </p>
+          <SheetText as="p" text={v('section_docs_sub')} style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }} />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {docs.map((item, i) => {
               const Icon = getIcon(item.Icono);
@@ -135,9 +133,7 @@ export default function TasacionesPage({ data }) {
           <h2 style={{ fontSize: 'clamp(1.625rem, 3.5vw, 2.375rem)', fontWeight: 800, color: 'var(--text-strong)', textAlign: 'center', marginBottom: '1rem' }}>
             {v('section_propuesta_titulo')}
           </h2>
-          <p style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-            {v('section_propuesta_sub')}
-          </p>
+          <SheetText as="p" text={v('section_propuesta_sub')} style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             {propuesta.map((item, i) => {
               const Icon = getIcon(item.Icono);
@@ -161,9 +157,7 @@ export default function TasacionesPage({ data }) {
           <h2 style={{ fontSize: 'clamp(1.625rem, 3.5vw, 2.375rem)', fontWeight: 800, color: 'var(--text-strong)', textAlign: 'center', marginBottom: '1rem' }}>
             {v('section_faq_titulo')}
           </h2>
-          <p style={{ textAlign: 'center', maxWidth: '480px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-            {v('section_faq_sub')}
-          </p>
+          <SheetText as="p" text={v('section_faq_sub')} style={{ textAlign: 'center', maxWidth: '480px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }} />
           <Accordion items={faqs} />
         </section>
 
