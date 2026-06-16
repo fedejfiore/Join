@@ -9,9 +9,11 @@ export default function MapaListado({ propiedades = [] }) {
   const mapRef    = useRef(null);
   const instanceRef = useRef(null);
 
+  const norm = v => parseFloat((v || '').toString().trim().replace(',', '.'));
+
   const withCoords = propiedades.filter(p => {
-    const lat = parseFloat(p.LAT);
-    const lng = parseFloat(p.LONG);
+    const lat = norm(p.LAT);
+    const lng = norm(p.LONG);
     return !isNaN(lat) && !isNaN(lng);
   });
 
@@ -35,7 +37,7 @@ export default function MapaListado({ propiedades = [] }) {
       }
 
       const center = withCoords.length > 0
-        ? [parseFloat(withCoords[0].LAT), parseFloat(withCoords[0].LONG)]
+        ? [norm(withCoords[0].LAT), norm(withCoords[0].LONG)]
         : [-34.6132, -58.3772];
 
       const map = L.map(mapRef.current, {
@@ -58,8 +60,8 @@ export default function MapaListado({ propiedades = [] }) {
       });
 
       withCoords.forEach(prop => {
-        const lat = parseFloat(prop.LAT);
-        const lng = parseFloat(prop.LONG);
+        const lat = norm(prop.LAT);
+        const lng = norm(prop.LONG);
         const precio = Number(prop.Precio).toLocaleString('es-AR');
         const popup = `
           <div style="min-width:160px;font-family:inherit">
@@ -75,7 +77,7 @@ export default function MapaListado({ propiedades = [] }) {
       });
 
       if (withCoords.length > 1) {
-        const bounds = L.latLngBounds(withCoords.map(p => [parseFloat(p.LAT), parseFloat(p.LONG)]));
+        const bounds = L.latLngBounds(withCoords.map(p => [norm(p.LAT), norm(p.LONG)]));
         map.fitBounds(bounds, { padding: [40, 40] });
       }
     };

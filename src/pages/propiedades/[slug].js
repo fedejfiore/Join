@@ -41,11 +41,13 @@ export default function PropertyDetail({ property, data }) {
       if (raw.includes('maps/embed') || raw.includes('output=embed')) return raw;
     }
     // Prioridad 2: LAT/LONG → OpenStreetMap (sin API key, sin restricciones)
-    const lat = (prop.LAT || '').toString().trim();
-    const lng = (prop.LONG || '').toString().trim();
+    const normCoord = v => (v || '').toString().trim().replace(',', '.');
+    const lat = normCoord(prop.LAT);
+    const lng = normCoord(prop.LONG);
     if (lat && lng) {
       const latN = parseFloat(lat), lngN = parseFloat(lng), d = 0.003;
-      return `https://www.openstreetmap.org/export/embed.html?bbox=${lngN-d},${latN-d},${lngN+d},${latN+d}&layer=mapnik&marker=${lat},${lng}`;
+      if (!isNaN(latN) && !isNaN(lngN))
+        return `https://www.openstreetmap.org/export/embed.html?bbox=${lngN-d},${latN-d},${lngN+d},${latN+d}&layer=mapnik&marker=${latN},${lngN}`;
     }
     // Prioridad 3: URL de Google Maps compartida → extraer coords
     for (const f of rawFields) {
