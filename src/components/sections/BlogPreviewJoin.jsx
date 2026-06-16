@@ -14,7 +14,6 @@ export default function BlogPreviewJoin({ noticias = [] }) {
     <section className="section-dynamic">
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.3em', color: '#cc0044', marginBottom: '1rem' }}>Blog</p>
           <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3.25rem)', fontWeight: 800, color: 'var(--text-strong)', lineHeight: 1.15, letterSpacing: '-0.02em' }}>
             Artículos que te pueden interesar
           </h2>

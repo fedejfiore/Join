@@ -30,15 +30,21 @@ export default function PropertyDetail({ property, data }) {
   };
 
   const getMapEmbedUrl = (prop) => {
-    if (prop.LAT && prop.LONG) {
-      return `https://maps.google.com/maps?q=${prop.LAT},${prop.LONG}&z=16&output=embed`;
+    const lat = (prop.LAT || '').toString().trim();
+    const lng = (prop.LONG || '').toString().trim();
+    if (lat && lng) {
+      return `https://maps.google.com/maps?q=${lat},${lng}&z=16&output=embed`;
     }
-    const url = prop.URL_Maps || prop.Direccion_maps || '';
-    if (!url) return '';
-    if (url.includes('maps/embed')) return url;
-    if (url.includes('output=embed')) return url;
-    if (url.includes('google.com/maps')) {
-      const coordMatch = url.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+    const raw = (prop.URL_Maps || prop.Direccion_maps || '').trim();
+    if (!raw) return '';
+    // Soporte para <iframe ...src="..."> pegado desde Google Maps
+    if (raw.includes('<iframe')) {
+      const srcMatch = raw.match(/src="([^"]+)"/);
+      return srcMatch ? srcMatch[1] : '';
+    }
+    if (raw.includes('maps/embed') || raw.includes('output=embed')) return raw;
+    if (raw.includes('google.com/maps')) {
+      const coordMatch = raw.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
       if (coordMatch) return `https://maps.google.com/maps?q=${coordMatch[1]},${coordMatch[2]}&z=16&output=embed`;
     }
     return '';
@@ -215,7 +221,7 @@ export default function PropertyDetail({ property, data }) {
               )}
 
               {/* MAPA */}
-              {(property.LAT || property.LONG || property.URL_Maps || property.Direccion_maps) && (() => {
+              {(() => {
                 const mapSrc = getMapEmbedUrl(property);
                 return mapSrc ? (
                   <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2rem' }}>

@@ -93,13 +93,13 @@ export default function HeroJoin({ config, brand }) {
         )}
       </div>
 
-      {/* ACTION CARDS — fila única, siempre visible */}
-      <div style={{ position: 'relative', zIndex: 20, flexShrink: 0, padding: '0 1rem' }}>
+      {/* ACTION CARDS — fila única */}
+      <div style={{ position: 'relative', zIndex: 20, flexShrink: 0, padding: '0 1.5rem 0' }}>
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '10px',
-          maxWidth: '900px',
+          display: 'flex',
+          gap: '12px',
+          justifyContent: 'center',
+          maxWidth: '800px',
           margin: '0 auto',
         }}>
           {BTN_DEFAULTS.map((def, idx) => {
@@ -111,26 +111,28 @@ export default function HeroJoin({ config, brand }) {
             return (
               <a key={idx} href={item.href}
                 style={{
+                  flex: 1,
                   display: 'flex', flexDirection: 'column',
-                  alignItems: 'center', gap: '0.5rem',
-                  padding: '1rem 0.75rem 1.125rem',
-                  background: 'rgba(255,255,255,0.1)',
-                  backdropFilter: 'blur(16px)',
-                  WebkitBackdropFilter: 'blur(16px)',
-                  border: '1px solid rgba(255,255,255,0.18)',
-                  borderRadius: '0.875rem',
+                  alignItems: 'center', justifyContent: 'center', gap: '0.625rem',
+                  padding: '1.25rem 0.75rem',
+                  background: 'rgba(255,255,255,0.12)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: '1.125rem',
                   textDecoration: 'none',
-                  transition: 'background 0.2s',
+                  transition: 'background 0.2s, transform 0.2s',
+                  minWidth: 0,
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.18)'}
-                onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.22)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.transform = 'translateY(0)'; }}
               >
-                <Icon size={22} strokeWidth={1.25} style={{ color: 'rgba(255,255,255,0.85)' }} />
+                <Icon size={30} strokeWidth={1.5} style={{ color: '#ffffff' }} />
                 <span style={{
-                  fontSize: '9px', fontWeight: 700,
-                  color: 'rgba(255,255,255,0.75)',
-                  textAlign: 'center', lineHeight: 1.3,
-                  textTransform: 'uppercase', letterSpacing: '0.08em',
+                  fontSize: '10px', fontWeight: 800,
+                  color: 'rgba(255,255,255,0.9)',
+                  textAlign: 'center', lineHeight: 1.25,
+                  textTransform: 'uppercase', letterSpacing: '0.06em',
                 }}>
                   {item.label}
                 </span>
