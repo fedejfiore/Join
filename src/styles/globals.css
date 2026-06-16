@@ -28,6 +28,20 @@
 
   /* Separadores */
   --divider: rgba(255,255,255,0.08);
+
+  /* Navbar / Footer */
+  --nav-bg:           #111111;
+  --nav-border:       rgba(255,255,255,0.07);
+  --nav-text:         rgba(255,255,255,0.6);
+  --nav-text-hover:   #ffffff;
+  --nav-separator:    rgba(255,255,255,0.1);
+  --nav-icon:         rgba(255,255,255,0.4);
+  --footer-text-label: rgba(255,255,255,0.55);
+  --footer-text-link:  rgba(255,255,255,0.5);
+  --footer-text-muted: rgba(255,255,255,0.4);
+  --footer-text-copy:  rgba(255,255,255,0.25);
+  --footer-btn-bg:     rgba(255,255,255,0.07);
+  --footer-btn-border: rgba(255,255,255,0.1);
 }
 
 /* Modo claro — todo cambia automáticamente */
@@ -46,6 +60,20 @@ html:not(.dark) {
   --text-faint:     rgba(0,0,0,0.28);
 
   --divider: rgba(0,0,0,0.08);
+
+  /* Navbar / Footer */
+  --nav-bg:           #f8f8f8;
+  --nav-border:       rgba(0,0,0,0.08);
+  --nav-text:         rgba(0,0,0,0.5);
+  --nav-text-hover:   #111111;
+  --nav-separator:    rgba(0,0,0,0.1);
+  --nav-icon:         rgba(0,0,0,0.4);
+  --footer-text-label: rgba(0,0,0,0.55);
+  --footer-text-link:  rgba(0,0,0,0.5);
+  --footer-text-muted: rgba(0,0,0,0.4);
+  --footer-text-copy:  rgba(0,0,0,0.25);
+  --footer-btn-bg:     rgba(0,0,0,0.05);
+  --footer-btn-border: rgba(0,0,0,0.1);
 }
 
 .dark {
@@ -190,6 +218,45 @@ html:not(.dark) select option {
    ============================================================ */
 .property-card-img { transition: transform 0.5s ease; }
 .property-card:hover .property-card-img { transform: scale(1.04); }
+
+/* ============================================================
+   SCROLL REVEAL — entrance animation on scroll
+   ============================================================ */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+/* Stagger para grillas */
+.scroll-reveal:nth-child(2) { transition-delay: 0.08s; }
+.scroll-reveal:nth-child(3) { transition-delay: 0.16s; }
+.scroll-reveal:nth-child(4) { transition-delay: 0.24s; }
+
+/* Card hover shadow — aplica a todos los divs con border inline en secciones */
+.card-hover {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.card-hover:hover {
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+  transform: translateY(-3px);
+}
+html:not(.dark) .card-hover:hover {
+  box-shadow: 0 12px 40px rgba(0,0,0,0.10);
+}
+
+/* ============================================================
+   PAGE PROGRESS BAR
+   ============================================================ */
+#page-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: #cc0044; z-index: 9999;
+  width: 0%; transition: width 0.25s ease;
+  pointer-events: none;
+}
 
 /* ============================================================
    RESPONSIVE

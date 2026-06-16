@@ -33,13 +33,13 @@ export default function Navbar({ brand, setup, accConfig }) {
   const logoSrc = isDark ? logoBlancoSrc : logoColorSrc;
 
   return (
-    <nav style={{ position: 'sticky', top: 0, width: '100%', zIndex: 50, backgroundColor: '#111111', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+    <nav style={{ position: 'sticky', top: 0, width: '100%', zIndex: 50, backgroundColor: 'var(--nav-bg)', borderBottom: '1px solid var(--nav-border)', transition: 'background-color 0.3s ease, border-color 0.3s ease' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
         {/* LOGO */}
         <Link href="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
           {logoError ? (
-            <span style={{ fontWeight: 900, fontSize: '1.25rem', letterSpacing: '8px', color: '#ffffff' }}>JOIN</span>
+            <span style={{ fontWeight: 900, fontSize: '1.25rem', letterSpacing: '8px', color: 'var(--nav-text-hover)' }}>JOIN</span>
           ) : (
             <img
               key={logoSrc}
@@ -58,22 +58,22 @@ export default function Navbar({ brand, setup, accConfig }) {
               key={item.id}
               href={item.href}
               className="group relative"
-              style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.18em', color: 'rgba(255,255,255,0.6)', transition: 'color 0.2s' }}
-              onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'}
+              style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.18em', color: 'var(--nav-text)', transition: 'color 0.2s' }}
+              onMouseEnter={e => e.currentTarget.style.color = 'var(--nav-text-hover)'}
+              onMouseLeave={e => e.currentTarget.style.color = 'var(--nav-text)'}
             >
               {item.label}
-              <span style={{ position: 'absolute', bottom: '-4px', left: 0, height: '1px', background: '#ffffff', width: 0, transition: 'width 0.3s ease' }}
+              <span style={{ position: 'absolute', bottom: '-4px', left: 0, height: '1px', background: 'var(--nav-text-hover)', width: 0, transition: 'width 0.3s ease' }}
                 className="group-hover:w-full" />
             </Link>
           ))}
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingLeft: '24px', borderLeft: '1px solid rgba(255,255,255,0.1)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingLeft: '24px', borderLeft: '1px solid var(--nav-separator)' }}>
             <ThemeToggle />
             {setup?.config_accesibilidad?.status === 'ON' && (
               <button
                 onClick={() => setShowAcc(!showAcc)}
-                style={{ color: 'rgba(255,255,255,0.4)', padding: '8px', borderRadius: '50%' }}
+                style={{ color: 'var(--nav-icon)', padding: '8px', borderRadius: '50%' }}
               >
                 <Accessibility size={18} />
               </button>
@@ -86,7 +86,7 @@ export default function Navbar({ brand, setup, accConfig }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <ThemeToggle />
             <button
-              style={{ color: 'rgba(255,255,255,0.7)', padding: '8px' }}
+              style={{ color: 'var(--nav-text)', padding: '8px' }}
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -105,13 +105,13 @@ export default function Navbar({ brand, setup, accConfig }) {
 
       {/* MENÚ MÓVIL */}
       {isOpen && (
-        <div className="md:hidden" style={{ backgroundColor: '#111111', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <div className="md:hidden" style={{ backgroundColor: 'var(--nav-bg)', borderTop: '1px solid var(--nav-border)', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {menuItems.map(item => (
             <Link
               key={item.id}
               href={item.href}
               onClick={() => setIsOpen(false)}
-              style={{ fontWeight: 900, textTransform: 'uppercase', fontSize: '1.125rem', color: 'rgba(255,255,255,0.7)', letterSpacing: '0.15em' }}
+              style={{ fontWeight: 900, textTransform: 'uppercase', fontSize: '1.125rem', color: 'var(--nav-text)', letterSpacing: '0.15em' }}
             >
               {item.label}
             </Link>

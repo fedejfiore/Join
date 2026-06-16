@@ -81,7 +81,7 @@ export default function TasacionesPage({ data }) {
 
   return (
     <Layout data={data}>
-      <div className="min-h-screen pt-32 pb-24">
+      <div className="min-h-screen pt-44 pb-24">
 
         {/* HEADER */}
         <header style={{ maxWidth: '1280px', margin: '0 auto 7rem', padding: '0 1.5rem', textAlign: 'center' }}>
@@ -105,7 +105,7 @@ export default function TasacionesPage({ data }) {
         </header>
 
         {/* DOCUMENTACIÓN NECESARIA */}
-        <section style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
+        <section className="scroll-reveal" style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
           <h2 style={{ fontSize: 'clamp(1.625rem, 3.5vw, 2.375rem)', fontWeight: 800, color: 'var(--text-strong)', textAlign: 'center', marginBottom: '1rem' }}>
             {v('section_docs_titulo')}
           </h2>
@@ -114,7 +114,7 @@ export default function TasacionesPage({ data }) {
             {docs.map((item, i) => {
               const Icon = getIcon(item.Icono);
               return (
-                <div key={i} style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '1.75rem', display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
+                <div key={i} className="card-hover" style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '1.75rem', display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
                   <div style={{ background: '#660033', color: '#fff', padding: '0.75rem', borderRadius: '0.75rem', flexShrink: 0 }}>
                     <Icon size={20} />
                   </div>
@@ -129,7 +129,7 @@ export default function TasacionesPage({ data }) {
         </section>
 
         {/* PROPUESTA DE VALOR */}
-        <section style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
+        <section className="scroll-reveal" style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
           <h2 style={{ fontSize: 'clamp(1.625rem, 3.5vw, 2.375rem)', fontWeight: 800, color: 'var(--text-strong)', textAlign: 'center', marginBottom: '1rem' }}>
             {v('section_propuesta_titulo')}
           </h2>
@@ -138,7 +138,7 @@ export default function TasacionesPage({ data }) {
             {propuesta.map((item, i) => {
               const Icon = getIcon(item.Icono);
               return (
-                <div key={i} style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2rem 2.25rem', display: 'flex', gap: '1.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                <div key={i} className="card-hover" style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2rem 2.25rem', display: 'flex', gap: '1.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                   <div style={{ background: 'rgba(102,0,51,0.12)', color: '#cc0044', padding: '1rem', borderRadius: '0.75rem', flexShrink: 0 }}>
                     <Icon size={26} />
                   </div>
@@ -153,7 +153,7 @@ export default function TasacionesPage({ data }) {
         </section>
 
         {/* FAQ */}
-        <section style={{ maxWidth: '800px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
+        <section className="scroll-reveal" style={{ maxWidth: '800px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
           <h2 style={{ fontSize: 'clamp(1.625rem, 3.5vw, 2.375rem)', fontWeight: 800, color: 'var(--text-strong)', textAlign: 'center', marginBottom: '1rem' }}>
             {v('section_faq_titulo')}
           </h2>

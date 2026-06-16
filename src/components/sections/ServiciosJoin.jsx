@@ -19,10 +19,11 @@ export default function ServiciosJoin({ servicios = [] }) {
   return (
     <section id="servicios" className="section-dynamic overflow-hidden">
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
-        <div className="text-center mb-24">
+        <div className="text-center" style={{ marginBottom: '4rem' }}>
           <h2 className="text-4xl md:text-5xl font-bold text-white">
             Servicios Jurídicos e Inmobiliarios Integrados
           </h2>
+          <div style={{ width: '4rem', height: '3px', background: '#cc0044', borderRadius: '2px', margin: '1.5rem auto 0' }} />
         </div>
 
         <div className="relative w-full max-w-6xl mx-auto px-4">

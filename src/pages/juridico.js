@@ -99,7 +99,7 @@ export default function JuridicoPage({ data }) {
 
   return (
     <Layout data={data}>
-      <div className="min-h-screen pt-32 pb-24">
+      <div className="min-h-screen pt-44 pb-24">
 
         {/* HEADER */}
         <header style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem', textAlign: 'center' }}>
@@ -111,7 +111,7 @@ export default function JuridicoPage({ data }) {
         </header>
 
         {/* GRILLA FLIP CARDS */}
-        <section style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
+        <section className="scroll-reveal" style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {areas.map((area, i) => (
               <FlipCard key={i} item={area} />
@@ -119,16 +119,19 @@ export default function JuridicoPage({ data }) {
           </div>
         </section>
 
-        {/* CONTACTO */}
-        <div id="contacto" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 800, color: 'var(--text-strong)' }}>
+        {/* PARALLAX CONTACTO */}
+        <div style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(135deg, #1a0010 0%, #660033 50%, #330019 100%)', padding: '5rem 1.5rem' }}>
+          <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(204,0,68,0.2) 0%, transparent 60%), radial-gradient(circle at 80% 50%, rgba(102,0,51,0.25) 0%, transparent 60%)' }} />
+          <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }}>
               {v('contacto_titulo')}
             </h2>
             {v('contacto_sub') && (
-              <p style={{ marginTop: '1rem', fontWeight: 500, color: 'var(--text-secondary)' }}><SheetText text={v('contacto_sub')} /></p>
+              <SheetText as="p" text={v('contacto_sub')} style={{ marginTop: '1rem', fontWeight: 500, color: 'rgba(255,255,255,0.65)', lineHeight: 1.6 }} />
             )}
           </div>
+        </div>
+        <div id="contacto" style={{ maxWidth: '1280px', margin: '0 auto', padding: '4rem 1.5rem 0' }}>
           <ContactoJoin brand={data.brand} defaultTema="Otra consulta legal" />
         </div>
 
