@@ -136,9 +136,7 @@ export default function SucesionesPage({ data }) {
               "<SheetText text={v('parallax_quote')} />"
             </p>
             <div style={{ width: '3.5rem', height: '3px', background: 'rgba(255,255,255,0.35)', margin: '1.5rem auto 0', borderRadius: '2px' }} />
-            <p style={{ marginTop: '1.25rem', fontSize: '15px', fontWeight: 500, color: 'rgba(255,255,255,0.65)', maxWidth: '480px', lineHeight: 1.6 }}>
-              {v('parallax_sub')}
-            </p>
+            <SheetText as="p" text={v('parallax_sub')} style={{ marginTop: '1.25rem', fontSize: '15px', fontWeight: 500, color: 'rgba(255,255,255,0.65)', maxWidth: '480px', lineHeight: 1.6 }} />
           </div>
         </div>
 
