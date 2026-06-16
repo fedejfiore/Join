@@ -9,10 +9,7 @@ export default function NovedadesPage({ data }) {
     <Layout data={data}>
       <div className="min-h-screen pt-32 pb-24">
         <header className="max-w-7xl mx-auto px-6 mb-16 text-center md:text-left">
-          <span className="text-primary dark:text-accent font-black text-[10px] uppercase tracking-[0.3em] transition-colors">
-            {data.setup.novedades?.valor || "Actualidad"}
-          </span>
-          <h1 className="text-6xl md:text-8xl font-black italic text-primary dark:text-accent uppercase leading-none tracking-tighter mt-2 transition-colors">
+          <h1 className="text-6xl md:text-8xl font-black italic text-primary dark:text-accent uppercase leading-none tracking-tighter transition-colors">
             Novedades
           </h1>
           <div className="w-24 h-2 bg-primary dark:bg-accent mt-6 rounded-full md:mx-0 mx-auto"></div>

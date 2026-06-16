@@ -133,7 +133,7 @@ export default function SucesionesPage({ data }) {
           <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '2rem' }}>
             <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.4em', color: 'rgba(255,255,255,0.5)', marginBottom: '1.5rem' }}>Nuestra propuesta</p>
             <p style={{ fontSize: 'clamp(1.375rem, 3.5vw, 2.25rem)', fontWeight: 900, color: '#ffffff', lineHeight: 1.25, maxWidth: '720px', letterSpacing: '-0.02em' }}>
-              "{v('parallax_quote')}"
+              "<SheetText text={v('parallax_quote')} />"
             </p>
             <div style={{ width: '3.5rem', height: '3px', background: 'rgba(255,255,255,0.35)', margin: '1.5rem auto 0', borderRadius: '2px' }} />
             <p style={{ marginTop: '1.25rem', fontSize: '15px', fontWeight: 500, color: 'rgba(255,255,255,0.65)', maxWidth: '480px', lineHeight: 1.6 }}>
