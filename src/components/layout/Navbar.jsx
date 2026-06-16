@@ -70,10 +70,10 @@ export default function Navbar({ brand, setup, accConfig }) {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingLeft: '24px', borderLeft: '1px solid var(--nav-separator)' }}>
             <ThemeToggle />
-            {setup?.config_accesibilidad?.status === 'ON' && (
+            {setup?.accesibilidad?.status === 'ON' && (
               <button
                 onClick={() => setShowAcc(!showAcc)}
-                style={{ color: 'var(--nav-icon)', padding: '8px', borderRadius: '50%' }}
+                style={{ color: 'var(--nav-icon)', padding: '8px', borderRadius: '50%', background: 'none', border: 'none', cursor: 'pointer' }}
               >
                 <Accessibility size={18} />
               </button>
@@ -85,8 +85,16 @@ export default function Navbar({ brand, setup, accConfig }) {
         <div className="md:hidden">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <ThemeToggle />
+            {setup?.accesibilidad?.status === 'ON' && (
+              <button
+                onClick={() => setShowAcc(!showAcc)}
+                style={{ color: 'var(--nav-icon)', padding: '8px', background: 'none', border: 'none', cursor: 'pointer' }}
+              >
+                <Accessibility size={18} />
+              </button>
+            )}
             <button
-              style={{ color: 'var(--nav-text)', padding: '8px' }}
+              style={{ color: 'var(--nav-text)', padding: '8px', background: 'none', border: 'none', cursor: 'pointer' }}
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? <X size={28} /> : <Menu size={28} />}
