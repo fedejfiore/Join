@@ -60,7 +60,7 @@ export default function ContactoJoin({ brand, defaultTema = "", propiedadInfo = 
               Dejanos tu consulta
             </h3>
 
-            <form action={brand?.Formspree?.valor || "https://formspree.io/f/xojkjron"} method="POST" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <form action={brand?.Formspree?.valor || "https://formspree.io/f/mbdebywn"} method="POST" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               {propiedadInfo && <input type="hidden" name="propiedad" value={propiedadInfo} />}
 
               <input type="text" name="nombre" placeholder="Nombre" required style={fieldStyle} />
