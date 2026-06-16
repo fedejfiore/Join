@@ -30,22 +30,33 @@ export default function PropertyDetail({ property, data }) {
   };
 
   const getMapEmbedUrl = (prop) => {
+    // Prioridad 1: iframe pegado desde Google Maps en cualquier campo de mapa
+    const rawFields = [prop.URL_Maps, prop.Direccion_maps, prop.Iframe_Mapa, prop.Embed_Mapa];
+    for (const f of rawFields) {
+      const raw = (f || '').trim();
+      if (raw.includes('<iframe')) {
+        const srcMatch = raw.match(/src="([^"]+)"/);
+        if (srcMatch) return srcMatch[1];
+      }
+      if (raw.includes('maps/embed') || raw.includes('output=embed')) return raw;
+    }
+    // Prioridad 2: LAT/LONG → OpenStreetMap (sin API key, sin restricciones)
     const lat = (prop.LAT || '').toString().trim();
     const lng = (prop.LONG || '').toString().trim();
     if (lat && lng) {
-      return `https://maps.google.com/maps?q=${lat},${lng}&z=16&output=embed`;
+      const latN = parseFloat(lat), lngN = parseFloat(lng), d = 0.003;
+      return `https://www.openstreetmap.org/export/embed.html?bbox=${lngN-d},${latN-d},${lngN+d},${latN+d}&layer=mapnik&marker=${lat},${lng}`;
     }
-    const raw = (prop.URL_Maps || prop.Direccion_maps || '').trim();
-    if (!raw) return '';
-    // Soporte para <iframe ...src="..."> pegado desde Google Maps
-    if (raw.includes('<iframe')) {
-      const srcMatch = raw.match(/src="([^"]+)"/);
-      return srcMatch ? srcMatch[1] : '';
-    }
-    if (raw.includes('maps/embed') || raw.includes('output=embed')) return raw;
-    if (raw.includes('google.com/maps')) {
-      const coordMatch = raw.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
-      if (coordMatch) return `https://maps.google.com/maps?q=${coordMatch[1]},${coordMatch[2]}&z=16&output=embed`;
+    // Prioridad 3: URL de Google Maps compartida → extraer coords
+    for (const f of rawFields) {
+      const raw = (f || '').trim();
+      if (raw.includes('google.com/maps')) {
+        const m = raw.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+        if (m) {
+          const latN = parseFloat(m[1]), lngN = parseFloat(m[2]), d = 0.003;
+          return `https://www.openstreetmap.org/export/embed.html?bbox=${lngN-d},${latN-d},${lngN+d},${latN+d}&layer=mapnik&marker=${m[1]},${m[2]}`;
+        }
+      }
     }
     return '';
   };

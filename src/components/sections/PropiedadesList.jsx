@@ -1,8 +1,13 @@
 "use client";
 
 import { useState, useMemo } from 'react';
+import dynamic from 'next/dynamic';
 
-const BUENOS_AIRES_MAP = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d210325.25739999998!2d-58.6265!3d-34.6132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcc422562d9d7f%3A0x8b54ab46e71c73b7!2sBuenos%20Aires%2C%20Argentina!5e0!3m2!1ses!2sar!4v1717000000000!5m2!1ses!2sar";
+const MapaListado = dynamic(() => import('./MapaListado'), { ssr: false, loading: () => (
+  <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--card-bg)', color: 'var(--text-muted)', fontSize: '13px', fontWeight: 600 }}>
+    Cargando mapa…
+  </div>
+) });
 
 export default function PropiedadesList({ propiedades = [] }) {
   const [operacion, setOperacion] = useState('Todos');
@@ -242,15 +247,7 @@ export default function PropiedadesList({ propiedades = [] }) {
 
         {/* MAPA — sticky, oculto en mobile */}
         <div className="hidden lg:block" style={{ position: 'sticky', top: '180px', height: 'calc(100vh - 200px)', borderRadius: '1.25rem', overflow: 'hidden', border: '1px solid var(--card-border)' }}>
-          <iframe
-            src={BUENOS_AIRES_MAP}
-            width="100%"
-            height="100%"
-            style={{ border: 0, display: 'block' }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+          <MapaListado propiedades={filteredProperties} />
         </div>
 
       </div>
