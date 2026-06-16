@@ -7,23 +7,20 @@ import PorQueElegirnos from '../components/sections/PorQueElegirnos';
 import BlogPreviewJoin from '../components/sections/BlogPreviewJoin';
 import ContactoJoin from '../components/sections/ContactoJoin';
 
-const PARALLAX_BANNERS = [
-  {
-    bg: 'linear-gradient(135deg, #0a0006 0%, #660033 50%, #1a0010 100%)',
-    quote: 'Cada propiedad tiene una historia. Nosotros la completamos.',
-  },
-  {
-    bg: 'linear-gradient(135deg, #1a0010 0%, #330019 40%, #660033 100%)',
-    quote: 'Seguridad jurídica y gestión inmobiliaria. En un solo lugar.',
-  },
+const PARALLAX_BG = [
+  'linear-gradient(135deg, #0a0006 0%, #660033 50%, #1a0010 100%)',
+  'linear-gradient(135deg, #1a0010 0%, #330019 40%, #660033 100%)',
+];
+const PARALLAX_DEFAULT = [
+  'Cada propiedad tiene una historia. Nosotros la completamos.',
+  'Seguridad jurídica y gestión inmobiliaria. En un solo lugar.',
 ];
 
-function ParallaxDivider({ index = 0 }) {
-  const b = PARALLAX_BANNERS[index % PARALLAX_BANNERS.length];
+function ParallaxDivider({ quote, index = 0 }) {
   return (
     <div style={{
       position: 'relative', height: '220px', overflow: 'hidden',
-      background: b.bg,
+      background: PARALLAX_BG[index % PARALLAX_BG.length],
       display: 'flex', alignItems: 'center', justifyContent: 'center',
     }}>
       <div style={{
@@ -37,7 +34,7 @@ function ParallaxDivider({ index = 0 }) {
         textAlign: 'center', maxWidth: '700px', padding: '0 2rem',
         lineHeight: 1.4, letterSpacing: '-0.02em',
       }}>
-        {b.quote}
+        {quote || PARALLAX_DEFAULT[index % PARALLAX_DEFAULT.length]}
       </p>
     </div>
   );
@@ -45,15 +42,15 @@ function ParallaxDivider({ index = 0 }) {
 
 export default function Home({ data }) {
   if (!data) return null;
-  const { setup, brand, banner, nosotros, servicios, valores, noticias } = data;
+  const { setup, brand, banner, nosotros, servicios, valores, valores_items, noticias } = data;
   return (
     <Layout data={data}>
       {setup.banner?.status !== 'OFF'   && <HeroJoin config={banner} brand={brand} />}
       {setup.servicios?.status !== 'OFF' && <ServiciosJoin servicios={servicios} />}
-      <ParallaxDivider index={0} />
+      <ParallaxDivider index={0} quote={banner?.parallax_1_quote?.valor} />
       {setup.nosotros?.status !== 'OFF'  && <NosotrosJoin data={nosotros} />}
-      {setup.valores?.status !== 'OFF'   && <PorQueElegirnos valores={valores} />}
-      <ParallaxDivider index={1} />
+      {setup.valores?.status !== 'OFF'   && <PorQueElegirnos valores={valores} valores_items={valores_items} />}
+      <ParallaxDivider index={1} quote={banner?.parallax_2_quote?.valor} />
       {setup.noticias?.status !== 'OFF'  && <BlogPreviewJoin noticias={noticias} />}
       {setup.contacto?.status !== 'OFF'  && <ContactoJoin brand={brand} />}
     </Layout>
