@@ -67,6 +67,9 @@ export default function Layout({ children, data }) {
   const { brand, setup, config_accesibilidad, mkt } = data;
   const gtmId = mkt?.google_tag_manager?.valor || mkt?.gtm_id?.valor;
 
+  const colorPrimary = brand?.color_primary?.valor || '#660033';
+  const colorAccent  = brand?.color_accent?.valor  || '#cc0044';
+
   const metaTitle = brand?.titulo_meta?.valor || brand?.Titulo_Meta?.valor
     || 'JOIN | Inmobiliaria y Estudio Jurídico en Buenos Aires';
   const metaDesc = brand?.descripcion_meta?.valor || brand?.Descripcion_Meta?.valor
@@ -91,6 +94,7 @@ export default function Layout({ children, data }) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="JOIN" />
+        <style>{`:root{--color-primary:${colorPrimary};--color-accent:${colorAccent}}`}</style>
       </Head>
 
       {mkt?.google_tag_manager?.status === 'ON' && gtmId && (
@@ -109,7 +113,7 @@ export default function Layout({ children, data }) {
 
       <main className="flex-grow">{children}</main>
 
-      {setup?.footer?.status !== 'OFF' && <Footer brand={brand} />}
+      {setup?.footer?.status !== 'OFF' && <Footer brand={brand} setup={setup} />}
 
       {showInstallBanner && (
         <div className="fixed bottom-24 left-6 right-6 md:left-auto md:right-6 md:w-80 z-[60] bg-white dark:bg-slate-900 shadow-2xl rounded-3xl p-5 border border-slate-100 dark:border-slate-800">

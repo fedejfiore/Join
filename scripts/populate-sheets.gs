@@ -36,7 +36,7 @@ function crearYPoblarPestañas() {
   }
 
   // ============================================================
-  // BANNER — agregar filas de paralax si no existen
+  // BANNER — agregar filas nuevas si no existen
   // ============================================================
   const bannerSheet = ss.getSheetByName('banner');
   if (bannerSheet) {
@@ -44,10 +44,36 @@ function crearYPoblarPestañas() {
     const nuevas = [
       ['parallax_1_quote', 'Cada propiedad tiene una historia. Nosotros la completamos.', 'ON'],
       ['parallax_2_quote', 'Seguridad jurídica y gestión inmobiliaria. En un solo lugar.', 'ON'],
+      ['hero_btn_1',      '¿Querés vender?',   'ON'],
+      ['hero_btn_1_href', '/tasaciones',        'ON'],
+      ['hero_btn_2',      '¿Querés comprar?',  'ON'],
+      ['hero_btn_2_href', '/propiedades',       'ON'],
+      ['hero_btn_3',      'Tasá tu propiedad', 'ON'],
+      ['hero_btn_3_href', '/tasaciones',        'ON'],
+      ['hero_btn_4',      'Consulta jurídica',  'ON'],
+      ['hero_btn_4_href', '/juridico',          'ON'],
     ].filter(([k]) => !existingKeys.includes(k));
     if (nuevas.length > 0) {
       const last = bannerSheet.getLastRow();
       bannerSheet.getRange(last + 1, 1, nuevas.length, 3).setValues(nuevas);
+    }
+  }
+
+  // ============================================================
+  // BRAND — agregar filas de personalización si no existen
+  // ============================================================
+  const brandSheet = ss.getSheetByName('brand');
+  if (brandSheet) {
+    const existingKeys = brandSheet.getDataRange().getValues().slice(1).map(r => r[0]);
+    const nuevas = [
+      ['descripcion_corta', 'Inmobiliaria y Estudio Jurídico especializado en Sucesiones y Operaciones Simultáneas en Buenos Aires.', 'ON'],
+      ['tagline',           'Inmobiliaria y Estudio Jurídico en Buenos Aires', 'ON'],
+      ['color_primary',     '#660033', 'ON'],
+      ['color_accent',      '#cc0044', 'ON'],
+    ].filter(([k]) => !existingKeys.includes(k));
+    if (nuevas.length > 0) {
+      const last = brandSheet.getLastRow();
+      brandSheet.getRange(last + 1, 1, nuevas.length, 3).setValues(nuevas);
     }
   }
 
@@ -228,20 +254,31 @@ function crearYPoblarPestañas() {
   ]);
 
   // ============================================================
-  // LOG DE GIDs — copiar estos valores a google-sheets.js
+  // LOG DE GIDs — solo las pestañas nuevas, listas para pegar en google-sheets.js
   // ============================================================
-  const gidsLog = ['=== GIDs para google-sheets.js ==='];
-  ss.getSheets().forEach(s => {
-    gidsLog.push(`  ${s.getName()}: '${s.getSheetId()}',`);
-  });
+  const NUEVAS_PESTAÑAS = [
+    'sucesiones','sucesiones_porque','sucesiones_proceso','sucesiones_docs','sucesiones_faq',
+    'tasaciones','tasaciones_docs','tasaciones_propuesta','tasaciones_faq',
+    'juridico','juridico_areas','valores_items',
+  ];
+
+  const gidsLog = [
+    '// ── Pegar estos GIDs en src/lib/google-sheets.js (reemplazar las \'\') ──',
+  ];
+  ss.getSheets()
+    .filter(s => NUEVAS_PESTAÑAS.includes(s.getName()))
+    .sort((a, b) => NUEVAS_PESTAÑAS.indexOf(a.getName()) - NUEVAS_PESTAÑAS.indexOf(b.getName()))
+    .forEach(s => gidsLog.push(`  ${s.getName()}: '${s.getSheetId()}',`));
+
   Logger.log(gidsLog.join('\n'));
+  console.log(gidsLog.join('\n'));
 
   SpreadsheetApp.getUi().alert(
-    '¡Pestañas creadas y pobladas!\n\n' +
-    'Ahora:\n' +
-    '1. Ver > Registros de ejecución → copiar los GIDs\n' +
-    '2. Actualizar GIDS en src/lib/google-sheets.js\n' +
-    '3. Publicar el sheet (Archivo > Compartir > Publicar en la web)\n' +
-    '    → elegir cada nueva pestaña y publicar como CSV'
+    '¡Listo! Pestañas creadas y pobladas.\n\n' +
+    'PASO 1 → Ver > Registros de ejecución\n' +
+    'PASO 2 → Copiá los GIDs y pasáselos a Claude\n' +
+    'PASO 3 → Publicar cada pestaña como CSV:\n' +
+    '   Archivo > Compartir > Publicar en la web\n' +
+    '   → elegir pestaña → CSV → Publicar'
   );
 }

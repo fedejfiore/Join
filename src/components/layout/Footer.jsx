@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { Instagram, Facebook, Mail, MessageCircle, Youtube } from 'lucide-react';
 
-const NAV_LINKS = [
-  { label: 'Tasaciones',  href: '/tasaciones' },
-  { label: 'Propiedades', href: '/propiedades' },
-  { label: 'Sucesiones',  href: '/sucesiones' },
-  { label: 'Jurídico',    href: '/juridico' },
-  { label: 'Blog',        href: '/blog' },
+const NAV_HREFS = [
+  { id: 'tasaciones',  label: 'Tasaciones',  href: '/tasaciones' },
+  { id: 'propiedades', label: 'Propiedades', href: '/propiedades' },
+  { id: 'sucesiones',  label: 'Sucesiones',  href: '/sucesiones' },
+  { id: 'juridico',    label: 'Jurídico',    href: '/juridico' },
+  { id: 'blog',        label: 'Blog',        href: '/blog' },
 ];
 
-export default function Footer({ brand }) {
+export default function Footer({ brand, setup }) {
   const [logoError, setLogoError] = useState(false);
   const year = new Date().getFullYear();
 
@@ -18,6 +18,12 @@ export default function Footer({ brand }) {
   const email     = brand?.email?.valor          || brand?.Mail?.valor || 'hola@ejoin.com.ar';
   const cucicba   = brand?.cucicba?.valor        || brand?.RPA?.valor;
   const cpacf     = brand?.cpacf?.valor          || brand?.CPACF?.valor;
+
+  const descripcion = brand?.descripcion_corta?.valor
+    || 'Inmobiliaria y Estudio Jurídico especializado en Sucesiones y Operaciones Simultáneas en Buenos Aires.';
+  const tagline = brand?.tagline?.valor || 'Inmobiliaria y Estudio Jurídico en Buenos Aires';
+
+  const navLinks = NAV_HREFS.filter(l => setup?.[l.id]?.status !== 'OFF');
 
   const waRaw = brand?.whatsapp?.valor || brand?.whatsapp_flotante?.valor || '541126820000';
   const waNum = waRaw.replace(/\D/g, '');
@@ -55,7 +61,7 @@ export default function Footer({ brand }) {
                 style={{ height: '44px', width: 'auto', objectFit: 'contain', objectPosition: 'left' }} />
             )}
             <p style={{ fontSize: '11px', lineHeight: 1.7, color: 'rgba(255,255,255,0.4)' }}>
-              Inmobiliaria y Estudio Jurídico especializado en Sucesiones y Operaciones Simultáneas en Buenos Aires.
+              {descripcion}
             </p>
             {(cucicba || cpacf) && (
               <div style={{ fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.3)', lineHeight: 1.8 }}>
@@ -125,7 +131,7 @@ export default function Footer({ brand }) {
           {/* COL 4 — ACCESOS RÁPIDOS */}
           <div className="flex flex-col gap-4">
             <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.25em', color: 'rgba(255,255,255,0.55)', marginBottom: '4px' }}>Accesos rápidos</p>
-            {NAV_LINKS.map(link => (
+            {navLinks.map(link => (
               <a key={link.href} href={link.href}
                 className="transition-colors hover:text-white"
                 style={{ fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.5)' }}>
@@ -143,7 +149,7 @@ export default function Footer({ brand }) {
             © {year} {nombre} — Todos los derechos reservados
           </p>
           <p style={{ fontSize: '10px', fontWeight: 500, color: 'rgba(255,255,255,0.2)' }}>
-            Inmobiliaria y Estudio Jurídico en Buenos Aires
+            {tagline}
           </p>
         </div>
 

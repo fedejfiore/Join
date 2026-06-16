@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react';
 import Typewriter from 'typewriter-effect';
 import { Home, ShoppingBag, Calculator, Scale } from 'lucide-react';
 
-const HERO_ACTIONS = [
-  { icon: Home,        label: '¿Querés vender?',   href: '/tasaciones' },
-  { icon: ShoppingBag, label: '¿Querés comprar?',  href: '/propiedades' },
-  { icon: Calculator,  label: 'Tasá tu propiedad', href: '/tasaciones' },
-  { icon: Scale,       label: 'Consulta jurídica', href: '/juridico' },
+const ICON_BTN = [Home, ShoppingBag, Calculator, Scale];
+const BTN_DEFAULTS = [
+  { label: '¿Querés vender?',   href: '/tasaciones' },
+  { label: '¿Querés comprar?',  href: '/propiedades' },
+  { label: 'Tasá tu propiedad', href: '/tasaciones' },
+  { label: 'Consulta jurídica', href: '/juridico' },
 ];
 
 export default function HeroJoin({ config, brand }) {
@@ -101,10 +102,14 @@ export default function HeroJoin({ config, brand }) {
           maxWidth: '860px',
           margin: '0 auto',
         }}>
-          {HERO_ACTIONS.map((item) => {
-            const Icon = item.icon;
+          {BTN_DEFAULTS.map((def, idx) => {
+            const Icon = ICON_BTN[idx];
+            const item = {
+              label: config?.[`hero_btn_${idx + 1}`]?.valor || def.label,
+              href:  config?.[`hero_btn_${idx + 1}_href`]?.valor || def.href,
+            };
             return (
-              <a key={item.label} href={item.href}
+              <a key={idx} href={item.href}
                 style={{
                   display: 'flex', flexDirection: 'column',
                   alignItems: 'center', gap: '0.5rem',
