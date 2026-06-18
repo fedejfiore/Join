@@ -125,24 +125,36 @@ export default function Layout({ children, data }) {
       {setup?.footer?.status !== 'OFF' && <Footer brand={brand} setup={setup} />}
 
       {showInstallBanner && (
-        <div className="fixed bottom-24 left-6 right-6 md:left-auto md:right-6 md:w-80 z-[60] bg-white dark:bg-slate-900 shadow-2xl rounded-3xl p-4 border border-slate-100 dark:border-slate-800 overflow-hidden">
-          {/* Header con X */}
-          <div className="flex justify-between items-center mb-3">
-            <p className="text-[10px] font-black uppercase tracking-widest text-primary">App Disponible</p>
-            <button onClick={cerrarBanner} className="text-slate-400 hover:text-slate-600 transition-colors">
-              <X size={16} />
+        <div style={{
+          position: 'fixed', bottom: '6rem', left: '1.5rem', right: '1.5rem',
+          maxWidth: '340px', marginLeft: 'auto',
+          background: 'var(--nav-bg)', border: '1px solid var(--nav-border)',
+          borderRadius: '1.25rem', padding: '1rem 1.25rem',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.35)', zIndex: 60,
+        }}>
+          {/* Fila superior: label + X */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <span style={{ fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.25em', color: '#cc0044' }}>App Disponible</span>
+            <button onClick={cerrarBanner} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--nav-icon)', display: 'flex', padding: '2px' }}>
+              <X size={15} />
             </button>
           </div>
-          {/* Cuerpo */}
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg flex-shrink-0">
-              <Download size={20} />
+          {/* Fila con icono + texto */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+            <div style={{ width: '36px', height: '36px', background: '#660033', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Download size={18} color="#fff" />
             </div>
-            <h4 className="text-sm font-bold dark:text-white flex-1 min-w-0">
+            <span style={{ fontWeight: 700, fontSize: '13px', color: 'var(--nav-text-hover)' }}>
               {isIOS ? 'Añadir a Inicio' : 'Instalar App JOIN'}
-            </h4>
+            </span>
           </div>
-          <button onClick={handleInstallClick} className="w-full bg-primary text-white py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest">
+          {/* Botón full-width */}
+          <button onClick={handleInstallClick} style={{
+            width: '100%', background: '#660033', color: '#fff',
+            padding: '0.6rem 1rem', borderRadius: '0.75rem', border: 'none',
+            fontWeight: 900, fontSize: '11px', textTransform: 'uppercase',
+            letterSpacing: '0.15em', cursor: 'pointer',
+          }}>
             {isIOS ? 'Ver Cómo' : 'Instalar'}
           </button>
         </div>
