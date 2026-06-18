@@ -15,7 +15,14 @@ export default function HeroJoin({ config, brand }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  const videoSrc = config?.video_fondo?.valor || config?.Video_fondo?.valor || '/hero-mobile.mp4';
+  // Video: solo se muestra si status === 'ON' Y hay una URL definida
+  const videoStatus = config?.video_fondo?.status ?? config?.Video_fondo?.status;
+  const videoSrc    = config?.video_fondo?.valor  || config?.Video_fondo?.valor  || '';
+  const showVideo   = videoStatus === 'ON' && videoSrc !== '';
+
+  // Imagen de fondo: fallback cuando el video está OFF o no hay URL
+  const imagenSrc  = config?.imagen_fondo?.valor || config?.Imagen_fondo?.valor || '';
+  const showImagen = !showVideo && imagenSrc !== '';
 
   const typewriterStrings = [
     config?.typewriter_1?.valor || 'Encontramos tu hogar ideal',
@@ -34,13 +41,24 @@ export default function HeroJoin({ config, brand }) {
       display: 'flex',
       flexDirection: 'column',
     }}>
-      {/* VIDEO */}
-      <video
-        autoPlay muted loop playsInline
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
-      >
-        <source src={videoSrc} type="video/mp4" />
-      </video>
+      {/* VIDEO — solo si video_fondo.status === 'ON' en el Sheet */}
+      {showVideo && (
+        <video
+          autoPlay muted loop playsInline
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      )}
+
+      {/* IMAGEN DE FONDO — fallback cuando video está OFF o sin URL */}
+      {showImagen && (
+        <img
+          src={imagenSrc}
+          alt=""
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
+        />
+      )}
 
       {/* OVERLAY */}
       <div style={{
