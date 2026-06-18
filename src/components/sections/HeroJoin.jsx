@@ -65,17 +65,17 @@ export default function HeroJoin({ config, brand }) {
         </p>
 
         <h1 style={{
-          fontSize: 'clamp(2.5rem, 7vw, 5rem)', fontWeight: 900,
+          fontSize: 'clamp(1.875rem, 5.5vw, 3.75rem)', fontWeight: 900,
           textTransform: 'uppercase', color: '#ffffff',
-          lineHeight: 1.0, letterSpacing: '-0.03em',
+          lineHeight: 1.05, letterSpacing: '0.04em',
         }}>
           Inmobiliaria y Estudio Jurídico.
           <span style={{
             display: 'block',
-            fontSize: 'clamp(1.125rem, 2.5vw, 1.75rem)',
+            fontSize: 'clamp(0.9rem, 1.8vw, 1.375rem)',
             color: 'rgba(255,255,255,0.75)',
             marginTop: '1rem', fontWeight: 600,
-            textTransform: 'none', letterSpacing: 'normal',
+            textTransform: 'none', letterSpacing: '0.02em',
           }}>
             Especialistas en Sucesiones y Operaciones Simultáneas.
           </span>
