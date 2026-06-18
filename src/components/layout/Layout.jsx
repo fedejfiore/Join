@@ -70,6 +70,14 @@ export default function Layout({ children, data }) {
   const colorPrimary = brand?.color_primary?.valor || '#660033';
   const colorAccent  = brand?.color_accent?.valor  || '#cc0044';
 
+  // Tipografía configurable desde el Sheet (pestaña brand)
+  const heroSize     = brand?.hero_size?.valor     || 'clamp(1.875rem, 5.5vw, 3.75rem)';
+  const heroTracking = brand?.hero_tracking?.valor || '0.04em';
+  const h1Size       = brand?.h1_size?.valor       || 'clamp(1.75rem, 4.5vw, 3.25rem)';
+  const h1Tracking   = brand?.h1_tracking?.valor   || '0.03em';
+  const h2Size       = brand?.h2_size?.valor       || 'clamp(1.625rem, 3.5vw, 2.375rem)';
+  const h2Tracking   = brand?.h2_tracking?.valor   || '0em';
+
   const metaTitle = brand?.titulo_meta?.valor || brand?.Titulo_Meta?.valor
     || 'JOIN | Inmobiliaria y Estudio Jurídico en Buenos Aires';
   const metaDesc = brand?.descripcion_meta?.valor || brand?.Descripcion_Meta?.valor
@@ -94,7 +102,7 @@ export default function Layout({ children, data }) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="JOIN" />
-        <style>{`:root{--color-primary:${colorPrimary};--color-accent:${colorAccent}}`}</style>
+        <style>{`:root{--color-primary:${colorPrimary};--color-accent:${colorAccent};--typo-hero-size:${heroSize};--typo-hero-tracking:${heroTracking};--typo-h1-size:${h1Size};--typo-h1-tracking:${h1Tracking};--typo-h2-size:${h2Size};--typo-h2-tracking:${h2Tracking}}`}</style>
       </Head>
 
       {mkt?.google_tag_manager?.status === 'ON' && gtmId && (

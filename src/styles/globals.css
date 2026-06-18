@@ -26,6 +26,14 @@
   --text-muted:     rgba(255,255,255,0.35);
   --text-faint:     rgba(255,255,255,0.22);
 
+  /* Tipografía — sobreescrita por Layout.jsx con valores del Sheet */
+  --typo-hero-size:     clamp(1.875rem, 5.5vw, 3.75rem);
+  --typo-hero-tracking: 0.04em;
+  --typo-h1-size:       clamp(1.75rem, 4.5vw, 3.25rem);
+  --typo-h1-tracking:   0.03em;
+  --typo-h2-size:       clamp(1.625rem, 3.5vw, 2.375rem);
+  --typo-h2-tracking:   0em;
+
   /* Separadores */
   --divider: rgba(255,255,255,0.08);
 

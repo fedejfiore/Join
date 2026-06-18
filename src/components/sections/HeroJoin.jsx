@@ -83,9 +83,9 @@ export default function HeroJoin({ config, brand }) {
         </p>
 
         <h1 style={{
-          fontSize: 'clamp(1.875rem, 5.5vw, 3.75rem)', fontWeight: 900,
+          fontSize: 'var(--typo-hero-size)', fontWeight: 900,
           textTransform: 'uppercase', color: '#ffffff',
-          lineHeight: 1.05, letterSpacing: '0.04em',
+          lineHeight: 1.05, letterSpacing: 'var(--typo-hero-tracking)',
         }}>
           Inmobiliaria y Estudio Jurídico.
           <span style={{

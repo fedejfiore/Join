@@ -8,7 +8,7 @@ export default function PropiedadesPage({ data }) {
     <Layout data={data}>
       <div className="min-h-screen pt-32 pb-24">
         <header style={{ maxWidth: '1280px', margin: '0 auto 3rem', padding: '0 1.5rem', textAlign: 'center' }}>
-          <h1 style={{ fontSize: 'clamp(1.75rem, 4.5vw, 3.25rem)', fontWeight: 800, color: 'var(--text-strong)', lineHeight: 1.1, letterSpacing: '0.03em' }}>
+          <h1 style={{ fontSize: 'var(--typo-h1-size)', fontWeight: 800, color: 'var(--text-strong)', lineHeight: 1.1, letterSpacing: 'var(--typo-h1-tracking)' }}>
             Encontrá la propiedad que buscás
           </h1>
           <div style={{ width: '96px', height: '4px', background: '#660033', margin: '1.5rem auto 0', borderRadius: '2px' }} />

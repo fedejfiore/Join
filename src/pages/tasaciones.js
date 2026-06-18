@@ -85,7 +85,7 @@ export default function TasacionesPage({ data }) {
 
         {/* HEADER */}
         <header style={{ maxWidth: '1280px', margin: '0 auto 7rem', padding: '0 1.5rem', textAlign: 'center' }}>
-          <h1 style={{ fontSize: 'clamp(1.75rem, 4.5vw, 3.25rem)', fontWeight: 900, color: 'var(--text-strong)', lineHeight: 1.05, letterSpacing: '0.03em' }}>
+          <h1 style={{ fontSize: 'var(--typo-h1-size)', fontWeight: 900, color: 'var(--text-strong)', lineHeight: 1.05, letterSpacing: 'var(--typo-h1-tracking)' }}>
             {v('titulo')}
           </h1>
           <div style={{ width: '6rem', height: '5px', background: '#660033', margin: '2rem auto', borderRadius: '3px' }} />
@@ -106,7 +106,7 @@ export default function TasacionesPage({ data }) {
 
         {/* DOCUMENTACIÓN NECESARIA */}
         <section className="scroll-reveal" style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
-          <h2 style={{ fontSize: 'clamp(1.625rem, 3.5vw, 2.375rem)', fontWeight: 800, color: 'var(--text-strong)', textAlign: 'center', marginBottom: '1rem' }}>
+          <h2 style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '1rem' }}>
             {v('section_docs_titulo')}
           </h2>
           <SheetText as="p" text={v('section_docs_sub')} style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }} />
@@ -130,7 +130,7 @@ export default function TasacionesPage({ data }) {
 
         {/* PROPUESTA DE VALOR */}
         <section className="scroll-reveal" style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
-          <h2 style={{ fontSize: 'clamp(1.625rem, 3.5vw, 2.375rem)', fontWeight: 800, color: 'var(--text-strong)', textAlign: 'center', marginBottom: '1rem' }}>
+          <h2 style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '1rem' }}>
             {v('section_propuesta_titulo')}
           </h2>
           <SheetText as="p" text={v('section_propuesta_sub')} style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }} />
@@ -154,7 +154,7 @@ export default function TasacionesPage({ data }) {
 
         {/* FAQ */}
         <section className="scroll-reveal" style={{ maxWidth: '800px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
-          <h2 style={{ fontSize: 'clamp(1.625rem, 3.5vw, 2.375rem)', fontWeight: 800, color: 'var(--text-strong)', textAlign: 'center', marginBottom: '1rem' }}>
+          <h2 style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '1rem' }}>
             {v('section_faq_titulo')}
           </h2>
           <SheetText as="p" text={v('section_faq_sub')} style={{ textAlign: 'center', maxWidth: '480px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }} />
