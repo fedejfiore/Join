@@ -57,7 +57,7 @@ export async function middleware(request) {
     // URL del script — configurable via variable de entorno en Vercel
     // Vercel dashboard → Settings → Environment Variables → APPS_SCRIPT_URL
     const SCRIPT_URL = process.env.APPS_SCRIPT_URL ||
-      'https://script.google.com/macros/s/AKfycbwivmKGVjylM_KERiwebIcagCzk4Zre429hXWkQvG6xmIK_l47a2FMRsku-0lXayzAT/exec';
+      'https://script.google.com/macros/s/AKfycbwwzPiGPb8BtYt0r8tQR1rld6krDZDkvg4p2volKzRAed-RQUhOEF4chjelUlnxgD2h/exec';
 
     const scriptParams = new URLSearchParams({
       id:   found.Origen_corto || cleanPath,
