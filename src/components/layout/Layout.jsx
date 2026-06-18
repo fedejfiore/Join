@@ -85,6 +85,7 @@ export default function Layout({ children, data }) {
   const themePrimary = brand?.theme_color?.valor || '#0D3B66';
   const whatsappNum = (brand?.whatsapp?.valor || brand?.whatsapp_flotante?.valor || '541126820000').replace(/\D/g, '');
   const showWhatsapp = brand?.whatsapp?.status === 'ON' || brand?.whatsapp_flotante?.status === 'ON';
+  const favicon = brand?.favicon?.valor || '/images/JOIN---Burdeos (1).png';
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -94,8 +95,8 @@ export default function Layout({ children, data }) {
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDesc} />
         <meta property="og:type" content="website" />
-        <link rel="icon" type="image/png" href="/images/JOIN---Burdeos (1).png" />
-        <link rel="apple-touch-icon" href="/images/JOIN---Burdeos (1).png" />
+        <link rel="icon" type="image/png" href={favicon} />
+        <link rel="apple-touch-icon" href={favicon} />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#660033" />
         <meta name="mobile-web-app-capable" content="yes" />
