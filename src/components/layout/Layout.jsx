@@ -134,17 +134,17 @@ export default function Layout({ children, data }) {
             </button>
           </div>
           {/* Cuerpo */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg flex-shrink-0">
               <Download size={20} />
             </div>
-            <div className="flex-1 min-w-0">
-              <h4 className="text-sm font-bold dark:text-white truncate">{isIOS ? 'Añadir a Inicio' : 'Instalar App JOIN'}</h4>
-            </div>
-            <button onClick={handleInstallClick} className="bg-primary text-white px-3 py-2 rounded-xl text-[10px] font-black uppercase flex-shrink-0">
-              {isIOS ? 'Ver Cómo' : 'Instalar'}
-            </button>
+            <h4 className="text-sm font-bold dark:text-white flex-1 min-w-0">
+              {isIOS ? 'Añadir a Inicio' : 'Instalar App JOIN'}
+            </h4>
           </div>
+          <button onClick={handleInstallClick} className="w-full bg-primary text-white py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest">
+            {isIOS ? 'Ver Cómo' : 'Instalar'}
+          </button>
         </div>
       )}
 
