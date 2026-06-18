@@ -125,7 +125,7 @@ export default function Layout({ children, data }) {
       {setup?.footer?.status !== 'OFF' && <Footer brand={brand} setup={setup} />}
 
       {showInstallBanner && (
-        <div className="fixed bottom-24 left-6 right-6 md:left-auto md:right-6 md:w-80 z-[60] bg-white dark:bg-slate-900 shadow-2xl rounded-3xl p-4 border border-slate-100 dark:border-slate-800">
+        <div className="fixed bottom-24 left-6 right-6 md:left-auto md:right-6 md:w-80 z-[60] bg-white dark:bg-slate-900 shadow-2xl rounded-3xl p-4 border border-slate-100 dark:border-slate-800 overflow-hidden">
           {/* Header con X */}
           <div className="flex justify-between items-center mb-3">
             <p className="text-[10px] font-black uppercase tracking-widest text-primary">App Disponible</p>

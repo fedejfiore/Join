@@ -257,6 +257,16 @@ html:not(.dark) .card-hover:hover {
 }
 
 /* ============================================================
+   PARALLAX JS — fondo que se mueve más lento que el contenido
+   ============================================================ */
+.parallax-bg {
+  position: absolute;
+  inset: -50% 0;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* ============================================================
    ESCALADO DE TEXTO — activa cuando html tiene clase .text-scaled
    Cubre textos con px hardcodeados que no escalan con font-size del root
    ============================================================ */

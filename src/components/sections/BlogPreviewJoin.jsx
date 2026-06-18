@@ -64,7 +64,7 @@ export default function BlogPreviewJoin({ noticias = [] }) {
         <div className="mt-16 text-center">
           <button
             onClick={() => router.push('/blog')}
-            className="inline-flex items-center gap-3 px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest transition-all hover:scale-105 shadow-lg"
+            className="inline-flex items-center gap-3 px-12 py-5 rounded-full font-bold text-sm uppercase tracking-widest transition-all hover:scale-105 shadow-lg"
             style={{ background: '#660033', color: '#fff' }}
           >
             Ver todos los artículos <ArrowRight size={16} />

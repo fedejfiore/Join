@@ -118,12 +118,12 @@ export default function PorQueElegirnos({ valores = [], valores_items = [] }) {
         </div>
 
         {/* PANEL */}
-        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2.5rem 3rem', transition: 'all 0.3s ease' }}>
+        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: 'clamp(1.5rem, 4vw, 2.5rem) clamp(1.25rem, 4vw, 3rem)', transition: 'all 0.3s ease' }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem', marginBottom: '2.5rem', paddingBottom: '2rem', borderBottom: '1px solid var(--divider)' }}>
-            <div style={{ padding: '14px', borderRadius: '12px', flexShrink: 0, background: 'rgba(102,0,51,0.12)', color: '#cc0044' }}>
+            <div className="hidden sm:flex" style={{ padding: '14px', borderRadius: '12px', flexShrink: 0, background: 'rgba(102,0,51,0.12)', color: '#cc0044', alignItems: 'center', justifyContent: 'center' }}>
               <Icon size={28} />
             </div>
-            <div>
+            <div style={{ minWidth: 0, flex: 1 }}>
               <h3 style={{ fontSize: 'clamp(1.25rem, 3vw, 1.75rem)', fontWeight: 800, color: 'var(--text-strong)', marginBottom: '10px' }}>
                 {razon.Titulo}
               </h3>

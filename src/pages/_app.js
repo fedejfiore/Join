@@ -36,6 +36,23 @@ function PageEffects() {
     return () => io.disconnect();
   }, [router.pathname]);
 
+  useEffect(() => {
+    const tick = () => {
+      document.querySelectorAll('.parallax-bg').forEach(bg => {
+        const parent = bg.parentElement;
+        if (!parent) return;
+        const rect = parent.getBoundingClientRect();
+        const vh   = window.innerHeight;
+        if (rect.bottom < -100 || rect.top > vh + 100) return;
+        const progress = (vh - rect.top) / (vh + rect.height);
+        bg.style.transform = `translateY(${(progress - 0.5) * 90}px)`;
+      });
+    };
+    window.addEventListener('scroll', tick, { passive: true });
+    tick();
+    return () => window.removeEventListener('scroll', tick);
+  }, [router.pathname]);
+
   return null;
 }
 
