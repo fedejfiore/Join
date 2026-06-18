@@ -1,0 +1,25 @@
+{
+  "id": "adomus-pro-v1",
+  "name": "Domus Administracion",
+  "short_name": "Domus",
+  "description": "Panel de Propietarios Adomus",
+  "lang": "es-AR",
+  "start_url": "/mi-consorcio",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#d4af37",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "752x752",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "752x752",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
