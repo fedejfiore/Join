@@ -104,8 +104,8 @@ export default function Navbar({ brand, setup, accConfig }) {
       </div>
 
       {showAcc && (
-        <div className="fixed md:absolute inset-0 md:inset-auto md:right-6 md:top-20 z-[100] flex justify-center items-center md:items-start bg-black/70 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none p-6 md:p-0">
-          <div className="w-full max-w-sm">
+        <div className="fixed md:absolute inset-0 md:inset-auto md:right-6 md:top-20 z-[100] flex justify-center items-center md:items-start bg-black/70 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none p-4 md:p-0">
+          <div style={{ width: 'min(440px, calc(100vw - 2rem))', maxHeight: '90vh', overflowY: 'auto' }}>
             <AccessibilityHub close={() => setShowAcc(false)} config={accConfig} />
           </div>
         </div>

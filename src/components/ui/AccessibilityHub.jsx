@@ -41,7 +41,7 @@ export default function AccessibilityHub({ close, config = {} }) {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-3xl shadow-2xl w-full">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-2xl w-full">
       <div className="flex justify-between items-center mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
         <h4 className="font-black italic uppercase text-[10px] text-slate-400 tracking-widest leading-none">Ajustes del Sitio</h4>
         <button onClick={close} className="text-slate-300 hover:text-red-500 transition-colors">
@@ -49,11 +49,11 @@ export default function AccessibilityHub({ close, config = {} }) {
         </button>
       </div>
       
-      <div className="grid grid-cols-1 gap-2">
+      <div className="grid grid-cols-1 gap-3">
         {/* MODO OSCURO */}
         <button 
           onClick={() => setIsDark(!isDark)}
-          className="flex items-center justify-between p-3 bg-slate-100 dark:bg-slate-800 rounded-2xl hover:scale-[1.02] transition-all"
+          className="flex items-center justify-between p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl hover:scale-[1.02] transition-all"
         >
           <div className="flex items-center gap-3">
             {isDark ? <Sun size={16} className="text-amber-400" /> : <Moon size={16} className="text-indigo-600" />}
@@ -66,7 +66,7 @@ export default function AccessibilityHub({ close, config = {} }) {
         {/* AUMENTAR TEXTO */}
         <button 
           onClick={() => setFontSize(prev => prev >= 150 ? 100 : prev + step)}
-          className={`flex items-center justify-between p-3 rounded-2xl transition-all ${fontSize > 100 ? 'bg-primary text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'}`}
+          className={`flex items-center justify-between p-4 rounded-2xl transition-all ${fontSize > 100 ? 'bg-primary text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'}`}
         >
           <div className="flex items-center gap-3 text-current">
             <Type size={16} />
@@ -79,7 +79,7 @@ export default function AccessibilityHub({ close, config = {} }) {
         {showContrast && (
           <button 
             onClick={() => setIsContrast(!isContrast)}
-            className={`flex items-center justify-between p-3 rounded-2xl transition-all ${isContrast ? 'bg-black text-yellow-400 border-2 border-yellow-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'}`}
+            className={`flex items-center justify-between p-4 rounded-2xl transition-all ${isContrast ? 'bg-black text-yellow-400 border-2 border-yellow-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'}`}
           >
             <div className="flex items-center gap-3 text-current">
               <Contrast size={16} />
