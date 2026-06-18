@@ -104,11 +104,26 @@ export default function Navbar({ brand, setup, accConfig }) {
       </div>
 
       {showAcc && (
-        <div className="fixed md:absolute inset-0 md:inset-auto md:right-6 md:top-20 z-[100] flex justify-center items-center md:items-start bg-black/70 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none p-4 md:p-0">
-          <div style={{ width: 'min(440px, calc(100vw - 2rem))', maxHeight: '90vh', overflowY: 'auto' }}>
+        <>
+          {/* Backdrop — click cierra el panel */}
+          <div
+            onClick={() => setShowAcc(false)}
+            style={{ position: 'fixed', inset: 0, zIndex: 98, background: 'rgba(0,0,0,0.45)' }}
+          />
+          {/* Panel — siempre fixed, debajo del navbar */}
+          <div style={{
+            position: 'fixed',
+            top: '88px',
+            right: '1.5rem',
+            zIndex: 99,
+            width: 'min(400px, calc(100vw - 3rem))',
+            maxHeight: 'calc(100vh - 104px)',
+            overflowY: 'auto',
+            borderRadius: '1.5rem',
+          }}>
             <AccessibilityHub close={() => setShowAcc(false)} config={accConfig} />
           </div>
-        </div>
+        </>
       )}
 
       {/* MENÚ MÓVIL */}

@@ -4,92 +4,134 @@ import { useState, useEffect } from 'react';
 import { Type, Contrast, RotateCcw, X, Sun, Moon } from 'lucide-react';
 
 export default function AccessibilityHub({ close, config = {} }) {
-  const [fontSize, setFontSize] = useState(100);
+  const [level, setLevel]       = useState(0);   // 0 = normal, 1 = +10%, 2 = +20%, 3 = +30%
   const [isContrast, setIsContrast] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark]     = useState(false);
 
-  // Valores dinámicos desde el Sheet
-  const step = parseInt(config?.pasos_aumento?.valor) || 10;
   const showContrast = config?.contraste_alto?.status === 'ON';
 
+  const LEVELS = [100, 110, 120, 130];
+  const fontSize = LEVELS[level];
+
   useEffect(() => {
-    // Sincronizar estado inicial con las clases del HTML
     setIsDark(document.documentElement.classList.contains('dark'));
     setIsContrast(document.documentElement.classList.contains('high-contrast'));
   }, []);
 
   useEffect(() => {
     const html = document.documentElement;
-    
-    // 1. Tamaño de fuente
-    html.style.fontSize = `${fontSize}%`;
-    
-    // 2. Alto Contraste
+
+    // Escala el root font-size → afecta todos los valores rem/em
+    html.style.fontSize = level === 0 ? '' : `${fontSize}%`;
+
+    // Clase CSS para escalar textos con px hardcodeados
+    html.classList.toggle('text-scaled', level > 0);
+    html.dataset.textLevel = level;
+
     if (isContrast) html.classList.add('high-contrast');
     else html.classList.remove('high-contrast');
 
-    // 3. Dark Mode
     if (isDark) html.classList.add('dark');
     else html.classList.remove('dark');
-
-  }, [fontSize, isContrast, isDark]);
+  }, [level, isContrast, isDark]);
 
   const reset = () => {
-    setFontSize(100);
+    setLevel(0);
     setIsContrast(false);
-    setIsDark(false); // Opcional: resetear también el modo oscuro
+    // no reseteamos dark mode — es una preferencia separada
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-2xl w-full">
-      <div className="flex justify-between items-center mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
-        <h4 className="font-black italic uppercase text-[10px] text-slate-400 tracking-widest leading-none">Ajustes del Sitio</h4>
-        <button onClick={close} className="text-slate-300 hover:text-red-500 transition-colors">
+    <div style={{
+      background: isDark ? '#1c1c1e' : '#ffffff',
+      border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+      padding: '1.5rem',
+      borderRadius: '1.5rem',
+      boxShadow: '0 20px 60px rgba(0,0,0,0.35)',
+      width: '100%',
+    }}>
+      {/* HEADER */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', paddingBottom: '0.75rem', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` }}>
+        <span style={{ fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.3em', color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)' }}>
+          Ajustes del Sitio
+        </span>
+        <button onClick={close} style={{ background: 'none', border: 'none', cursor: 'pointer', color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', display: 'flex' }}
+          onMouseEnter={e => e.currentTarget.style.color = '#cc0044'}
+          onMouseLeave={e => e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'}>
           <X size={16} />
         </button>
       </div>
-      
-      <div className="grid grid-cols-1 gap-3">
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+
         {/* MODO OSCURO */}
-        <button 
+        <button
           onClick={() => setIsDark(!isDark)}
-          className="flex items-center justify-between p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl hover:scale-[1.02] transition-all"
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.875rem 1rem', borderRadius: '0.875rem', background: isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.05)', border: 'none', cursor: 'pointer', width: '100%', transition: 'background 0.2s' }}
+          onMouseEnter={e => e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.09)'}
+          onMouseLeave={e => e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.05)'}
         >
-          <div className="flex items-center gap-3">
-            {isDark ? <Sun size={16} className="text-amber-400" /> : <Moon size={16} className="text-indigo-600" />}
-            <span className="text-xs font-bold text-slate-700 dark:text-slate-200">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            {isDark
+              ? <Sun size={16} style={{ color: '#f59e0b' }} />
+              : <Moon size={16} style={{ color: '#6366f1' }} />}
+            <span style={{ fontSize: '13px', fontWeight: 700, color: isDark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.75)' }}>
               {isDark ? 'Modo Claro' : 'Modo Oscuro'}
             </span>
           </div>
         </button>
 
-        {/* AUMENTAR TEXTO */}
-        <button 
-          onClick={() => setFontSize(prev => prev >= 150 ? 100 : prev + step)}
-          className={`flex items-center justify-between p-4 rounded-2xl transition-all ${fontSize > 100 ? 'bg-primary text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'}`}
+        {/* TAMAÑO DE TEXTO */}
+        <button
+          onClick={() => setLevel(prev => (prev + 1) % LEVELS.length)}
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '0.875rem 1rem', borderRadius: '0.875rem', border: 'none', cursor: 'pointer', width: '100%', transition: 'background 0.2s',
+            background: level > 0 ? '#660033' : (isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.05)'),
+          }}
+          onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
+          onMouseLeave={e => e.currentTarget.style.opacity = '1'}
         >
-          <div className="flex items-center gap-3 text-current">
-            <Type size={16} />
-            <span className="text-xs font-bold">Aumentar Texto</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <Type size={16} style={{ color: level > 0 ? '#fff' : (isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)') }} />
+            <span style={{ fontSize: '13px', fontWeight: 700, color: level > 0 ? '#fff' : (isDark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.75)') }}>
+              Tamaño de Texto
+            </span>
           </div>
-          <span className={`text-[9px] font-black ${fontSize > 100 ? 'text-white' : 'text-slate-400'}`}>{fontSize}%</span>
+          <span style={{ fontSize: '10px', fontWeight: 900, color: level > 0 ? 'rgba(255,255,255,0.8)' : (isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)') }}>
+            {level === 0 ? 'NORMAL' : `+${level * 10}%`}
+          </span>
         </button>
 
         {/* ALTO CONTRASTE */}
         {showContrast && (
-          <button 
+          <button
             onClick={() => setIsContrast(!isContrast)}
-            className={`flex items-center justify-between p-4 rounded-2xl transition-all ${isContrast ? 'bg-black text-yellow-400 border-2 border-yellow-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'}`}
+            style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '0.875rem 1rem', borderRadius: '0.875rem', border: isContrast ? '2px solid #facc15' : 'none', cursor: 'pointer', width: '100%', transition: 'all 0.2s',
+              background: isContrast ? '#000000' : (isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.05)'),
+            }}
           >
-            <div className="flex items-center gap-3 text-current">
-              <Contrast size={16} />
-              <span className="text-xs font-bold">Alto Contraste</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <Contrast size={16} style={{ color: isContrast ? '#facc15' : (isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)') }} />
+              <span style={{ fontSize: '13px', fontWeight: 700, color: isContrast ? '#facc15' : (isDark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.75)') }}>
+                Alto Contraste
+              </span>
             </div>
-            <span className={`text-[9px] font-black ${isContrast ? 'text-yellow-400' : 'text-slate-400'}`}>{isContrast ? 'ON' : 'OFF'}</span>
+            <span style={{ fontSize: '10px', fontWeight: 900, color: isContrast ? '#facc15' : (isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)') }}>
+              {isContrast ? 'ON' : 'OFF'}
+            </span>
           </button>
         )}
 
-        <button onClick={reset} className="mt-2 py-3 text-[9px] font-black uppercase text-slate-400 hover:text-primary transition-colors flex items-center justify-center gap-2 border-t border-slate-100 dark:border-slate-800 pt-4">
+        {/* RESTABLECER */}
+        <button
+          onClick={reset}
+          style={{ marginTop: '4px', padding: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', background: 'none', border: 'none', cursor: 'pointer', borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`, color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)', fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', transition: 'color 0.2s' }}
+          onMouseEnter={e => e.currentTarget.style.color = '#cc0044'}
+          onMouseLeave={e => e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)'}
+        >
           <RotateCcw size={12} /> Restablecer
         </button>
       </div>

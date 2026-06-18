@@ -257,6 +257,14 @@ html:not(.dark) .card-hover:hover {
 }
 
 /* ============================================================
+   ESCALADO DE TEXTO — activa cuando html tiene clase .text-scaled
+   Cubre textos con px hardcodeados que no escalan con font-size del root
+   ============================================================ */
+html[data-text-level="1"] body { zoom: 1.10; }
+html[data-text-level="2"] body { zoom: 1.20; }
+html[data-text-level="3"] body { zoom: 1.30; }
+
+/* ============================================================
    ALTO CONTRASTE — activa cuando html tiene clase .high-contrast
    ============================================================ */
 
