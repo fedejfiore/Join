@@ -5,6 +5,7 @@ import { getAllSiteData } from '../lib/google-sheets';
 import { getIcon } from '../lib/icon-map';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import SheetText from '../lib/sheet-text';
+import ParallaxSection from '../components/ui/ParallaxSection';
 
 // ── Fallbacks (usados si la pestaña del sheet está vacía) ──────────────────
 const DEFAULT_CFG = {
@@ -129,11 +130,8 @@ export default function SucesionesPage({ data }) {
         </section>
 
         {/* PARALLAX BANNER */}
-        <div style={{ position: 'relative', height: '300px', margin: '0 0 6rem 0', overflow: 'hidden' }}>
-          <div className="parallax-bg" style={{ background: 'linear-gradient(135deg, #1a0010 0%, #660033 50%, #330019 100%)' }}>
-            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(204,0,68,0.15) 0%, transparent 60%), radial-gradient(circle at 80% 50%, rgba(102,0,51,0.2) 0%, transparent 60%)' }} />
-          </div>
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '2rem' }}>
+        <ParallaxSection style={{ height: '300px', margin: '0 0 6rem 0' }}>
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '2rem', zIndex: 1 }}>
             <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.4em', color: 'rgba(255,255,255,0.5)', marginBottom: '1.5rem' }}>Nuestra propuesta</p>
             <p style={{ fontSize: 'clamp(1.375rem, 3.5vw, 2.25rem)', fontWeight: 900, color: '#ffffff', lineHeight: 1.25, maxWidth: '720px', letterSpacing: '-0.02em' }}>
               "<SheetText text={v('parallax_quote')} />"
@@ -141,7 +139,7 @@ export default function SucesionesPage({ data }) {
             <div style={{ width: '3.5rem', height: '3px', background: 'rgba(255,255,255,0.35)', margin: '1.5rem auto 0', borderRadius: '2px' }} />
             <SheetText as="p" text={v('parallax_sub')} style={{ marginTop: '1.25rem', fontSize: '15px', fontWeight: 500, color: 'rgba(255,255,255,0.65)', maxWidth: '480px', lineHeight: 1.6 }} />
           </div>
-        </div>
+        </ParallaxSection>
 
         {/* PROCESO PASO A PASO */}
         <section className="scroll-reveal" style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
@@ -196,10 +194,7 @@ export default function SucesionesPage({ data }) {
         </section>
 
         {/* PARALLAX CONTACTO */}
-        <div style={{ position: 'relative', overflow: 'hidden', padding: '5rem 1.5rem', marginBottom: '0' }}>
-          <div className="parallax-bg" style={{ background: 'linear-gradient(135deg, #1a0010 0%, #660033 50%, #330019 100%)' }}>
-            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(204,0,68,0.2) 0%, transparent 60%), radial-gradient(circle at 80% 50%, rgba(102,0,51,0.25) 0%, transparent 60%)' }} />
-          </div>
+        <ParallaxSection style={{ padding: '5rem 1.5rem', marginBottom: '0' }}>
           <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
             <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }}>
               {v('contacto_titulo')}
@@ -208,7 +203,7 @@ export default function SucesionesPage({ data }) {
               <SheetText as="p" text={v('contacto_sub')} style={{ marginTop: '1rem', fontWeight: 500, color: 'rgba(255,255,255,0.65)', lineHeight: 1.6 }} />
             )}
           </div>
-        </div>
+        </ParallaxSection>
         <div id="contacto" style={{ maxWidth: '1280px', margin: '0 auto', padding: '4rem 1.5rem 0' }}>
           <ContactoJoin brand={data.brand} defaultTema="Consultar por sucesión" />
         </div>

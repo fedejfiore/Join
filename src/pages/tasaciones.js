@@ -5,6 +5,7 @@ import { getAllSiteData } from '../lib/google-sheets';
 import { getIcon } from '../lib/icon-map';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import SheetText from '../lib/sheet-text';
+import ParallaxSection from '../components/ui/ParallaxSection';
 
 // ── Fallbacks ──────────────────────────────────────────────────────────────
 const DEFAULT_CFG = {
@@ -162,16 +163,13 @@ export default function TasacionesPage({ data }) {
         </section>
 
         {/* PARALLAX CONTACTO */}
-        <div style={{ position: 'relative', overflow: 'hidden', padding: '5rem 1.5rem' }}>
-          <div className="parallax-bg" style={{ background: 'linear-gradient(135deg, #1a0010 0%, #660033 50%, #330019 100%)' }}>
-            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(204,0,68,0.2) 0%, transparent 60%), radial-gradient(circle at 80% 50%, rgba(102,0,51,0.25) 0%, transparent 60%)' }} />
-          </div>
+        <ParallaxSection style={{ padding: '5rem 1.5rem' }}>
           <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
             <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }}>
               {v('contacto_titulo')}
             </h2>
           </div>
-        </div>
+        </ParallaxSection>
         <div id="contacto" style={{ maxWidth: '1280px', margin: '0 auto', padding: '4rem 1.5rem 0' }}>
           <ContactoJoin brand={data.brand} defaultTema="Pedir una tasación" />
         </div>
