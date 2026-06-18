@@ -129,7 +129,7 @@ export default function SucesionesPage({ data }) {
         </section>
 
         {/* PARALLAX BANNER */}
-        <div style={{ position: 'relative', height: '300px', margin: '0 0 6rem 0', overflow: 'hidden', background: 'linear-gradient(135deg, #1a0010 0%, #660033 50%, #330019 100%)' }}>
+        <div style={{ position: 'relative', height: '300px', margin: '0 0 6rem 0', overflow: 'hidden', backgroundImage: 'linear-gradient(135deg, #1a0010 0%, #660033 50%, #330019 100%)', backgroundAttachment: 'fixed', backgroundSize: 'cover' }}>
           <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(204,0,68,0.15) 0%, transparent 60%), radial-gradient(circle at 80% 50%, rgba(102,0,51,0.2) 0%, transparent 60%)' }} />
           <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '2rem' }}>
             <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.4em', color: 'rgba(255,255,255,0.5)', marginBottom: '1.5rem' }}>Nuestra propuesta</p>
@@ -194,7 +194,7 @@ export default function SucesionesPage({ data }) {
         </section>
 
         {/* PARALLAX CONTACTO */}
-        <div style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(135deg, #1a0010 0%, #660033 50%, #330019 100%)', padding: '5rem 1.5rem', marginBottom: '0' }}>
+        <div style={{ position: 'relative', overflow: 'hidden', backgroundImage: 'linear-gradient(135deg, #1a0010 0%, #660033 50%, #330019 100%)', backgroundAttachment: 'fixed', backgroundSize: 'cover', padding: '5rem 1.5rem', marginBottom: '0' }}>
           <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(204,0,68,0.2) 0%, transparent 60%), radial-gradient(circle at 80% 50%, rgba(102,0,51,0.25) 0%, transparent 60%)' }} />
           <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
             <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }}>

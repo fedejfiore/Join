@@ -34,8 +34,8 @@ export default function HeroJoin({ config, brand }) {
     <section style={{
       position: 'relative',
       width: '100%',
-      height: 'calc(100vh - 80px)',
-      minHeight: '520px',
+      height: 'calc(100svh - 80px)',
+      minHeight: '480px',
       overflow: 'hidden',
       background: '#0a0a0a',
       display: 'flex',
@@ -72,7 +72,7 @@ export default function HeroJoin({ config, brand }) {
         position: 'relative', zIndex: 10,
         display: 'flex', flexDirection: 'column',
         justifyContent: 'center', alignItems: 'center',
-        textAlign: 'center', padding: '4rem 2rem 2rem',
+        textAlign: 'center', padding: '2rem 2rem 1rem',
         maxWidth: '1024px', margin: '0 auto', width: '100%',
       }}>
         <p style={{

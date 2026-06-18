@@ -125,19 +125,23 @@ export default function Layout({ children, data }) {
       {setup?.footer?.status !== 'OFF' && <Footer brand={brand} setup={setup} />}
 
       {showInstallBanner && (
-        <div className="fixed bottom-24 left-6 right-6 md:left-auto md:right-6 md:w-80 z-[60] bg-white dark:bg-slate-900 shadow-2xl rounded-3xl p-5 border border-slate-100 dark:border-slate-800">
-          <button onClick={cerrarBanner} className="absolute top-3 right-3 text-slate-400 hover:text-slate-600">
-            <X size={18} />
-          </button>
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center text-white shadow-lg">
-              <Download size={24} />
+        <div className="fixed bottom-24 left-6 right-6 md:left-auto md:right-6 md:w-80 z-[60] bg-white dark:bg-slate-900 shadow-2xl rounded-3xl p-4 border border-slate-100 dark:border-slate-800">
+          {/* Header con X */}
+          <div className="flex justify-between items-center mb-3">
+            <p className="text-[10px] font-black uppercase tracking-widest text-primary">App Disponible</p>
+            <button onClick={cerrarBanner} className="text-slate-400 hover:text-slate-600 transition-colors">
+              <X size={16} />
+            </button>
+          </div>
+          {/* Cuerpo */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg flex-shrink-0">
+              <Download size={20} />
             </div>
-            <div className="flex-1">
-              <p className="text-[10px] font-black uppercase tracking-widest text-primary">App Disponible</p>
-              <h4 className="text-sm font-bold dark:text-white">{isIOS ? 'Añadir a Inicio' : 'Instalar App JOIN'}</h4>
+            <div className="flex-1 min-w-0">
+              <h4 className="text-sm font-bold dark:text-white truncate">{isIOS ? 'Añadir a Inicio' : 'Instalar App JOIN'}</h4>
             </div>
-            <button onClick={handleInstallClick} className="bg-primary text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase">
+            <button onClick={handleInstallClick} className="bg-primary text-white px-3 py-2 rounded-xl text-[10px] font-black uppercase flex-shrink-0">
               {isIOS ? 'Ver Cómo' : 'Instalar'}
             </button>
           </div>
