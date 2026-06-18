@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function middleware(request) {
   const { pathname, searchParams } = request.nextUrl;
 
-  // 1. WHITELIST: pasar de inmediato sin procesar redirects
+  // 1. WHITELIST — pasar sin procesar
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
@@ -15,7 +15,7 @@ export async function middleware(request) {
     return NextResponse.next();
   }
 
-  // 2. Ignorar pre-fetches y UTMs
+  // 2. Ignorar pre-fetches y UTMs (evita doble conteo)
   if (
     request.headers.get('x-middleware-preflight') === '1' ||
     request.headers.get('purpose') === 'prefetch' ||
@@ -33,7 +33,7 @@ export async function middleware(request) {
     const res = await fetch(url);
     const csvText = await res.text();
 
-    const rows = csvText.split(/\r?\n/).filter(row => row.trim() !== "").map(row => row.split(','));
+    const rows = csvText.split(/\r?\n/).filter(row => row.trim() !== '').map(row => row.split(','));
     const headers = rows[0].map(h => h.trim());
     const data = rows.slice(1).map(row =>
       headers.reduce((acc, header, i) => ({ ...acc, [header]: row[i]?.trim() }), {})
@@ -42,61 +42,72 @@ export async function middleware(request) {
     const cleanPath = pathname.startsWith('/') ? pathname : `/${pathname}`;
 
     const found = data.find(r => {
-      const origen = r.Origen_corto || r["Origen corto"] || Object.values(r)[0];
+      const origen = r.Origen_corto || r['Origen corto'] || Object.values(r)[0];
       const excelOrigin = origen?.startsWith('/') ? origen : `/${origen}`;
-      return excelOrigin === cleanPath && (r.ON_OFF === 'ON' || r["ON_OFF"] === 'ON');
+      return excelOrigin === cleanPath && (r.ON_OFF === 'ON');
     });
 
-    if (found) {
-      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwivmKGVjylM_KERiwebIcagCzk4Zre429hXWkQvG6xmIK_l47a2FMRsku-0lXayzAT/exec";
+    if (!found) return NextResponse.next();
 
-      const destinoRaw = (found.Sección_o_Nota || found.Seccion_o_Nota || Object.values(found)[1])?.trim();
-      const campaña = (found.Nombre_Campaña || found.Nombre_Campana || Object.values(found)[2] || 'qr_general')?.trim();
+    const destinoRaw = (found.Sección_o_Nota || found.Seccion_o_Nota || Object.values(found)[1])?.trim();
+    const campaña   = (found.Nombre_Campaña || found.Nombre_Campana  || Object.values(found)[2] || 'qr_general')?.trim();
 
-      if (!destinoRaw) return NextResponse.next();
+    if (!destinoRaw) return NextResponse.next();
 
-      const isExternal = destinoRaw.toLowerCase().startsWith('http');
-      const fullScriptUrl = `${SCRIPT_URL}?id=${encodeURIComponent(found.Origen_corto)}&dest=${encodeURIComponent(destinoRaw)}&camp=${encodeURIComponent(campaña)}&ua=${encodeURIComponent(request.headers.get('user-agent') || 'Mobile')}`;
+    // URL del script — configurable via variable de entorno en Vercel
+    // Vercel dashboard → Settings → Environment Variables → APPS_SCRIPT_URL
+    const SCRIPT_URL = process.env.APPS_SCRIPT_URL ||
+      'https://script.google.com/macros/s/AKfycbwivmKGVjylM_KERiwebIcagCzk4Zre429hXWkQvG6xmIK_l47a2FMRsku-0lXayzAT/exec';
 
-      if (isExternal) {
-        try {
-          await Promise.race([
-            fetch(fullScriptUrl),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 800))
-          ]);
-        } catch (e) {}
-      } else {
-        fetch(fullScriptUrl).catch(() => {});
-      }
+    const scriptParams = new URLSearchParams({
+      id:   found.Origen_corto || cleanPath,
+      dest: destinoRaw,
+      camp: campaña,
+      ua:   request.headers.get('user-agent') || 'Unknown',
+    });
+    const fullScriptUrl = `${SCRIPT_URL}?${scriptParams.toString()}`;
 
-      if (isExternal) {
-        try {
-          const urlObjeto = new URL(destinoRaw);
-          urlObjeto.searchParams.set('utm_source', 'qr_join');
-          urlObjeto.searchParams.set('utm_medium', 'offline');
-          urlObjeto.searchParams.set('utm_campaign', campaña);
-          return NextResponse.redirect(urlObjeto.toString(), 307);
-        } catch (err) {
-          const sep = destinoRaw.includes('?') ? '&' : '?';
-          return NextResponse.redirect(new URL(`${destinoRaw}${sep}utm_source=qr_join&utm_campaign=${campaña}`), 307);
-        }
-      } else {
-        const [path, hash] = destinoRaw.split('#');
-        let basePath = path || '/';
-        if (!basePath.startsWith('/')) basePath = `/${basePath}`;
-        const finalUrl = `${basePath}?utm_source=qr_join&utm_medium=offline&utm_campaign=${campaña}${hash ? '#' + hash : ''}`;
-        return NextResponse.redirect(new URL(finalUrl, request.url), 307);
-      }
+    const isExternal = destinoRaw.toLowerCase().startsWith('http');
+
+    // Llamada al script con timeout generoso (Google Apps Script cold start: 1-3s)
+    try {
+      await Promise.race([
+        fetch(fullScriptUrl),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('script_timeout')), 4000)),
+      ]);
+    } catch (scriptErr) {
+      // No bloqueamos el redirect si el script falla o tarda demasiado
+      console.warn('JOIN MKT script:', scriptErr.message, '| url:', fullScriptUrl);
     }
+
+    // Redirigir con parámetros UTM
+    if (isExternal) {
+      try {
+        const dest = new URL(destinoRaw);
+        dest.searchParams.set('utm_source', 'qr_join');
+        dest.searchParams.set('utm_medium', 'offline');
+        dest.searchParams.set('utm_campaign', campaña);
+        return NextResponse.redirect(dest.toString(), 307);
+      } catch {
+        return NextResponse.redirect(
+          `${destinoRaw}${destinoRaw.includes('?') ? '&' : '?'}utm_source=qr_join&utm_campaign=${campaña}`,
+          307
+        );
+      }
+    } else {
+      const [path, hash] = destinoRaw.split('#');
+      const basePath = (path || '/').startsWith('/') ? (path || '/') : `/${path || '/'}`;
+      const finalUrl = `${basePath}?utm_source=qr_join&utm_medium=offline&utm_campaign=${campaña}${hash ? '#' + hash : ''}`;
+      return NextResponse.redirect(new URL(finalUrl, request.url), 307);
+    }
+
   } catch (e) {
-    console.error("JOIN Middleware Error:", e);
+    console.error('JOIN Middleware Error:', e);
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|manifest.json|sw.js).*)',
-  ],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|manifest.json|sw.js).*)'],
 };
