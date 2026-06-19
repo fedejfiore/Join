@@ -1,62 +1,88 @@
 "use client";
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 /**
- * Sección parallax de 3 capas:
- *  - Fondo  → se mueve ±120px (más rápido)
- *  - Texto  → se mueve ±35px  (más lento)
- *  - Contenedor → fluye normal en el layout
- * La diferencia de velocidad entre capas crea profundidad obvia.
+ * Sección parallax con efecto "cuadro congelado":
+ * - La sección se adhiere (sticky) al viewport mientras el resto de la página sigue scrolleando
+ * - El fondo se mueve internamente de forma sutil, creando la sensación de profundidad
  */
-export default function ParallaxSection({ children, style = {} }) {
-  const containerRef = useRef(null);
-  const bgRef        = useRef(null);
-  const contentRef   = useRef(null);
+export default function ParallaxSection({ children, style = {}, stickyTop = 88 }) {
+  const sectionRef = useRef(null);
+  const bgRef      = useRef(null);
+  const contentRef = useRef(null);
+  const [sectionH, setSectionH] = useState(0);
 
+  // Medir altura real de la sección después de renderizar
   useEffect(() => {
-    const container = containerRef.current;
-    const bgEl      = bgRef.current;
-    const contentEl = contentRef.current;
-    if (!container || !bgEl || !contentEl) return;
+    if (sectionRef.current) setSectionH(sectionRef.current.offsetHeight);
+  }, []);
+
+  // Parallax interno: fondo ±60px, texto ±15px dentro de la sección congelada
+  useEffect(() => {
+    const bg      = bgRef.current;
+    const content = contentRef.current;
+    const section = sectionRef.current;
+    if (!bg || !content || !section) return;
 
     const tick = () => {
-      const rect     = container.getBoundingClientRect();
-      const vh       = window.innerHeight;
-      const progress = (vh - rect.top) / (vh + rect.height);
-      const shift    = (progress - 0.5);           // −0.5 a +0.5
-
-      bgEl.style.transform      = `translateY(${shift * 240}px)`;  // ±120px
-      contentEl.style.transform = `translateY(${shift * 70}px)`;   // ±35px
+      const rect = section.getBoundingClientRect();
+      const vh   = window.innerHeight;
+      // progress 0→1 mientras la sección está visible y "congelada"
+      const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
+      const shift = (progress - 0.5);
+      bg.style.transform      = `translateY(${shift * 120}px)`;
+      content.style.transform = `translateY(${shift * 28}px)`;
     };
 
     window.addEventListener('scroll', tick, { passive: true });
     tick();
     return () => window.removeEventListener('scroll', tick);
-  }, []);
+  }, [sectionH]);
+
+  // Espacio extra para que la sección quede "congelada" durante más scroll
+  const spacer = sectionH > 0 ? sectionH * 1.8 : 0;
 
   return (
-    <div ref={containerRef} style={{ position: 'relative', overflow: 'hidden', ...style }}>
+    <div style={{
+      position: 'relative',
+      // El spacer extra es lo que da la ilusión de que la sección se queda quieta
+      height: sectionH > 0 ? sectionH + spacer : 'auto',
+      ...Object.fromEntries(
+        Object.entries(style).filter(([k]) => ['marginTop','marginBottom','margin'].includes(k))
+      ),
+    }}>
+      {/* Sección sticky: se adhiere al viewport mientras el spacer scrollea */}
+      <div
+        ref={sectionRef}
+        style={{
+          position: sectionH > 0 ? 'sticky' : 'relative',
+          top: sectionH > 0 ? stickyTop : 0,
+          overflow: 'hidden',
+          ...Object.fromEntries(
+            Object.entries(style).filter(([k]) => !['marginTop','marginBottom','margin'].includes(k))
+          ),
+        }}
+      >
+        {/* FONDO — se mueve lentamente dentro del cuadro congelado */}
+        <div ref={bgRef} style={{
+          position: 'absolute',
+          top: '-50%', left: 0,
+          width: '100%', height: '200%',
+          willChange: 'transform',
+          pointerEvents: 'none',
+          backgroundImage: [
+            'repeating-linear-gradient(-55deg, transparent 0px, transparent 18px, rgba(255,255,255,0.02) 18px, rgba(255,255,255,0.02) 19px)',
+            'radial-gradient(ellipse 70% 35% at 50% 30%, rgba(204,0,68,0.30) 0%, transparent 65%)',
+            'radial-gradient(ellipse 50% 25% at 50% 75%, rgba(102,0,51,0.35) 0%, transparent 60%)',
+            'linear-gradient(to bottom, #04000a 0%, #1e0014 15%, #660033 38%, #99003d 50%, #660033 62%, #1e0014 85%, #04000a 100%)',
+          ].join(', '),
+        }} />
 
-      {/* CAPA 1 — fondo, se mueve más */}
-      <div ref={bgRef} style={{
-        position: 'absolute',
-        top: '-60%', left: 0,
-        width: '100%', height: '220%',
-        willChange: 'transform',
-        pointerEvents: 'none',
-        backgroundImage: [
-          'repeating-linear-gradient(-55deg, transparent 0px, transparent 18px, rgba(255,255,255,0.022) 18px, rgba(255,255,255,0.022) 19px)',
-          'radial-gradient(ellipse 80% 40% at 50% 28%, rgba(204,0,68,0.35) 0%, transparent 70%)',
-          'radial-gradient(ellipse 60% 30% at 50% 74%, rgba(102,0,51,0.40) 0%, transparent 65%)',
-          'linear-gradient(to bottom, #06000a 0%, #2a0018 18%, #660033 38%, #99003d 50%, #660033 62%, #2a0018 82%, #06000a 100%)',
-        ].join(', '),
-      }} />
-
-      {/* CAPA 2 — contenido (texto), se mueve menos */}
-      <div ref={contentRef} style={{ position: 'relative', zIndex: 1, willChange: 'transform' }}>
-        {children}
+        {/* CONTENIDO — se mueve muy poco, casi estático */}
+        <div ref={contentRef} style={{ position: 'relative', zIndex: 1, willChange: 'transform' }}>
+          {children}
+        </div>
       </div>
-
     </div>
   );
 }
