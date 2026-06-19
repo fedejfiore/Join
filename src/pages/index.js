@@ -1,4 +1,5 @@
 import { getAllSiteData } from '../lib/google-sheets';
+import ParallaxSection from '../components/ui/ParallaxSection';
 import Layout from '../components/layout/Layout';
 import HeroJoin from '../components/sections/HeroJoin';
 import ServiciosJoin from '../components/sections/ServiciosJoin';
@@ -7,38 +8,10 @@ import PorQueElegirnos from '../components/sections/PorQueElegirnos';
 import BlogPreviewJoin from '../components/sections/BlogPreviewJoin';
 import ContactoJoin from '../components/sections/ContactoJoin';
 
-const PARALLAX_BG = [
-  'linear-gradient(135deg, #0a0006 0%, #660033 50%, #1a0010 100%)',
-  'linear-gradient(135deg, #1a0010 0%, #330019 40%, #660033 100%)',
-];
 const PARALLAX_DEFAULT = [
   'Cada propiedad tiene una historia. Nosotros la completamos.',
   'Seguridad jurídica y gestión inmobiliaria. En un solo lugar.',
 ];
-
-function ParallaxDivider({ quote, index = 0 }) {
-  return (
-    <div style={{
-      position: 'relative', height: '220px', overflow: 'hidden',
-      background: PARALLAX_BG[index % PARALLAX_BG.length],
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-    }}>
-      <div style={{
-        position: 'absolute', inset: 0, opacity: 0.08,
-        backgroundImage: 'radial-gradient(circle at 20% 50%, #fff 1px, transparent 1px), radial-gradient(circle at 80% 50%, #fff 1px, transparent 1px)',
-        backgroundSize: '60px 60px',
-      }} />
-      <p style={{
-        position: 'relative', zIndex: 1,
-        fontSize: 'clamp(1.1rem, 3vw, 1.75rem)', fontWeight: 800, color: 'rgba(255,255,255,0.92)',
-        textAlign: 'center', maxWidth: '700px', padding: '0 2rem',
-        lineHeight: 1.4, letterSpacing: '-0.02em',
-      }}>
-        {quote || PARALLAX_DEFAULT[index % PARALLAX_DEFAULT.length]}
-      </p>
-    </div>
-  );
-}
 
 export default function Home({ data }) {
   if (!data) return null;
@@ -47,10 +20,22 @@ export default function Home({ data }) {
     <Layout data={data}>
       {setup.banner?.status !== 'OFF'   && <HeroJoin config={banner} brand={brand} />}
       {setup.servicios?.status !== 'OFF' && <ServiciosJoin servicios={servicios} />}
-      <ParallaxDivider index={0} quote={banner?.parallax_1_quote?.valor} />
+      <ParallaxSection style={{ height: '220px' }}>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 2rem' }}>
+          <p style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(1.1rem, 3vw, 1.75rem)', fontWeight: 800, color: '#ffffff', textAlign: 'center', maxWidth: '700px', lineHeight: 1.4, letterSpacing: '-0.02em' }}>
+            {banner?.parallax_1_quote?.valor || PARALLAX_DEFAULT[0]}
+          </p>
+        </div>
+      </ParallaxSection>
       {setup.nosotros?.status !== 'OFF'  && <NosotrosJoin data={nosotros} />}
       {setup.valores?.status !== 'OFF'   && <PorQueElegirnos valores={valores} valores_items={valores_items} />}
-      <ParallaxDivider index={1} quote={banner?.parallax_2_quote?.valor} />
+      <ParallaxSection style={{ height: '220px' }}>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 2rem' }}>
+          <p style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(1.1rem, 3vw, 1.75rem)', fontWeight: 800, color: '#ffffff', textAlign: 'center', maxWidth: '700px', lineHeight: 1.4, letterSpacing: '-0.02em' }}>
+            {banner?.parallax_2_quote?.valor || PARALLAX_DEFAULT[1]}
+          </p>
+        </div>
+      </ParallaxSection>
       {setup.noticias?.status !== 'OFF'  && <BlogPreviewJoin noticias={noticias} />}
       {setup.contacto?.status !== 'OFF'  && <ContactoJoin brand={brand} />}
     </Layout>

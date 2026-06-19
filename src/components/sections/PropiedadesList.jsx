@@ -251,6 +251,7 @@ export default function PropiedadesList({ propiedades = [] }) {
         </div>
 
       </div>
+      <div style={{ height: '4rem' }} />
     </div>
   );
 }
