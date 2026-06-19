@@ -23,11 +23,10 @@ export default function ParallaxSection({ children, style = {} }) {
       bg.style.transform      = `translateY(${bgOffset}px)`;
       content.style.transform = `translateY(${-shift * 50}px)`;
 
-      // Sincroniza la posición del gradiente del texto con el fondo
-      // Fondo: top=-125% del container, height=350% → gradiente 50% queda en el centro del container
-      // Con bgOffset: el gradiente se desplaza. El texto debe seguir exactamente.
-      const h = container.offsetHeight;
-      content.style.backgroundPositionY = `${-1.25 * h + bgOffset}px`;
+      // Sincroniza la máscara del texto con el gradiente del fondo
+      const posY = `${-1.25 * container.offsetHeight + bgOffset}px`;
+      content.style.maskPositionY        = posY;
+      content.style.webkitMaskPositionY  = posY;
     };
 
     window.addEventListener('scroll', tick, { passive: true });
@@ -35,10 +34,13 @@ export default function ParallaxSection({ children, style = {} }) {
     return () => window.removeEventListener('scroll', tick);
   }, []);
 
+  // Máscara: blanco = texto visible, negro = texto invisible
+  // Coincide con el gradiente del fondo: texto aparece donde está el burdeos
+  const MASK = 'linear-gradient(to bottom, black 0%, black 28%, white 38%, white 62%, black 72%, black 100%)';
+
   return (
     <div ref={containerRef} style={{ position: 'relative', overflow: 'hidden', ...style }}>
 
-      {/* Fondo parallax */}
       <div ref={bgRef} style={{
         position: 'absolute',
         top: '-125%', left: 0,
@@ -51,27 +53,21 @@ export default function ParallaxSection({ children, style = {} }) {
         ].join(', '),
       }} />
 
-      {/*
-        Texto con gradiente sincronizado:
-        - background-clip: text → el gradiente solo se ve donde hay letras
-        - webkit-text-fill-color: transparent → las letras heredan el gradiente del padre
-        - Gradiente inverso al fondo: blanco donde hay burdeos, burdeos donde hay negro
-        - backgroundPositionY se actualiza en tick() para sincronizarse con el fondo
-      */}
       <div
         ref={contentRef}
         style={{
           position: 'relative',
           zIndex: 1,
           willChange: 'transform',
-          backgroundImage: 'linear-gradient(to bottom, #cc0044 0%, #cc0044 32%, #ffffff 37%, #ffffff 63%, #cc0044 68%, #cc0044 100%)',
-          backgroundSize: '100% 350%',
-          backgroundPositionY: '-125%',
-          backgroundRepeat: 'no-repeat',
-          WebkitBackgroundClip: 'text',
-          backgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          color: 'transparent',
+          // El texto aparece y desaparece siguiendo al gradiente burdeos del fondo
+          maskImage: MASK,
+          WebkitMaskImage: MASK,
+          maskSize: '100% 350%',
+          WebkitMaskSize: '100% 350%',
+          maskPositionY: '-125%',
+          WebkitMaskPositionY: '-125%',
+          maskRepeat: 'no-repeat',
+          WebkitMaskRepeat: 'no-repeat',
         }}
       >
         {children}
