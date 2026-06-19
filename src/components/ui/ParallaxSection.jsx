@@ -25,7 +25,7 @@ export default function ParallaxSection({ children, style = {} }) {
 
       // Texto visible con burdeos, desaparece rápido cuando llega el negro
       const absShift = Math.abs(shift);
-      const opacity  = Math.max(0, Math.min(1, (0.30 - absShift) / 0.07));
+      const opacity  = Math.max(0, Math.min(1, (0.28 - absShift) / 0.02));
       content.style.opacity = String(opacity);
     };
 
