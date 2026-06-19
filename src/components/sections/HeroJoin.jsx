@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useState } from 'react';
 import Typewriter from 'typewriter-effect';
-import { Home, ShoppingBag, Calculator, Scale } from 'lucide-react';
+import { Home, ShoppingBag, Calculator, Scale, Network } from 'lucide-react';
 
-const ICON_BTN = [Home, ShoppingBag, Calculator, Scale];
+const ICON_BTN = [Calculator, Home, Network, Scale];
 const BTN_DEFAULTS = [
-  { label: '¿Querés vender?',   href: '/tasaciones' },
-  { label: '¿Querés comprar?',  href: '/propiedades' },
   { label: 'Tasá tu propiedad', href: '/tasaciones' },
+  { label: '¿Querés comprar?',  href: '/propiedades' },
+  { label: 'Sucesiones',   href: '/sucesiones' },
   { label: 'Consulta jurídica', href: '/juridico' },
 ];
 
