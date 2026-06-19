@@ -35,7 +35,12 @@ export default function ParallaxSection({ children, style = {} }) {
   }, []);
 
   return (
-    <div ref={containerRef} style={{ position: 'relative', overflow: 'hidden', ...style }}>
+    <div ref={containerRef} style={{
+      position: 'relative', overflow: 'hidden',
+      maskImage: 'linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)',
+      WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)',
+      ...style,
+    }}>
 
       <div ref={bgRef} style={{
         position: 'absolute',

@@ -33,7 +33,7 @@ export default function Navbar({ brand, setup, accConfig }) {
   const logoSrc = isDark ? logoBlancoSrc : logoColorSrc;
 
   return (
-    <nav style={{ position: 'sticky', top: 0, width: '100%', zIndex: 50, backgroundColor: 'var(--nav-bg)', borderBottom: '1px solid var(--nav-border)', boxShadow: '0 4px 24px rgba(0,0,0,0.25)', transition: 'background-color 0.3s ease, border-color 0.3s ease' }}>
+    <nav style={{ position: 'sticky', top: 0, width: '100%', zIndex: 50, backgroundColor: 'var(--nav-bg)', borderBottom: '1px solid var(--nav-border)', boxShadow: 'var(--nav-shadow)', transition: 'background-color 0.3s ease, border-color 0.3s ease' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
         {/* LOGO */}
