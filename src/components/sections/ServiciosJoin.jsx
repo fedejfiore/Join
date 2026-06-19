@@ -45,23 +45,34 @@ export default function ServiciosJoin({ servicios = [] }) {
             autoplay={{ delay: 3500, disableOnInteraction: false }}
             className="w-full py-12"
           >
-            {servicios.map((s, i) => (
-              <SwiperSlide key={i}>
-                <div className="relative h-[420px] rounded-xl overflow-hidden shadow-2xl group"
-                  style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
-                  <img src={s.Imagen_Fondo || s.imagen} className="absolute inset-0 w-full h-full object-cover" alt={s.Titulo} />
-                  <div className="absolute inset-0 bg-black/40 z-[1]" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent z-[2]" />
-                  <div className="absolute bottom-0 left-0 text-white z-[10] w-full text-center"
-                    style={{ padding: '2.5rem 2rem 2rem' }}>
-                    <h3 className="font-bold mb-3" style={{ fontSize: '1.2rem', lineHeight: 1.3, color: '#ffffff' }}>{s.Titulo}</h3>
-                    <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)', maxWidth: '280px', margin: '0 auto' }}>
-                      {s.Detalle || s.Descripcion}
-                    </p>
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
+            {servicios.map((s, i) => {
+              const href = s.URL || s.url || s.Link || s.link || s.Href || s.href || null;
+              const isExternal = href && href.startsWith('http');
+              return (
+                <SwiperSlide key={i}>
+                  <a
+                    href={href || undefined}
+                    target={isExternal ? '_blank' : undefined}
+                    rel={isExternal ? 'noopener noreferrer' : undefined}
+                    style={{ display: 'block', textDecoration: 'none', cursor: href ? 'pointer' : 'default' }}
+                  >
+                    <div className="relative h-[420px] rounded-xl overflow-hidden shadow-2xl group"
+                      style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
+                      <img src={s.Imagen_Fondo || s.imagen} className="absolute inset-0 w-full h-full object-cover" alt={s.Titulo} />
+                      <div className="absolute inset-0 bg-black/40 z-[1]" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent z-[2]" />
+                      <div className="absolute bottom-0 left-0 text-white z-[10] w-full text-center"
+                        style={{ padding: '2.5rem 2rem 2rem' }}>
+                        <h3 className="font-bold mb-3" style={{ fontSize: '1.2rem', lineHeight: 1.3, color: '#ffffff' }}>{s.Titulo}</h3>
+                        <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)', maxWidth: '280px', margin: '0 auto' }}>
+                          {s.Detalle || s.Descripcion}
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
 
           <button className="swiper-prev-custom absolute top-1/2 -left-2 md:-left-12 z-30 p-3 rounded-full shadow-xl transition-all hidden sm:flex items-center justify-center"
