@@ -7,7 +7,7 @@ export default function NovedadesPage({ data }) {
 
   return (
     <Layout data={data}>
-      <div className="min-h-screen" style={{ paddingTop: "9rem", paddingBottom: "6rem" }}>
+      <div className="min-h-screen" style={{ paddingTop: "6rem", paddingBottom: "6rem" }}>
         <header className="max-w-7xl mx-auto px-6 mb-16 text-center md:text-left">
           <h1 className="text-6xl md:text-8xl font-black italic text-primary dark:text-accent uppercase leading-none tracking-tighter transition-colors">
             Novedades

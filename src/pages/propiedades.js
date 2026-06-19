@@ -6,7 +6,7 @@ export default function PropiedadesPage({ data }) {
   if (!data) return null;
   return (
     <Layout data={data}>
-      <div className="min-h-screen" style={{ paddingTop: "9rem", paddingBottom: "6rem" }}>
+      <div className="min-h-screen" style={{ paddingTop: "6rem", paddingBottom: "6rem" }}>
         <header style={{ maxWidth: '1280px', margin: '0 auto 3rem', padding: '0 1.5rem', textAlign: 'center' }}>
           <h1 style={{ fontSize: 'var(--typo-h1-size)', fontWeight: 800, color: 'var(--text-strong)', lineHeight: 1.1, letterSpacing: 'var(--typo-h1-tracking)' }}>
             Encontrá la propiedad que buscás

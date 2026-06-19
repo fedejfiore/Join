@@ -89,7 +89,7 @@ export default function SucesionesPage({ data }) {
 
   return (
     <Layout data={data}>
-      <div className="min-h-screen" style={{ paddingTop: "9rem", paddingBottom: "6rem" }}>
+      <div className="min-h-screen" style={{ paddingTop: "6rem", paddingBottom: "6rem" }}>
 
         {/* HEADER */}
         <header style={{ maxWidth: '1280px', margin: '0 auto 7rem', padding: '0 1.5rem', textAlign: 'center' }}>
