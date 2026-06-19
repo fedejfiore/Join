@@ -141,8 +141,9 @@ export default function Layout({ children, data }) {
           </div>
           {/* Fila con icono + texto */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-            <div style={{ width: '36px', height: '36px', background: '#660033', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Download size={18} color="#fff" />
+            {/* Ícono: logo JOIN blanco sobre fondo burdeos, igual al ícono de la app */}
+            <div style={{ width: '44px', height: '44px', background: '#660033', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, padding: '8px' }}>
+              <img src="/images/JOIN-Blanco.png" alt="JOIN" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
             <span style={{ fontWeight: 700, fontSize: '13px', color: 'var(--nav-text-hover)' }}>
               {isIOS ? 'Añadir a Inicio' : 'Instalar App JOIN'}

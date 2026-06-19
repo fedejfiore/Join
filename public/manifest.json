@@ -1,23 +1,23 @@
 {
-  "id": "adomus-pro-v1",
-  "name": "Domus Administracion",
-  "short_name": "Domus",
-  "description": "Panel de Propietarios Adomus",
+  "id": "join-inmobiliaria-v1",
+  "name": "JOIN Inmobiliaria & Jurídico",
+  "short_name": "JOIN",
+  "description": "Inmobiliaria y Estudio Jurídico especializado en Sucesiones y Operaciones Simultáneas en Buenos Aires.",
   "lang": "es-AR",
-  "start_url": "/mi-consorcio",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#020617",
-  "theme_color": "#d4af37",
+  "background_color": "#660033",
+  "theme_color": "#660033",
   "icons": [
     {
-      "src": "/favicon.png",
-      "sizes": "752x752",
+      "src": "/images/JOIN-Blanco.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/favicon.png",
-      "sizes": "752x752",
+      "src": "/images/JOIN-Blanco.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     }
