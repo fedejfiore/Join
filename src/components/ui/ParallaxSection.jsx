@@ -43,9 +43,10 @@ export default function ParallaxSection({ children, style = {} }) {
         willChange: 'transform',
         pointerEvents: 'none',
         backgroundImage: [
-          'repeating-linear-gradient(-50deg, transparent 0px, transparent 22px, rgba(255,255,255,0.022) 22px, rgba(255,255,255,0.022) 23px)',
-          'radial-gradient(ellipse 85% 35% at 50% 50%, rgba(204,0,68,0.45) 0%, transparent 55%)',
-          'linear-gradient(to bottom, #000 0%, #000 16%, #330019 25%, #660033 36%, #cc0044 46%, #cc0044 54%, #660033 64%, #330019 75%, #000 84%, #000 100%)',
+          'repeating-linear-gradient(-50deg, transparent 0px, transparent 18px, rgba(255,255,255,0.028) 18px, rgba(255,255,255,0.028) 19px)',
+          'radial-gradient(ellipse 100% 30% at 50% 50%, rgba(255,0,60,0.55) 0%, transparent 60%)',
+          // Negro solo en los extremos (4%), rojo vivo domina agresivamente
+          'linear-gradient(to bottom, #000 0%, #ff0040 4%, #ff0040 96%, #000 100%)',
         ].join(', '),
       }} />
 
