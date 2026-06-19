@@ -2,29 +2,31 @@
 import { useRef, useEffect } from 'react';
 
 /**
- * Sección con efecto parallax JS: el fondo se mueve más lento que el contenido.
- * Usa imagen de fondo real para que el movimiento sea claramente visible.
+ * Sección parallax de 3 capas:
+ *  - Fondo  → se mueve ±120px (más rápido)
+ *  - Texto  → se mueve ±35px  (más lento)
+ *  - Contenedor → fluye normal en el layout
+ * La diferencia de velocidad entre capas crea profundidad obvia.
  */
-export default function ParallaxSection({
-  children,
-  style = {},
-  imageSrc = '/images/heroBG.jpg',   // imagen de fondo — el movimiento es obvio con imágenes
-  gradient = 'linear-gradient(135deg, rgba(26,0,16,0.88) 0%, rgba(102,0,51,0.80) 50%, rgba(51,0,25,0.88) 100%)',
-}) {
+export default function ParallaxSection({ children, style = {} }) {
   const containerRef = useRef(null);
   const bgRef        = useRef(null);
+  const contentRef   = useRef(null);
 
   useEffect(() => {
     const container = containerRef.current;
     const bgEl      = bgRef.current;
-    if (!container || !bgEl) return;
+    const contentEl = contentRef.current;
+    if (!container || !bgEl || !contentEl) return;
 
     const tick = () => {
       const rect     = container.getBoundingClientRect();
       const vh       = window.innerHeight;
       const progress = (vh - rect.top) / (vh + rect.height);
-      // Mueve el fondo ±120px mientras la sección atraviesa el viewport
-      bgEl.style.transform = `translateY(${(progress - 0.5) * 240}px)`;
+      const shift    = (progress - 0.5);           // −0.5 a +0.5
+
+      bgEl.style.transform      = `translateY(${shift * 240}px)`;  // ±120px
+      contentEl.style.transform = `translateY(${shift * 70}px)`;   // ±35px
     };
 
     window.addEventListener('scroll', tick, { passive: true });
@@ -35,31 +37,26 @@ export default function ParallaxSection({
   return (
     <div ref={containerRef} style={{ position: 'relative', overflow: 'hidden', ...style }}>
 
-      {/* Fondo con imagen real — el movimiento es claramente visible */}
+      {/* CAPA 1 — fondo, se mueve más */}
       <div ref={bgRef} style={{
         position: 'absolute',
         top: '-60%', left: 0,
         width: '100%', height: '220%',
-        backgroundImage: `url(${imageSrc})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
         willChange: 'transform',
         pointerEvents: 'none',
-      }}>
-        {/* Overlay de gradiente burdeos sobre la imagen */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: gradient,
-        }} />
-        {/* Glows radiales */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(204,0,68,0.25) 0%, transparent 55%), radial-gradient(circle at 80% 50%, rgba(102,0,51,0.3) 0%, transparent 55%)',
-        }} />
+        backgroundImage: [
+          'repeating-linear-gradient(-55deg, transparent 0px, transparent 18px, rgba(255,255,255,0.022) 18px, rgba(255,255,255,0.022) 19px)',
+          'radial-gradient(ellipse 80% 40% at 50% 28%, rgba(204,0,68,0.35) 0%, transparent 70%)',
+          'radial-gradient(ellipse 60% 30% at 50% 74%, rgba(102,0,51,0.40) 0%, transparent 65%)',
+          'linear-gradient(to bottom, #06000a 0%, #2a0018 18%, #660033 38%, #99003d 50%, #660033 62%, #2a0018 82%, #06000a 100%)',
+        ].join(', '),
+      }} />
+
+      {/* CAPA 2 — contenido (texto), se mueve menos */}
+      <div ref={contentRef} style={{ position: 'relative', zIndex: 1, willChange: 'transform' }}>
+        {children}
       </div>
 
-      {/* Contenido encima del fondo */}
-      {children}
     </div>
   );
 }
