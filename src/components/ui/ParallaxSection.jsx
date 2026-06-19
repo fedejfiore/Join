@@ -23,20 +23,17 @@ export default function ParallaxSection({ children, style = {} }) {
       bg.style.transform      = `translateY(${bgOffset}px)`;
       content.style.transform = `translateY(${-shift * 50}px)`;
 
-      // Sincroniza la máscara del texto con el gradiente del fondo
-      const posY = `${-1.25 * container.offsetHeight + bgOffset}px`;
-      content.style.maskPositionY        = posY;
-      content.style.webkitMaskPositionY  = posY;
+      // Texto visible cuando el burdeos está al centro (shift ≈ 0),
+      // se desvanece suavemente cuando el negro se acerca (|shift| > 0.15)
+      const absShift = Math.abs(shift);
+      const opacity  = Math.max(0, Math.min(1, (0.38 - absShift) / 0.22));
+      content.style.opacity = String(opacity);
     };
 
     window.addEventListener('scroll', tick, { passive: true });
     tick();
     return () => window.removeEventListener('scroll', tick);
   }, []);
-
-  // Máscara: blanco = texto visible, negro = texto invisible
-  // Coincide con el gradiente del fondo: texto aparece donde está el burdeos
-  const MASK = 'linear-gradient(to bottom, black 0%, black 28%, white 38%, white 62%, black 72%, black 100%)';
 
   return (
     <div ref={containerRef} style={{ position: 'relative', overflow: 'hidden', ...style }}>
@@ -55,20 +52,7 @@ export default function ParallaxSection({ children, style = {} }) {
 
       <div
         ref={contentRef}
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          willChange: 'transform',
-          // El texto aparece y desaparece siguiendo al gradiente burdeos del fondo
-          maskImage: MASK,
-          WebkitMaskImage: MASK,
-          maskSize: '100% 350%',
-          WebkitMaskSize: '100% 350%',
-          maskPositionY: '-125%',
-          WebkitMaskPositionY: '-125%',
-          maskRepeat: 'no-repeat',
-          WebkitMaskRepeat: 'no-repeat',
-        }}
+        style={{ position: 'relative', zIndex: 1, willChange: 'transform' }}
       >
         {children}
       </div>
