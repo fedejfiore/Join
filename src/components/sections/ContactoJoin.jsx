@@ -58,7 +58,7 @@ export default function ContactoJoin({ brand, defaultTema = "", propiedadInfo = 
           </div>
 
           {/* COLUMNA DERECHA: FORMULARIO */}
-          <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2.5rem', boxShadow: '0 4px 32px rgba(102,0,51,0.18), 0 1px 6px rgba(0,0,0,0.12)' }}>
+          <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2.5rem', boxShadow: '0 0 0 1px rgba(102,0,51,0.3), 0 8px 40px rgba(102,0,51,0.35), 0 2px 8px rgba(0,0,0,0.2)' }}>
             <h3 style={{ fontSize: '1.375rem', fontWeight: 800, color: 'var(--text-strong)', textAlign: 'center', marginBottom: '2rem' }}>
               Dejanos tu consulta
             </h3>

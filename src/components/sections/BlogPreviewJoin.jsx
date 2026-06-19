@@ -61,7 +61,7 @@ export default function BlogPreviewJoin({ noticias = [] }) {
           ))}
         </div>
 
-        <div className="mt-24 text-center">
+        <div style={{ marginTop: '5rem', paddingTop: '4rem', borderTop: '1px solid var(--divider)', textAlign: 'center' }}>
           <button
             onClick={() => router.push('/blog')}
             style={{ background: '#660033', color: '#fff', padding: '1.1rem 3.5rem', borderRadius: '9999px', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.12em', display: 'inline-flex', alignItems: 'center', gap: '0.75rem', transition: 'transform 0.2s', boxShadow: '0 4px 20px rgba(102,0,51,0.35)' }}
