@@ -77,8 +77,8 @@ export default function PropiedadesList({ propiedades = [] }) {
   return (
     <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 1.5rem' }}>
 
-      {/* BARRA DE FILTROS */}
-      <div style={{
+      {/* BARRA DE FILTROS — sticky solo en desktop, scroll normal en mobile */}
+      <div className="prop-filter" style={{
         background: 'var(--card-bg)',
         border: '1px solid var(--card-border)',
         borderRadius: '1.25rem',
