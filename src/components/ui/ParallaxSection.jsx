@@ -1,31 +1,34 @@
 "use client";
 import { useRef, useEffect } from 'react';
 
-/**
- * Parallax simple: el fondo se mueve a distinta velocidad que el contenido.
- * El div que sigue a este componente debe tener:
- *   position: relative; zIndex: 2; borderRadius: '2rem 2rem 0 0';
- *   marginTop: '-2rem'; background: var(--card-bg) o el color del fondo siguiente
- * → crea el efecto de "tarjeta que emerge por debajo" del parallax.
- */
 export default function ParallaxSection({ children, style = {} }) {
   const containerRef = useRef(null);
   const bgRef        = useRef(null);
   const contentRef   = useRef(null);
+  const tintRef      = useRef(null);
 
   useEffect(() => {
     const container = containerRef.current;
     const bg        = bgRef.current;
     const content   = contentRef.current;
-    if (!container || !bg || !content) return;
+    const tint      = tintRef.current;
+    if (!container || !bg || !content || !tint) return;
 
     const tick = () => {
       const rect  = container.getBoundingClientRect();
       const vh    = window.innerHeight;
       if (rect.bottom < -100 || rect.top > vh + 100) return;
-      const shift = (vh - rect.top) / (vh + rect.height) - 0.5;
-      bg.style.transform      = `translateY(${-shift * 500}px)`;
+
+      const shift    = (vh - rect.top) / (vh + rect.height) - 0.5;
+      const bgOffset = -shift * 500;
+
+      bg.style.transform      = `translateY(${bgOffset}px)`;
       content.style.transform = `translateY(${-shift * 50}px)`;
+
+      // El tinte sigue exactamente al fondo para que el color de las letras
+      // coincida con la proporción de negro que las cubre
+      const h = container.offsetHeight;
+      tint.style.backgroundPositionY = `${-1.25 * h + bgOffset}px`;
     };
 
     window.addEventListener('scroll', tick, { passive: true });
@@ -35,7 +38,8 @@ export default function ParallaxSection({ children, style = {} }) {
 
   return (
     <div ref={containerRef} style={{ position: 'relative', overflow: 'hidden', ...style }}>
-      {/* Fondo 350% alto: movimiento ±250px claramente visible en zona opaca */}
+
+      {/* Fondo parallax */}
       <div ref={bgRef} style={{
         position: 'absolute',
         top: '-125%', left: 0,
@@ -43,16 +47,32 @@ export default function ParallaxSection({ children, style = {} }) {
         willChange: 'transform',
         pointerEvents: 'none',
         backgroundImage: [
-          'repeating-linear-gradient(-50deg, transparent 0px, transparent 22px, rgba(255,255,255,0.022) 22px, rgba(255,255,255,0.022) 23px)',
           'radial-gradient(ellipse 85% 25% at 50% 50%, rgba(204,0,68,0.45) 0%, transparent 55%)',
-          // Extremos con el color exacto del fondo de página (--parallax-edge)
           'linear-gradient(to bottom, var(--parallax-edge) 0%, var(--parallax-edge) 32%, #660033 37%, #cc0044 47%, #cc0044 53%, #660033 63%, var(--parallax-edge) 68%, var(--parallax-edge) 100%)',
         ].join(', '),
       }} />
 
+      {/* Contenido + capa de tinte sincronizada */}
       <div ref={contentRef} style={{ position: 'relative', zIndex: 1, willChange: 'transform' }}>
         {children}
+
+        {/*
+          Capa de tinte: gradiente inverso (burdeos donde el fondo es negro, transparente donde es burdeos).
+          mix-blend-mode: color → tiñe las letras blancas de burdeos en la proporción exacta
+          en que el negro las va cubriendo al scrollear.
+        */}
+        <div ref={tintRef} style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 10,
+          pointerEvents: 'none',
+          backgroundImage: 'linear-gradient(to bottom, #cc0044 0%, #cc0044 32%, transparent 37%, transparent 63%, #cc0044 68%, #cc0044 100%)',
+          backgroundSize: '100% 350%',
+          backgroundRepeat: 'no-repeat',
+          mixBlendMode: 'color',
+        }} />
       </div>
+
     </div>
   );
 }
