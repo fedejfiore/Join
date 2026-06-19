@@ -247,13 +247,18 @@ html:not(.dark) select option {
 /* Card hover shadow — aplica a todos los divs con border inline en secciones */
 .card-hover {
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+  /* Sombra burdeos sutil en reposo — efecto 3D permanente */
+  box-shadow: 0 2px 12px rgba(102,0,51,0.10), 0 1px 3px rgba(0,0,0,0.12);
 }
 .card-hover:hover {
-  box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 32px rgba(102,0,51,0.22), 0 4px 12px rgba(0,0,0,0.15);
   transform: translateY(-3px);
 }
+html:not(.dark) .card-hover {
+  box-shadow: 0 2px 12px rgba(102,0,51,0.08), 0 1px 3px rgba(0,0,0,0.07);
+}
 html:not(.dark) .card-hover:hover {
-  box-shadow: 0 12px 40px rgba(0,0,0,0.10);
+  box-shadow: 0 8px 32px rgba(102,0,51,0.15), 0 4px 12px rgba(0,0,0,0.08);
 }
 
 /* ============================================================

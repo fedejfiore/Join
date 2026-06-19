@@ -51,7 +51,7 @@ export default function ParallaxSection({ children, style = {} }) {
 
       <div
         ref={contentRef}
-        style={{ position: 'relative', zIndex: 1, willChange: 'transform' }}
+        style={{ position: 'relative', zIndex: 1, willChange: 'transform', minHeight: '100%' }}
       >
         {children}
       </div>
