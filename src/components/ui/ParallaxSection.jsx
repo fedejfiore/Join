@@ -5,14 +5,12 @@ export default function ParallaxSection({ children, style = {} }) {
   const containerRef = useRef(null);
   const bgRef        = useRef(null);
   const contentRef   = useRef(null);
-  const tintRef      = useRef(null);
 
   useEffect(() => {
     const container = containerRef.current;
     const bg        = bgRef.current;
     const content   = contentRef.current;
-    const tint      = tintRef.current;
-    if (!container || !bg || !content || !tint) return;
+    if (!container || !bg || !content) return;
 
     const tick = () => {
       const rect  = container.getBoundingClientRect();
@@ -25,10 +23,11 @@ export default function ParallaxSection({ children, style = {} }) {
       bg.style.transform      = `translateY(${bgOffset}px)`;
       content.style.transform = `translateY(${-shift * 50}px)`;
 
-      // El tinte sigue exactamente al fondo para que el color de las letras
-      // coincida con la proporción de negro que las cubre
+      // Sincroniza la posición del gradiente del texto con el fondo
+      // Fondo: top=-125% del container, height=350% → gradiente 50% queda en el centro del container
+      // Con bgOffset: el gradiente se desplaza. El texto debe seguir exactamente.
       const h = container.offsetHeight;
-      tint.style.backgroundPositionY = `${-1.25 * h + bgOffset}px`;
+      content.style.backgroundPositionY = `${-1.25 * h + bgOffset}px`;
     };
 
     window.addEventListener('scroll', tick, { passive: true });
@@ -52,25 +51,30 @@ export default function ParallaxSection({ children, style = {} }) {
         ].join(', '),
       }} />
 
-      {/* Contenido + capa de tinte sincronizada */}
-      <div ref={contentRef} style={{ position: 'relative', zIndex: 1, willChange: 'transform' }}>
-        {children}
-
-        {/*
-          Capa de tinte: gradiente inverso (burdeos donde el fondo es negro, transparente donde es burdeos).
-          mix-blend-mode: color → tiñe las letras blancas de burdeos en la proporción exacta
-          en que el negro las va cubriendo al scrollear.
-        */}
-        <div ref={tintRef} style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 10,
-          pointerEvents: 'none',
-          backgroundImage: 'linear-gradient(to bottom, #cc0044 0%, #cc0044 32%, transparent 37%, transparent 63%, #cc0044 68%, #cc0044 100%)',
+      {/*
+        Texto con gradiente sincronizado:
+        - background-clip: text → el gradiente solo se ve donde hay letras
+        - webkit-text-fill-color: transparent → las letras heredan el gradiente del padre
+        - Gradiente inverso al fondo: blanco donde hay burdeos, burdeos donde hay negro
+        - backgroundPositionY se actualiza en tick() para sincronizarse con el fondo
+      */}
+      <div
+        ref={contentRef}
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          willChange: 'transform',
+          backgroundImage: 'linear-gradient(to bottom, #cc0044 0%, #cc0044 32%, #ffffff 37%, #ffffff 63%, #cc0044 68%, #cc0044 100%)',
           backgroundSize: '100% 350%',
+          backgroundPositionY: '-125%',
           backgroundRepeat: 'no-repeat',
-          mixBlendMode: 'color',
-        }} />
+          WebkitBackgroundClip: 'text',
+          backgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          color: 'transparent',
+        }}
+      >
+        {children}
       </div>
 
     </div>
