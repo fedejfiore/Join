@@ -45,8 +45,8 @@ export default function ParallaxSection({ children, style = {} }) {
         backgroundImage: [
           'repeating-linear-gradient(-50deg, transparent 0px, transparent 22px, rgba(255,255,255,0.022) 22px, rgba(255,255,255,0.022) 23px)',
           'radial-gradient(ellipse 85% 25% at 50% 50%, rgba(204,0,68,0.45) 0%, transparent 55%)',
-          // Negro ocupa 65% (0-32% y 68-100%), burdeos solo 36% del centro, transición 5%
-          'linear-gradient(to bottom, #000 0%, #000 32%, #660033 37%, #cc0044 47%, #cc0044 53%, #660033 63%, #000 68%, #000 100%)',
+          // Extremos con el color exacto del fondo de página (--parallax-edge)
+          'linear-gradient(to bottom, var(--parallax-edge) 0%, var(--parallax-edge) 32%, #660033 37%, #cc0044 47%, #cc0044 53%, #660033 63%, var(--parallax-edge) 68%, var(--parallax-edge) 100%)',
         ].join(', '),
       }} />
 

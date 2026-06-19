@@ -259,8 +259,8 @@ html:not(.dark) .card-hover:hover {
 /* ============================================================
    PARALLAX — color del borde que se funde con el fondo de página
    ============================================================ */
-:root          { --parallax-edge: #000000; }  /* dark mode: negro */
-html:not(.dark){ --parallax-edge: #f2f2f2; }  /* light mode: gris claro de la página */
+:root          { --parallax-edge: #0f0f0f; }  /* dark mode: igual al body */
+html:not(.dark){ --parallax-edge: #f2f2f2; }  /* light mode: igual al body */
 
 /* ============================================================
    PARALLAX JS — fondo que se mueve más lento que el contenido
