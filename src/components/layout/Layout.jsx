@@ -95,10 +95,9 @@ export default function Layout({ children, data }) {
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDesc} />
         <meta property="og:type" content="website" />
-        <link rel="icon" type="image/svg+xml" href="/join-app-icon.svg" />
-        <link rel="icon" type="image/png" href={favicon} />
-        {/* apple-touch-icon: ícono de la app en iOS — fondo burdeos + logo JOIN blanco */}
-        <link rel="apple-touch-icon" href="/join-app-icon.svg" />
+        <link rel="icon" type="image/png" href="/api/app-icon" />
+        {/* apple-touch-icon: PNG generado con fondo burdeos + logo JOIN blanco */}
+        <link rel="apple-touch-icon" href="/api/app-icon" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#660033" />
         <meta name="mobile-web-app-capable" content="yes" />
