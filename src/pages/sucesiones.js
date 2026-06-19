@@ -204,8 +204,10 @@ export default function SucesionesPage({ data }) {
             )}
           </div>
         </ParallaxSection>
-        <div id="contacto" style={{ maxWidth: '1280px', margin: '0 auto', padding: '4rem 1.5rem 0' }}>
-          <ContactoJoin brand={data.brand} defaultTema="Consultar por sucesión" />
+        <div id="contacto" style={{ position: 'relative', zIndex: 2, background: 'var(--card-bg)', borderRadius: '2rem 2rem 0 0', marginTop: '-2rem', padding: '4rem 1.5rem 0' }}>
+          <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+            <ContactoJoin brand={data.brand} defaultTema="Consultar por sucesión" />
+          </div>
         </div>
 
       </div>

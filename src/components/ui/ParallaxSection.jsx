@@ -2,39 +2,30 @@
 import { useRef, useEffect } from 'react';
 
 /**
- * Sección "pinned": se queda fija mientras el resto de la página sigue scrolleando.
- * El wrapper invisible ocupa 2.5x la altura y da espacio de scroll.
- * Mientras la sección está fija, el fondo se desplaza sutilmente (parallax interno).
+ * Parallax simple: el fondo se mueve a distinta velocidad que el contenido.
+ * El div que sigue a este componente debe tener:
+ *   position: relative; zIndex: 2; borderRadius: '2rem 2rem 0 0';
+ *   marginTop: '-2rem'; background: var(--card-bg) o el color del fondo siguiente
+ * → crea el efecto de "tarjeta que emerge por debajo" del parallax.
  */
 export default function ParallaxSection({ children, style = {} }) {
-  const wrapperRef = useRef(null);
-  const sectionRef = useRef(null);
-  const bgRef      = useRef(null);
-  const contentRef = useRef(null);
+  const containerRef = useRef(null);
+  const bgRef        = useRef(null);
+  const contentRef   = useRef(null);
 
   useEffect(() => {
-    const wrapper  = wrapperRef.current;
-    const section  = sectionRef.current;
-    const bg       = bgRef.current;
-    const content  = contentRef.current;
-    if (!wrapper || !section || !bg || !content) return;
-
-    // El wrapper toma 2.5x la altura de la sección para dar espacio de scroll
-    const h = section.offsetHeight;
-    wrapper.style.height = `${h * 2.5}px`;
+    const container = containerRef.current;
+    const bg        = bgRef.current;
+    const content   = contentRef.current;
+    if (!container || !bg || !content) return;
 
     const tick = () => {
-      const wr   = wrapper.getBoundingClientRect();
-      const vh   = window.innerHeight;
-      if (wr.bottom < 0 || wr.top > vh) return;
-
-      // Progreso dentro del período "pinned" (0 cuando entra, 1 cuando sale)
-      const progress = Math.max(0, Math.min(1, (vh - wr.top) / (wr.height + vh)));
-      const shift    = progress - 0.5;
-
-      // Movimiento sutil del fondo mientras la sección está congelada
-      bg.style.transform      = `translateY(${shift * 100}px)`;
-      content.style.transform = `translateY(${shift * 25}px)`;
+      const rect  = container.getBoundingClientRect();
+      const vh    = window.innerHeight;
+      if (rect.bottom < -100 || rect.top > vh + 100) return;
+      const shift = (vh - rect.top) / (vh + rect.height) - 0.5;
+      bg.style.transform      = `translateY(${-shift * 500}px)`;
+      content.style.transform = `translateY(${-shift * 50}px)`;
     };
 
     window.addEventListener('scroll', tick, { passive: true });
@@ -42,43 +33,24 @@ export default function ParallaxSection({ children, style = {} }) {
     return () => window.removeEventListener('scroll', tick);
   }, []);
 
-  // Separar margin del resto del style (margin va en el wrapper, no en la sección sticky)
-  const { margin, marginTop, marginBottom, marginLeft, marginRight, ...sectionStyle } = style;
-
   return (
-    <div
-      ref={wrapperRef}
-      style={{ position: 'relative', margin, marginTop, marginBottom, marginLeft, marginRight }}
-    >
-      <div
-        ref={sectionRef}
-        style={{
-          position: 'sticky',
-          top: '88px',                    // debajo del navbar
-          clipPath: 'inset(0)',           // recorta el fondo extendido sin bloquear sticky
-          WebkitClipPath: 'inset(0)',
-          overflow: 'hidden',
-          ...sectionStyle,
-        }}
-      >
-        {/* Fondo que se mueve suavemente mientras la sección está pinned */}
-        <div ref={bgRef} style={{
-          position: 'absolute',
-          top: '-60%', left: 0,
-          width: '100%', height: '220%',
-          willChange: 'transform',
-          pointerEvents: 'none',
-          backgroundImage: [
-            'repeating-linear-gradient(-50deg, transparent 0px, transparent 22px, rgba(255,255,255,0.022) 22px, rgba(255,255,255,0.022) 23px)',
-            'radial-gradient(ellipse 80% 40% at 50% 50%, rgba(204,0,68,0.4) 0%, transparent 60%)',
-            'linear-gradient(135deg, #1a0010 0%, #660033 50%, #330019 100%)',
-          ].join(', '),
-        }} />
+    <div ref={containerRef} style={{ position: 'relative', overflow: 'hidden', ...style }}>
+      {/* Fondo 350% alto: movimiento ±250px claramente visible en zona opaca */}
+      <div ref={bgRef} style={{
+        position: 'absolute',
+        top: '-125%', left: 0,
+        width: '100%', height: '350%',
+        willChange: 'transform',
+        pointerEvents: 'none',
+        backgroundImage: [
+          'repeating-linear-gradient(-50deg, transparent 0px, transparent 22px, rgba(255,255,255,0.022) 22px, rgba(255,255,255,0.022) 23px)',
+          'radial-gradient(ellipse 85% 35% at 50% 50%, rgba(204,0,68,0.45) 0%, transparent 55%)',
+          'linear-gradient(to bottom, #000 0%, #000 16%, #330019 25%, #660033 36%, #cc0044 46%, #cc0044 54%, #660033 64%, #330019 75%, #000 84%, #000 100%)',
+        ].join(', '),
+      }} />
 
-        {/* Contenido */}
-        <div ref={contentRef} style={{ position: 'relative', zIndex: 1, willChange: 'transform' }}>
-          {children}
-        </div>
+      <div ref={contentRef} style={{ position: 'relative', zIndex: 1, willChange: 'transform' }}>
+        {children}
       </div>
     </div>
   );
