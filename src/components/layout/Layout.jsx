@@ -95,9 +95,8 @@ export default function Layout({ children, data }) {
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDesc} />
         <meta property="og:type" content="website" />
-        <link rel="icon" type="image/png" href="/api/app-icon" />
-        {/* apple-touch-icon: PNG generado con fondo burdeos + logo JOIN blanco */}
-        <link rel="apple-touch-icon" href="/api/app-icon" />
+        <link rel="icon" type="image/png" href="/JOINlogo.png" />
+        <link rel="apple-touch-icon" href="/JOINlogo.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#660033" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -142,10 +141,8 @@ export default function Layout({ children, data }) {
           </div>
           {/* Fila con icono + texto */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-            {/* Ícono: logo JOIN blanco sobre fondo burdeos, igual al ícono de la app */}
-            <div style={{ width: '44px', height: '44px', background: '#660033', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, padding: '8px' }}>
-              <img src="/images/JOIN-Blanco.png" alt="JOIN" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-            </div>
+            {/* Ícono: exactamente el mismo que aparece en pantalla de inicio */}
+            <img src="/JOINlogo.png" alt="JOIN" style={{ width: '44px', height: '44px', borderRadius: '10px', flexShrink: 0 }} />
             <span style={{ fontWeight: 700, fontSize: '13px', color: 'var(--nav-text-hover)' }}>
               {isIOS ? 'Añadir a Inicio' : 'Instalar App JOIN'}
             </span>

@@ -10,10 +10,16 @@
   "theme_color": "#660033",
   "icons": [
     {
-      "src": "/api/app-icon",
+      "src": "/JOINlogo.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/JOINlogo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
