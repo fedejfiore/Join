@@ -8,14 +8,16 @@ export default function NosotrosJoin({ data }) {
     return null;
   };
 
-  const subtitulo = v('subtitulo','Subtitulo','Subtítulo','subtítulo')
+  // Subtitulo: acepta Titulo/titulo/subtitulo/Subtitulo/etc.
+  const subtitulo = v('Titulo','titulo','Título','título','subtitulo','Subtitulo','Subtítulo','subtítulo')
     || 'Unimos una gestión inmobiliaria moderna con seguridad jurídica.';
-  const texto = v('texto','Texto','descripcion','Descripcion','descripción','Descripción')
-    || 'Vender o alquilar una propiedad no es solo colocar un cartel o publicarla en internet. Implica una decisión patrimonial de alto valor que requiere precisión, estrategia y, sobre todo, conocimientos legales.\n\nNuestra propuesta surge de dos observaciones claras en el mercado. Por un lado, el agotamiento de los herederos —generalmente por errores de comunicación, demoras y costos extra— cuando tienen que contratar, por separado, un abogado para la sucesión y una inmobiliaria para la venta. Por el otro, la desconfianza de propietarios, compradores e inquilinos por no comprender los efectos legales y prácticos de la documentación que están firmando.\n\nEn JOIN venimos a superar la fragmentación del servicio tradicional y a unificar dos profesiones bajo un mismo techo, para transformar operaciones inmobiliarias —y procesos legales— en soluciones patrimoniales simples y claras.';
-  const imagen = v('imagen','Imagen','foto','Foto');
-  const fundacion   = v('fundacion','Fundacion','fundación','Fundación');
-  const operaciones = v('operaciones','Operaciones');
-  const clientes    = v('clientes','Clientes');
+  // Texto: acepta Descripcion/descripcion/texto/Texto
+  const texto = v('Descripcion','descripcion','Descripción','descripción','texto','Texto')
+    || 'Vender o alquilar una propiedad no es solo colocar un cartel o publicarla en internet.';
+  const imagen = v('Imagen','imagen','Foto','foto');
+  const fundacion   = v('Fundacion','fundacion','Fundación','fundación');
+  const operaciones = v('Operaciones','operaciones');
+  const clientes    = v('Clientes','clientes');
 
   const stats = [
     fundacion   && { label: 'Fundada en',  value: fundacion },
