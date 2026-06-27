@@ -27,6 +27,7 @@ export default function Footer({ brand, setup }) {
   const email     = brand?.email?.valor          || brand?.Mail?.valor || 'hola@ejoin.com.ar';
   const cucicba   = brand?.cucicba?.valor        || brand?.RPA?.valor;
   const cpacf     = brand?.cpacf?.valor          || brand?.CPACF?.valor;
+  const titular   = brand?.titular?.valor        || brand?.Titular?.valor;
 
   const descripcion = brand?.descripcion_corta?.valor
     || 'Inmobiliaria y Estudio Jurídico especializado en Sucesiones y Operaciones Simultáneas en Buenos Aires.';
@@ -73,10 +74,11 @@ export default function Footer({ brand, setup }) {
             <p style={{ fontSize: '11px', lineHeight: 1.7, color: 'var(--footer-text-muted)' }}>
               {descripcion}
             </p>
-            {(cucicba || cpacf) && (
+            {(titular || cucicba || cpacf) && (
               <div style={{ fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--footer-text-copy)', lineHeight: 1.8 }}>
-                {cucicba && <p>CUCICBA {cucicba}</p>}
-                {cpacf   && <p>CPACF {cpacf}</p>}
+                {titular  && <p style={{ marginBottom: '2px', color: 'var(--footer-text-muted)', textTransform: 'none', letterSpacing: '0.05em' }}>{titular}</p>}
+                {cucicba  && <p>CUCICBA {cucicba}</p>}
+                {cpacf    && <p>CPACF {cpacf}</p>}
               </div>
             )}
           </div>
