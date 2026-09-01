@@ -45,17 +45,25 @@ export function toDirectImageUrl(url) {
   return id ? `https://lh3.googleusercontent.com/d/${id}` : url;
 }
 
+const FETCH_TIMEOUT_MS = 10_000;
+
 async function fetchCSV(gid) {
   const url = `https://docs.google.com/spreadsheets/d/e/${SHEET_PUB_ID}/pub?gid=${gid}&single=true&output=csv`;
-  const response = await fetch(url + '&cb=' + Date.now());
-  const csvText = await response.text();
-  return new Promise((resolve) => {
-    Papa.parse(csvText, {
-      header: true,
-      skipEmptyLines: true,
-      complete: (results) => resolve(results.data),
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    const response = await fetch(url + '&cb=' + Date.now(), { signal: controller.signal });
+    const csvText = await response.text();
+    return new Promise((resolve) => {
+      Papa.parse(csvText, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => resolve(results.data),
+      });
     });
-  });
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 async function fetchCSVSafe(gid) {
@@ -77,30 +85,33 @@ const mapConfig = (arr) => {
   }, {});
 };
 
-export async function getAllSiteData() {
-  // Pestañas con GID conocido (siempre se buscan)
-  const fixedKeys = [
-    'brand','servicios','proceso','banner','nosotros','valores',
-    'FAQ','noticias','MKT_Redirecciones','SETUP','config_accesibilidad',
-    'SETUP_mkt','formulario','propiedades','contacto',
-  ];
+// Pestañas con GID conocido (siempre se buscan)
+const FIXED_KEYS = [
+  'brand','servicios','proceso','banner','nosotros','valores',
+  'FAQ','noticias','MKT_Redirecciones','SETUP','config_accesibilidad',
+  'SETUP_mkt','formulario','propiedades','contacto',
+];
 
-  // Pestañas nuevas (solo si tienen GID cargado)
-  const dynamicKeys = [
-    'sucesiones','sucesiones_porque','sucesiones_proceso','sucesiones_docs','sucesiones_faq',
-    'tasaciones','tasaciones_docs','tasaciones_propuesta','tasaciones_faq',
-    'juridico','juridico_areas','valores_items',
-  ];
+// Pestañas nuevas (solo si tienen GID cargado)
+const DYNAMIC_KEYS = [
+  'sucesiones','sucesiones_porque','sucesiones_proceso','sucesiones_docs','sucesiones_faq',
+  'tasaciones','tasaciones_docs','tasaciones_propuesta','tasaciones_faq',
+  'juridico','juridico_areas','valores_items',
+];
 
+async function fetchAllRaw() {
   const [fixedResults, dynamicResults] = await Promise.all([
-    Promise.all(fixedKeys.map(k => fetchCSV(GIDS[k]))),
-    Promise.all(dynamicKeys.map(k => fetchCSVSafe(GIDS[k]))),
+    Promise.all(FIXED_KEYS.map(k => fetchCSV(GIDS[k]))),
+    Promise.all(DYNAMIC_KEYS.map(k => fetchCSVSafe(GIDS[k]))),
   ]);
 
   const raw = {};
-  fixedKeys.forEach((k, i) => { raw[k] = fixedResults[i]; });
-  dynamicKeys.forEach((k, i) => { raw[k] = dynamicResults[i]; });
+  FIXED_KEYS.forEach((k, i) => { raw[k] = fixedResults[i]; });
+  DYNAMIC_KEYS.forEach((k, i) => { raw[k] = dynamicResults[i]; });
+  return raw;
+}
 
+function buildSiteData(raw) {
   const ON = (arr) => (arr || []).filter(r => r.ON_OFF === 'ON');
 
   return {
@@ -136,4 +147,31 @@ export async function getAllSiteData() {
     tasaciones_faq:       ON(raw.tasaciones_faq),
     juridico_areas:       ON(raw.juridico_areas),
   };
+}
+
+// Caché en memoria del servidor: si hay una copia de menos de CACHE_TTL_MS,
+// se sirve directo sin volver a consultar el Sheet. Si está vieja (o no hay
+// ninguna) se intenta actualizar, pero si el Sheet falla o tarda de más se
+// sigue mostrando la última copia buena en vez de colgar la página.
+const CACHE_TTL_MS = 60_000;
+let cache = null; // { data, timestamp }
+
+export async function getAllSiteData() {
+  const now = Date.now();
+  if (cache && (now - cache.timestamp) < CACHE_TTL_MS) {
+    return cache.data;
+  }
+
+  try {
+    const raw = await fetchAllRaw();
+    const data = buildSiteData(raw);
+    cache = { data, timestamp: now };
+    return data;
+  } catch (e) {
+    if (cache) {
+      console.error('getAllSiteData: fallo el fetch al Sheet, sirviendo la última copia buena:', e.message);
+      return cache.data;
+    }
+    throw e;
+  }
 }
