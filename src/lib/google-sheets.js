@@ -35,6 +35,16 @@ const GIDS = {
   valores_items:       '695950307',
 };
 
+// Convierte un link de "compartir" de Google Drive (view/open/id=) en una URL
+// de imagen directa, servible desde <img src="...">. Si no es un link de
+// Drive, lo devuelve sin tocar.
+export function toDirectImageUrl(url) {
+  if (!url || !url.includes('drive.google.com')) return url;
+  const match = url.match(/\/d\/([^/]+)/) || url.match(/id=([^&]+)/);
+  const id = match ? match[1] : null;
+  return id ? `https://lh3.googleusercontent.com/d/${id}` : url;
+}
+
 async function fetchCSV(gid) {
   const url = `https://docs.google.com/spreadsheets/d/e/${SHEET_PUB_ID}/pub?gid=${gid}&single=true&output=csv`;
   const response = await fetch(url + '&cb=' + Date.now());

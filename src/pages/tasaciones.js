@@ -56,7 +56,7 @@ function Accordion({ items }) {
             onClick={() => setOpen(open === i ? null : i)}
             style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem 1.5rem', textAlign: 'left', gap: '1rem', background: 'none', border: 'none', cursor: 'pointer' }}
           >
-            <span style={{ fontWeight: 700, fontSize: '14px', lineHeight: 1.4, color: 'var(--text-strong)' }}>{item.Pregunta}</span>
+            <SheetText as="span" text={item.Pregunta} style={{ fontWeight: 700, fontSize: '14px', lineHeight: 1.4, color: 'var(--text-strong)' }} />
             <span style={{ color: '#cc0044', flexShrink: 0 }}>
               {open === i ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
             </span>
@@ -86,9 +86,7 @@ export default function TasacionesPage({ data }) {
 
         {/* HEADER */}
         <header style={{ maxWidth: '1280px', margin: '0 auto 7rem', padding: '0 1.5rem', textAlign: 'center' }}>
-          <h1 style={{ fontSize: 'var(--typo-h1-size)', fontWeight: 900, color: 'var(--text-strong)', lineHeight: 1.05, letterSpacing: 'var(--typo-h1-tracking)' }}>
-            {v('titulo')}
-          </h1>
+          <SheetText as="h1" text={v('titulo')} style={{ fontSize: 'var(--typo-h1-size)', fontWeight: 900, color: 'var(--text-strong)', lineHeight: 1.05, letterSpacing: 'var(--typo-h1-tracking)' }} />
           <div style={{ width: '6rem', height: '5px', background: '#660033', margin: '2rem auto', borderRadius: '3px' }} />
           <p style={{ maxWidth: '720px', margin: '0 auto 1rem', fontWeight: 500, lineHeight: 1.75, color: 'var(--text-secondary)', fontSize: '1.0625rem' }}>
             <SheetText text={v('subtitulo_1')} />
@@ -101,15 +99,13 @@ export default function TasacionesPage({ data }) {
             onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
             onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
           >
-            {v('cta_label')}
+            <SheetText text={v('cta_label')} />
           </a>
         </header>
 
         {/* DOCUMENTACIÓN NECESARIA */}
         <section className="scroll-reveal" style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
-          <h2 style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '1rem' }}>
-            {v('section_docs_titulo')}
-          </h2>
+          <SheetText as="h2" text={v('section_docs_titulo')} style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '1rem' }} />
           <SheetText as="p" text={v('section_docs_sub')} style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }} />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {docs.map((item, i) => {
@@ -120,7 +116,7 @@ export default function TasacionesPage({ data }) {
                     <Icon size={20} />
                   </div>
                   <div>
-                    <p style={{ fontWeight: 700, fontSize: '14px', marginBottom: '4px', color: 'var(--text-strong)' }}>{item.Titulo}</p>
+                    <SheetText as="p" text={item.Titulo} style={{ fontWeight: 700, fontSize: '14px', marginBottom: '4px', color: 'var(--text-strong)' }} />
                     <p style={{ fontSize: '12px', lineHeight: 1.65, color: 'var(--text-muted)' }}><SheetText text={item.Texto} /></p>
                   </div>
                 </div>
@@ -131,9 +127,7 @@ export default function TasacionesPage({ data }) {
 
         {/* PROPUESTA DE VALOR */}
         <section className="scroll-reveal" style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
-          <h2 style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '1rem' }}>
-            {v('section_propuesta_titulo')}
-          </h2>
+          <SheetText as="h2" text={v('section_propuesta_titulo')} style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '1rem' }} />
           <SheetText as="p" text={v('section_propuesta_sub')} style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             {propuesta.map((item, i) => {
@@ -144,7 +138,7 @@ export default function TasacionesPage({ data }) {
                     <Icon size={26} />
                   </div>
                   <div style={{ flex: 1, minWidth: '240px' }}>
-                    <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--text-strong)', marginBottom: '0.5rem' }}>{item.Titulo}</h3>
+                    <SheetText as="h3" text={item.Titulo} style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--text-strong)', marginBottom: '0.5rem' }} />
                     <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text-secondary)' }}><SheetText text={item.Texto} /></p>
                   </div>
                 </div>
@@ -155,9 +149,7 @@ export default function TasacionesPage({ data }) {
 
         {/* FAQ */}
         <section className="scroll-reveal" style={{ maxWidth: '800px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
-          <h2 style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '1rem' }}>
-            {v('section_faq_titulo')}
-          </h2>
+          <SheetText as="h2" text={v('section_faq_titulo')} style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '1rem' }} />
           <SheetText as="p" text={v('section_faq_sub')} style={{ textAlign: 'center', maxWidth: '480px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }} />
           <Accordion items={faqs} />
         </section>
@@ -165,9 +157,7 @@ export default function TasacionesPage({ data }) {
         {/* PARALLAX CONTACTO */}
         <ParallaxSection style={{ padding: '5rem 1.5rem' }}>
           <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }}>
-              {v('contacto_titulo')}
-            </h2>
+            <SheetText as="h2" text={v('contacto_titulo')} style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }} />
           </div>
         </ParallaxSection>
         <div id="contacto" style={{ maxWidth: '1280px', margin: '0 auto', padding: '4rem 1.5rem 0' }}>

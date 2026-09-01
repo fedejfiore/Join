@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import dynamic from 'next/dynamic';
+import SheetText from '../../lib/sheet-text';
 
 const MapaListado = dynamic(() => import('./MapaListado'), { ssr: false, loading: () => (
   <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--card-bg)', color: 'var(--text-muted)', fontSize: '13px', fontWeight: 600 }}>
@@ -211,9 +212,7 @@ export default function PropiedadesList({ propiedades = [] }) {
                       <p style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>
                         {prop.Tipo} · {prop.Barrio}
                       </p>
-                      <h3 style={{ fontSize: '1rem', fontWeight: 700, lineHeight: 1.35, color: 'var(--text-strong)', marginBottom: '0.75rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                        {prop.Titulo}
-                      </h3>
+                      <SheetText as="h3" text={prop.Titulo} style={{ fontSize: '1rem', fontWeight: 700, lineHeight: 1.35, color: 'var(--text-strong)', marginBottom: '0.75rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }} />
                       <p style={{ fontSize: '1.375rem', fontWeight: 900, color: '#660033', marginBottom: '2px' }}>
                         {prop.Moneda} {Number(prop.Precio).toLocaleString('es-AR')}
                       </p>

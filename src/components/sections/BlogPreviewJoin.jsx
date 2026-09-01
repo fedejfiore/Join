@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from 'next/router';
 import { ArrowRight } from 'lucide-react';
+import SheetText from '../../lib/sheet-text';
 
 export default function BlogPreviewJoin({ noticias = [] }) {
   const router = useRouter();
@@ -46,13 +47,10 @@ export default function BlogPreviewJoin({ noticias = [] }) {
                 <p style={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)', marginBottom: '0.875rem' }}>
                   {nota.Fecha}
                 </p>
-                <h3 style={{ fontSize: '1.0625rem', fontWeight: 700, lineHeight: 1.4, marginBottom: '0.875rem', color: 'var(--text-strong)', transition: 'color 0.2s' }}
-                  className="group-hover:text-[#cc0044]">
-                  {nota.Titulo}
-                </h3>
-                <p style={{ fontSize: '14px', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '1.75rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                  {nota.Copete}
-                </p>
+                <SheetText as="h3" text={nota.Titulo} className="group-hover:text-[#cc0044]"
+                  style={{ fontSize: '1.0625rem', fontWeight: 700, lineHeight: 1.4, marginBottom: '0.875rem', color: 'var(--text-strong)', transition: 'color 0.2s' }} />
+                <SheetText as="p" text={nota.Copete}
+                  style={{ fontSize: '14px', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '1.75rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }} />
                 <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '12px', fontWeight: 700, color: '#cc0044' }}>
                   Leer más <ArrowRight size={14} />
                 </div>

@@ -11,7 +11,7 @@ export default function About({ data }) {
       <div className="max-width-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
         <div className="space-y-6">
           <h2 className="text-5xl md:text-6xl">
-            {titulo}
+            <SheetText text={titulo} />
           </h2>
           <div className="text-slate-600 dark:text-slate-300 prose prose-slate dark:prose-invert max-w-none leading-relaxed text-justify">
             <SheetText as="div" text={descripcion} />

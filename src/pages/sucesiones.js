@@ -62,7 +62,7 @@ function Accordion({ items }) {
             onClick={() => setOpen(open === i ? null : i)}
             style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem 1.5rem', textAlign: 'left', gap: '1rem', background: 'none', border: 'none', cursor: 'pointer' }}
           >
-            <span style={{ fontWeight: 700, fontSize: '14px', lineHeight: 1.4, color: 'var(--text-strong)' }}>{item.Pregunta}</span>
+            <SheetText as="span" text={item.Pregunta} style={{ fontWeight: 700, fontSize: '14px', lineHeight: 1.4, color: 'var(--text-strong)' }} />
             <span style={{ color: '#cc0044', flexShrink: 0 }}>
               {open === i ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
             </span>
@@ -93,9 +93,7 @@ export default function SucesionesPage({ data }) {
 
         {/* HEADER */}
         <header style={{ maxWidth: '1280px', margin: '0 auto 7rem', padding: '0 1.5rem', textAlign: 'center' }}>
-          <h1 style={{ fontSize: 'var(--typo-h1-size)', fontWeight: 900, color: 'var(--text-strong)', lineHeight: 1.05, letterSpacing: 'var(--typo-h1-tracking)', marginTop: '1rem' }}>
-            {v('titulo')}
-          </h1>
+          <SheetText as="h1" text={v('titulo')} style={{ fontSize: 'var(--typo-h1-size)', fontWeight: 900, color: 'var(--text-strong)', lineHeight: 1.05, letterSpacing: 'var(--typo-h1-tracking)', marginTop: '1rem' }} />
           <div style={{ width: '6rem', height: '5px', background: '#660033', margin: '2rem auto', borderRadius: '3px' }} />
           <p style={{ maxWidth: '720px', margin: '0 auto', fontWeight: 500, lineHeight: 1.75, color: 'var(--text-secondary)', fontSize: '1.0625rem' }}>
             <SheetText text={v('subtitulo')} />
@@ -104,9 +102,7 @@ export default function SucesionesPage({ data }) {
 
         {/* POR QUÉ ELEGIRNOS */}
         <section className="scroll-reveal" style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
-          <h2 style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '1rem' }}>
-            {v('section_porque_titulo')}
-          </h2>
+          <SheetText as="h2" text={v('section_porque_titulo')} style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '1rem' }} />
           <p style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 3rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
             <SheetText text={v('section_porque_sub')} />
           </p>
@@ -120,7 +116,7 @@ export default function SucesionesPage({ data }) {
                     <Icon size={26} />
                   </div>
                   <div>
-                    <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--text-strong)', marginBottom: '0.625rem' }}>{item.Titulo}</h3>
+                    <SheetText as="h3" text={item.Titulo} style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--text-strong)', marginBottom: '0.625rem' }} />
                     <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text-secondary)' }}><SheetText text={item.Texto} /></p>
                   </div>
                 </div>
@@ -143,16 +139,14 @@ export default function SucesionesPage({ data }) {
 
         {/* PROCESO PASO A PASO */}
         <section className="scroll-reveal" style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
-          <h2 style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '3rem' }}>
-            {v('section_proceso_titulo')}
-          </h2>
+          <SheetText as="h2" text={v('section_proceso_titulo')} style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '3rem' }} />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {proceso.map((step, i) => (
               <div key={i} className="card-hover" style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2rem', position: 'relative', overflow: 'hidden' }}>
                 <span style={{ position: 'absolute', top: '1.25rem', right: '1.5rem', fontSize: '3.5rem', fontWeight: 900, color: 'rgba(102,0,51,0.18)', lineHeight: 1, userSelect: 'none' }}>
                   {step.Numero}
                 </span>
-                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-strong)', marginBottom: '0.75rem', paddingRight: '3rem', lineHeight: 1.4 }}>{step.Titulo}</h3>
+                <SheetText as="h3" text={step.Titulo} style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-strong)', marginBottom: '0.75rem', paddingRight: '3rem', lineHeight: 1.4 }} />
                 <p style={{ fontSize: '13px', lineHeight: 1.75, color: 'var(--text-muted)' }}><SheetText text={step.Texto} /></p>
               </div>
             ))}
@@ -161,9 +155,7 @@ export default function SucesionesPage({ data }) {
 
         {/* DOCUMENTACIÓN */}
         <section className="scroll-reveal" style={{ maxWidth: '800px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
-          <h2 style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '1rem' }}>
-            {v('section_docs_titulo')}
-          </h2>
+          <SheetText as="h2" text={v('section_docs_titulo')} style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '1rem' }} />
           <SheetText as="p" text={v('section_docs_sub')} style={{ textAlign: 'center', maxWidth: '480px', margin: '0 auto 2.5rem', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }} />
           <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2.25rem' }}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -175,7 +167,7 @@ export default function SucesionesPage({ data }) {
                       <Icon size={18} />
                     </div>
                     <div>
-                      <p style={{ fontWeight: 700, fontSize: '13px', marginBottom: '4px', color: 'var(--text-strong)' }}>{doc.Titulo}</p>
+                      <SheetText as="p" text={doc.Titulo} style={{ fontWeight: 700, fontSize: '13px', marginBottom: '4px', color: 'var(--text-strong)' }} />
                       <p style={{ fontSize: '12px', lineHeight: 1.6, color: 'var(--text-muted)' }}><SheetText text={doc.Texto} /></p>
                     </div>
                   </div>
@@ -187,18 +179,14 @@ export default function SucesionesPage({ data }) {
 
         {/* FAQ */}
         <section className="scroll-reveal" style={{ maxWidth: '800px', margin: '0 auto 6rem', padding: '0 1.5rem' }}>
-          <h2 style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '3rem' }}>
-            {v('section_faq_titulo')}
-          </h2>
+          <SheetText as="h2" text={v('section_faq_titulo')} style={{ fontSize: 'var(--typo-h2-size)', fontWeight: 800, color: 'var(--text-strong)', letterSpacing: 'var(--typo-h2-tracking)', textAlign: 'center', marginBottom: '3rem' }} />
           <Accordion items={faqs} />
         </section>
 
         {/* PARALLAX CONTACTO */}
         <ParallaxSection style={{ padding: '5rem 1.5rem', marginBottom: '0' }}>
           <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }}>
-              {v('contacto_titulo')}
-            </h2>
+            <SheetText as="h2" text={v('contacto_titulo')} style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }} />
             {v('contacto_sub') && (
               <SheetText as="p" text={v('contacto_sub')} style={{ marginTop: '1rem', fontWeight: 500, color: 'rgba(255,255,255,0.65)', lineHeight: 1.6 }} />
             )}

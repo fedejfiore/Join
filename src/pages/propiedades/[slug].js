@@ -15,11 +15,22 @@ export default function PropertyDetail({ property, data }) {
 
   const [activeTab, setActiveTab] = useState('fotos');
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [activeVideo, setActiveVideo] = useState(0);
+  const [activeMap, setActiveMap] = useState(0);
 
-  const photos = [
-    property.Foto_1, property.Foto_2, property.Foto_3, property.Foto_4, property.Foto_5,
-    property.Foto_6, property.Foto_7, property.Foto_8, property.Foto_9, property.Foto_10
-  ].filter(Boolean);
+  // Lee Campo, Campo_2, Campo_3... hasta que falte un número (sin tope fijo).
+  const collectSequential = (prop, prefix) => {
+    const values = [];
+    if (prop[prefix]) values.push(prop[prefix]);
+    let n = 2;
+    while (prop[`${prefix}_${n}`]) {
+      values.push(prop[`${prefix}_${n}`]);
+      n++;
+    }
+    return values;
+  };
+
+  const photos = collectSequential(property, 'Foto');
 
   const getEmbedUrl = (url) => {
     if (!url) return '';
@@ -28,9 +39,10 @@ export default function PropertyDetail({ property, data }) {
     return url;
   };
 
-  const getMapEmbedUrl = (prop) => {
+  const videos = collectSequential(property, 'URL_Video').map(getEmbedUrl).filter(Boolean);
+
+  const resolveMapEmbed = (rawFields, lat, lng) => {
     // Prioridad 1: iframe pegado desde Google Maps en cualquier campo de mapa
-    const rawFields = [prop.URL_Maps, prop.Direccion_maps, prop.Iframe_Mapa, prop.Embed_Mapa];
     for (const f of rawFields) {
       const raw = (f || '').trim();
       if (raw.includes('<iframe')) {
@@ -41,10 +53,10 @@ export default function PropertyDetail({ property, data }) {
     }
     // Prioridad 2: LAT/LONG → OpenStreetMap (sin API key, sin restricciones)
     const normCoord = v => (v || '').toString().trim().replace(',', '.');
-    const lat = normCoord(prop.LAT);
-    const lng = normCoord(prop.LONG);
-    if (lat && lng) {
-      const latN = parseFloat(lat), lngN = parseFloat(lng), d = 0.003;
+    const latC = normCoord(lat);
+    const lngC = normCoord(lng);
+    if (latC && lngC) {
+      const latN = parseFloat(latC), lngN = parseFloat(lngC), d = 0.003;
       if (!isNaN(latN) && !isNaN(lngN))
         return `https://www.openstreetmap.org/export/embed.html?bbox=${lngN-d},${latN-d},${lngN+d},${latN+d}&layer=mapnik&marker=${latN},${lngN}`;
     }
@@ -62,7 +74,18 @@ export default function PropertyDetail({ property, data }) {
     return '';
   };
 
-  const videoEmbed = getEmbedUrl(property.URL_Video);
+  // Junta URL_Maps/Direccion_maps/Iframe_Mapa/Embed_Mapa/LAT/LONG (y sus variantes _2, _3...) en una lista de mapas.
+  const maps = [];
+  for (let n = 1; ; n++) {
+    const suffix = n === 1 ? '' : `_${n}`;
+    const rawFields = [property[`URL_Maps${suffix}`], property[`Direccion_maps${suffix}`], property[`Iframe_Mapa${suffix}`], property[`Embed_Mapa${suffix}`]];
+    const lat = property[`LAT${suffix}`];
+    const lng = property[`LONG${suffix}`];
+    if (!rawFields.some(Boolean) && !(lat && lng)) break;
+    const src = resolveMapEmbed(rawFields, lat, lng);
+    if (src) maps.push({ label: property[`Mapa${suffix}_Titulo`] || (n === 1 ? 'Ubicación' : `Ubicación ${n}`), src });
+  }
+
   const prevPhoto = (e) => { e.stopPropagation(); setLightboxIndex(prev => prev === 0 ? photos.length - 1 : prev - 1); };
   const nextPhoto = (e) => { e.stopPropagation(); setLightboxIndex(prev => prev === photos.length - 1 ? 0 : prev + 1); };
   const propiedadInfo = `${property.Titulo} (${property.Direccion || property.Barrio})`;
@@ -100,9 +123,7 @@ export default function PropertyDetail({ property, data }) {
                   </span>
                 )}
               </div>
-              <h1 style={{ fontSize: 'clamp(1.625rem, 4vw, 2.75rem)', fontWeight: 800, color: 'var(--text-strong)', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
-                {property.Titulo}
-              </h1>
+              <SheetText as="h1" text={property.Titulo} style={{ fontSize: 'clamp(1.625rem, 4vw, 2.75rem)', fontWeight: 800, color: 'var(--text-strong)', lineHeight: 1.2, letterSpacing: '-0.02em' }} />
               <p style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', fontWeight: 600, color: 'var(--text-muted)', marginTop: '0.625rem' }}>
                 <MapPin size={15} /> {property.Direccion ? `${property.Direccion}, ` : ''}{property.Barrio}
               </p>
@@ -126,7 +147,7 @@ export default function PropertyDetail({ property, data }) {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', borderBottom: '1px solid var(--divider)', paddingBottom: '1.25rem', marginBottom: '1.5rem' }}>
             {[
               { key: 'fotos', label: `Fotos (${photos.length})`, icon: <Grid size={15} />, show: true },
-              { key: 'video', label: 'Video Tour',              icon: <Film size={15} />, show: !!videoEmbed },
+              { key: 'video', label: videos.length > 1 ? `Video Tour (${videos.length})` : 'Video Tour', icon: <Film size={15} />, show: videos.length > 0 },
               { key: 'tour',  label: 'Tour 360°',               icon: <Compass size={15} />, show: !!property.URL_Tour360 },
               { key: 'plano', label: 'Plano',                   icon: <span>📐</span>, show: !!property.URL_Plano },
             ].filter(t => t.show).map(tab => (
@@ -156,9 +177,24 @@ export default function PropertyDetail({ property, data }) {
                 ))}
               </div>
             )}
-            {activeTab === 'video' && videoEmbed && (
-              <div style={{ aspectRatio: '16/9', borderRadius: '0.875rem', overflow: 'hidden' }}>
-                <iframe src={videoEmbed} style={{ width: '100%', height: '100%', border: 0 }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+            {activeTab === 'video' && videos.length > 0 && (
+              <div>
+                {videos.length > 1 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
+                    {videos.map((_, i) => (
+                      <button key={i} onClick={() => setActiveVideo(i)} style={{
+                        padding: '0.5rem 1rem', borderRadius: '9999px',
+                        fontSize: '11px', fontWeight: 900, border: 'none', cursor: 'pointer',
+                        ...(activeVideo === i ? tabActiveStyle : tabInactiveStyle),
+                      }}>
+                        Video {i + 1}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                <div style={{ aspectRatio: '16/9', borderRadius: '0.875rem', overflow: 'hidden' }}>
+                  <iframe src={videos[activeVideo] || videos[0]} style={{ width: '100%', height: '100%', border: 0 }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+                </div>
               </div>
             )}
             {activeTab === 'tour' && property.URL_Tour360 && (
@@ -230,20 +266,30 @@ export default function PropertyDetail({ property, data }) {
                 </div>
               )}
 
-              {/* MAPA */}
-              {(() => {
-                const mapSrc = getMapEmbedUrl(property);
-                return mapSrc ? (
-                  <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2rem' }}>
-                    <h3 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#660033', marginBottom: '1.25rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--divider)' }}>
-                      Ubicación aproximada
-                    </h3>
-                    <div style={{ borderRadius: '0.875rem', overflow: 'hidden', height: '360px', border: '1px solid var(--card-border)' }}>
-                      <iframe src={mapSrc} width="100%" height="100%" style={{ border: 0, display: 'block' }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+              {/* MAPA(S) */}
+              {maps.length > 0 && (
+                <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '1.25rem', padding: '2rem' }}>
+                  <h3 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#660033', marginBottom: '1.25rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--divider)' }}>
+                    Ubicación aproximada
+                  </h3>
+                  {maps.length > 1 && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.25rem' }}>
+                      {maps.map((m, i) => (
+                        <button key={i} onClick={() => setActiveMap(i)} style={{
+                          padding: '0.5rem 1rem', borderRadius: '9999px',
+                          fontSize: '11px', fontWeight: 900, border: 'none', cursor: 'pointer',
+                          ...(activeMap === i ? tabActiveStyle : tabInactiveStyle),
+                        }}>
+                          {m.label}
+                        </button>
+                      ))}
                     </div>
+                  )}
+                  <div style={{ borderRadius: '0.875rem', overflow: 'hidden', height: '360px', border: '1px solid var(--card-border)' }}>
+                    <iframe src={(maps[activeMap] || maps[0]).src} width="100%" height="100%" style={{ border: 0, display: 'block' }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
                   </div>
-                ) : null;
-              })()}
+                </div>
+              )}
 
             </div>
 

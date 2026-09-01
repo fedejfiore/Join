@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Instagram, Facebook, Mail, MessageCircle, Youtube } from 'lucide-react';
+import { toDirectImageUrl } from '../../lib/google-sheets';
+import SheetText from '../../lib/sheet-text';
 
 const NAV_HREFS = [
   { id: 'tasaciones',  label: 'Tasaciones',  href: '/tasaciones' },
@@ -51,8 +53,8 @@ export default function Footer({ brand, setup }) {
   const showYt = (brand?.youtube?.status   || brand?.Youtube?.status)   === 'ON' && ytUrl;
   const showWa = (brand?.whatsapp?.status  || brand?.whatsapp_flotante?.status) === 'ON';
 
-  const logoBlancoSrc = brand?.Logo_Blanco?.valor || brand?.logo_blanco?.valor || '/images/JOIN-Blanco.png';
-  const logoColorSrc  = brand?.Logo_Color?.valor  || brand?.logo_color?.valor  || '/images/JOIN---Burdeos (1).png';
+  const logoBlancoSrc = toDirectImageUrl(brand?.Logo_Blanco?.valor || brand?.logo_blanco?.valor) || '/images/JOIN-Blanco.png';
+  const logoColorSrc  = toDirectImageUrl(brand?.Logo_Color?.valor  || brand?.logo_color?.valor)  || '/images/JOIN---Burdeos (1).png';
   const logoSrc = isDark ? logoBlancoSrc : logoColorSrc;
 
   return (
@@ -71,9 +73,7 @@ export default function Footer({ brand, setup }) {
                 onError={() => setLogoError(true)}
                 style={{ height: '44px', width: 'auto', objectFit: 'contain', objectPosition: 'left' }} />
             )}
-            <p style={{ fontSize: '11px', lineHeight: 1.7, color: 'var(--footer-text-muted)' }}>
-              {descripcion}
-            </p>
+            <SheetText as="p" text={descripcion} style={{ fontSize: '11px', lineHeight: 1.7, color: 'var(--footer-text-muted)' }} />
             {(titular || cucicba || cpacf) && (
               <div style={{ fontSize: '9px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--footer-text-copy)', lineHeight: 1.8 }}>
                 {titular  && <p style={{ marginBottom: '2px', color: 'var(--footer-text-muted)', textTransform: 'none', letterSpacing: '0.05em' }}>{titular}</p>}
@@ -160,9 +160,7 @@ export default function Footer({ brand, setup }) {
           <p style={{ fontSize: '10px', fontWeight: 500, color: 'var(--footer-text-copy)' }}>
             © {year} {nombre} — Todos los derechos reservados
           </p>
-          <p style={{ fontSize: '10px', fontWeight: 500, color: 'var(--footer-text-copy)' }}>
-            {tagline}
-          </p>
+          <SheetText as="p" text={tagline} style={{ fontSize: '10px', fontWeight: 500, color: 'var(--footer-text-copy)' }} />
         </div>
 
       </div>

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
 import { getIcon } from '../../lib/icon-map';
+import SheetText from '../../lib/sheet-text';
 
 // ── Fallbacks ──────────────────────────────────────────────────────────────
 const DEFAULT_RAZONES = [
@@ -99,7 +100,7 @@ export default function PorQueElegirnos({ valores = [], valores_items = [] }) {
               }}>
                 <I size={17} style={{ flexShrink: 0 }} />
                 <span style={{ fontWeight: 800, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.12em', lineHeight: 1.3 }}>
-                  {r.Numero}. {r.Titulo}
+                  {r.Numero}. <SheetText text={r.Titulo} />
                 </span>
               </button>
             );
@@ -124,12 +125,8 @@ export default function PorQueElegirnos({ valores = [], valores_items = [] }) {
               <Icon size={28} />
             </div>
             <div style={{ minWidth: 0, flex: 1 }}>
-              <h3 style={{ fontSize: 'clamp(1.25rem, 3vw, 1.75rem)', fontWeight: 800, color: 'var(--text-strong)', marginBottom: '10px' }}>
-                {razon.Titulo}
-              </h3>
-              <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text-secondary)', maxWidth: '700px' }}>
-                {razon.Intro}
-              </p>
+              <SheetText as="h3" text={razon.Titulo} style={{ fontSize: 'clamp(1.25rem, 3vw, 1.75rem)', fontWeight: 800, color: 'var(--text-strong)', marginBottom: '10px' }} />
+              <SheetText as="p" text={razon.Intro} style={{ fontSize: '14px', lineHeight: 1.75, color: 'var(--text-secondary)', maxWidth: '700px' }} />
             </div>
           </div>
 
@@ -140,9 +137,9 @@ export default function PorQueElegirnos({ valores = [], valores_items = [] }) {
                   <div style={{ width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 900, flexShrink: 0, background: '#660033', color: '#ffffff' }}>
                     {String(i + 1).padStart(2, '0')}
                   </div>
-                  <p style={{ fontWeight: 700, fontSize: '12px', color: 'var(--text-strong)', lineHeight: 1.3 }}>{item.Titulo}</p>
+                  <SheetText as="p" text={item.Titulo} style={{ fontWeight: 700, fontSize: '12px', color: 'var(--text-strong)', lineHeight: 1.3 }} />
                 </div>
-                <p style={{ fontSize: '12px', lineHeight: 1.7, color: 'var(--text-secondary)' }}>{item.Texto}</p>
+                <SheetText as="p" text={item.Texto} style={{ fontSize: '12px', lineHeight: 1.7, color: 'var(--text-secondary)' }} />
               </div>
             ))}
           </div>

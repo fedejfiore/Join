@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Navigation, Pagination, Autoplay } from 'swiper/modules';
+import SheetText from '../../lib/sheet-text';
 
 // Importación de estilos base de Swiper
 import 'swiper/css';
@@ -64,12 +65,8 @@ export default function Services({ servicios = [] }) {
                   
                   <div className="absolute bottom-0 left-0 p-8 text-white z-[10] w-full text-left">
                     {/* FORZAMOS EL COLOR CON LA NUEVA CLASE */}
-                    <h3 className="text-2xl font-black italic uppercase mb-2 tracking-tighter text-on-image">
-                      {s.Titulo}
-                    </h3>
-                    <p className="text-sm font-medium opacity-90 leading-relaxed text-white">
-                      {s.Detalle || s.Descripcion}
-                    </p>
+                    <SheetText as="h3" text={s.Titulo} className="text-2xl font-black italic uppercase mb-2 tracking-tighter text-on-image" />
+                    <SheetText as="p" text={s.Detalle || s.Descripcion} className="text-sm font-medium opacity-90 leading-relaxed text-white" />
                   </div>
                 </div>
               </SwiperSlide>

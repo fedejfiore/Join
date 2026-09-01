@@ -1,4 +1,5 @@
 import { getAllSiteData } from '../lib/google-sheets';
+import SheetText from '../lib/sheet-text';
 import ParallaxSection from '../components/ui/ParallaxSection';
 import Layout from '../components/layout/Layout';
 import HeroJoin from '../components/sections/HeroJoin';
@@ -22,18 +23,14 @@ export default function Home({ data }) {
       {setup.servicios?.status !== 'OFF' && <ServiciosJoin servicios={servicios} />}
       <ParallaxSection style={{ height: '220px' }}>
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 2rem' }}>
-          <p style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(1.1rem, 3vw, 1.75rem)', fontWeight: 800, color: '#ffffff', textAlign: 'center', maxWidth: '700px', lineHeight: 1.4, letterSpacing: '-0.02em' }}>
-            {banner?.parallax_1_quote?.valor || PARALLAX_DEFAULT[0]}
-          </p>
+          <SheetText as="p" text={banner?.parallax_1_quote?.valor || PARALLAX_DEFAULT[0]} style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(1.1rem, 3vw, 1.75rem)', fontWeight: 800, color: '#ffffff', textAlign: 'center', maxWidth: '700px', lineHeight: 1.4, letterSpacing: '-0.02em' }} />
         </div>
       </ParallaxSection>
       {setup.nosotros?.status !== 'OFF'  && <NosotrosJoin data={nosotros} />}
       {setup.valores?.status !== 'OFF'   && <PorQueElegirnos valores={valores} valores_items={valores_items} />}
       <ParallaxSection style={{ height: '220px' }}>
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 2rem' }}>
-          <p style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(1.1rem, 3vw, 1.75rem)', fontWeight: 800, color: '#ffffff', textAlign: 'center', maxWidth: '700px', lineHeight: 1.4, letterSpacing: '-0.02em' }}>
-            {banner?.parallax_2_quote?.valor || PARALLAX_DEFAULT[1]}
-          </p>
+          <SheetText as="p" text={banner?.parallax_2_quote?.valor || PARALLAX_DEFAULT[1]} style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(1.1rem, 3vw, 1.75rem)', fontWeight: 800, color: '#ffffff', textAlign: 'center', maxWidth: '700px', lineHeight: 1.4, letterSpacing: '-0.02em' }} />
         </div>
       </ParallaxSection>
       {setup.noticias?.status !== 'OFF'  && <BlogPreviewJoin noticias={noticias} />}

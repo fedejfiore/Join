@@ -55,7 +55,7 @@ export default function Process({ pasos = [] }) {
                     <div className="flex items-center gap-3 mb-2 md:hidden">
                         <span className="bg-accent text-white dark:text-slate-950 w-8 h-8 rounded-full flex items-center justify-center font-black text-sm">{item.paso}</span>
                     </div>
-                    <h3 className="text-3xl relative">{item.titulo}</h3>
+                    <SheetText as="h3" text={item.titulo} className="text-3xl relative" />
                     <div className="relative prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 font-medium text-left">
                       <SheetText as="div" text={item.descripcion} />
                     </div>

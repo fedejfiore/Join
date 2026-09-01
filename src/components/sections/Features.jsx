@@ -50,9 +50,7 @@ function FlipCard({ item }) {
 
           <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center z-[10]">
             {/* USAMOS LA CLASE text-on-image */}
-            <h3 className="text-3xl font-black italic uppercase leading-tight mb-6 text-on-image">
-              {item.titulo}
-            </h3>
+            <SheetText as="h3" text={item.titulo} className="text-3xl font-black italic uppercase leading-tight mb-6 text-on-image" />
             <button 
               onClick={(e) => { e.stopPropagation(); setIsFlipped(true); }}
               className="bg-white text-slate-900 px-8 py-3 rounded-full font-black uppercase text-[10px] tracking-widest hover:scale-110 transition-all shadow-xl"

@@ -48,9 +48,7 @@ function FlipCard({ item }) {
           <div style={{ background: 'rgba(102,0,51,0.12)', color: '#cc0044', padding: '1rem', borderRadius: '1rem', marginBottom: '1.5rem' }}>
             <Icon size={32} />
           </div>
-          <h3 style={{ fontSize: '1.0625rem', fontWeight: 700, color: 'var(--text-strong)', lineHeight: 1.35, marginBottom: '1.5rem', textAlign: 'center' }}>
-            {item.Titulo}
-          </h3>
+          <SheetText as="h3" text={item.Titulo} style={{ fontSize: '1.0625rem', fontWeight: 700, color: 'var(--text-strong)', lineHeight: 1.35, marginBottom: '1.5rem', textAlign: 'center' }} />
           <button
             onClick={() => setIsFlipped(true)}
             style={{ background: '#660033', color: '#fff', padding: '0.625rem 1.75rem', borderRadius: '9999px', fontWeight: 900, textTransform: 'uppercase', fontSize: '10px', letterSpacing: '0.18em', border: 'none', cursor: 'pointer', transition: 'transform 0.2s' }}
@@ -68,9 +66,7 @@ function FlipCard({ item }) {
           gap: '1rem', zIndex: 20, background: '#660033',
           transform: 'rotateY(180deg)', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden',
         }}>
-          <p style={{ fontWeight: 900, textTransform: 'uppercase', fontSize: '14px', textAlign: 'center', lineHeight: 1.3, color: '#fff' }}>
-            {item.Titulo}
-          </p>
+          <SheetText as="p" text={item.Titulo} style={{ fontWeight: 900, textTransform: 'uppercase', fontSize: '14px', textAlign: 'center', lineHeight: 1.3, color: '#fff' }} />
           <div style={{ width: '40px', height: '2px', borderRadius: '1px', background: 'rgba(255,255,255,0.3)' }} />
           <p style={{ fontSize: '14px', lineHeight: 1.75, textAlign: 'center', fontWeight: 500, color: 'rgba(255,255,255,0.88)', flex: 1, display: 'flex', alignItems: 'center' }}>
             <SheetText text={item.Descripcion} />
@@ -104,9 +100,7 @@ export default function JuridicoPage({ data }) {
 
         {/* HEADER */}
         <header style={{ maxWidth: '1280px', margin: '0 auto 6rem', padding: '0 1.5rem', textAlign: 'center' }}>
-          <h1 style={{ fontSize: 'var(--typo-h1-size)', fontWeight: 900, color: 'var(--text-strong)', lineHeight: 1.05, letterSpacing: 'var(--typo-h1-tracking)', marginTop: '1rem' }}>
-            {v('titulo')}
-          </h1>
+          <SheetText as="h1" text={v('titulo')} style={{ fontSize: 'var(--typo-h1-size)', fontWeight: 900, color: 'var(--text-strong)', lineHeight: 1.05, letterSpacing: 'var(--typo-h1-tracking)', marginTop: '1rem' }} />
           <div style={{ width: '6rem', height: '5px', background: '#660033', margin: '2rem auto', borderRadius: '3px' }} />
           <SheetText as="p" text={v('subtitulo')} style={{ maxWidth: '640px', margin: '0 auto', fontWeight: 500, lineHeight: 1.75, color: 'var(--text-secondary)' }} />
         </header>
@@ -123,9 +117,7 @@ export default function JuridicoPage({ data }) {
         {/* PARALLAX CONTACTO */}
         <ParallaxSection style={{ padding: '5rem 1.5rem' }}>
           <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }}>
-              {v('contacto_titulo')}
-            </h2>
+            <SheetText as="h2" text={v('contacto_titulo')} style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }} />
             {v('contacto_sub') && (
               <SheetText as="p" text={v('contacto_sub')} style={{ marginTop: '1rem', fontWeight: 500, color: 'rgba(255,255,255,0.65)', lineHeight: 1.6 }} />
             )}

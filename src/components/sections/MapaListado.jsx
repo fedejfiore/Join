@@ -10,6 +10,7 @@ export default function MapaListado({ propiedades = [] }) {
   const instanceRef = useRef(null);
 
   const norm = v => parseFloat((v || '').toString().trim().replace(',', '.'));
+  const esc = v => String(v || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
   const withCoords = propiedades.filter(p => {
     const lat = norm(p.LAT);
@@ -65,10 +66,10 @@ export default function MapaListado({ propiedades = [] }) {
         const precio = Number(prop.Precio).toLocaleString('es-AR');
         const popup = `
           <div style="min-width:160px;font-family:inherit">
-            <p style="font-weight:700;font-size:13px;margin:0 0 4px;color:#111">${prop.Titulo || ''}</p>
-            <p style="font-size:11px;color:#555;margin:0 0 4px">${prop.Tipo || ''} · ${prop.Barrio || ''}</p>
-            <p style="font-size:13px;font-weight:900;color:#660033;margin:0 0 8px">${prop.Moneda || ''} ${precio}</p>
-            <a href="/propiedades/${prop.Slug}"
+            <p style="font-weight:700;font-size:13px;margin:0 0 4px;color:#111">${esc(prop.Titulo)}</p>
+            <p style="font-size:11px;color:#555;margin:0 0 4px">${esc(prop.Tipo)} · ${esc(prop.Barrio)}</p>
+            <p style="font-size:13px;font-weight:900;color:#660033;margin:0 0 8px">${esc(prop.Moneda)} ${precio}</p>
+            <a href="/propiedades/${encodeURIComponent(prop.Slug || '')}"
                style="display:block;text-align:center;background:#660033;color:#fff;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;text-decoration:none">
               Ver propiedad →
             </a>

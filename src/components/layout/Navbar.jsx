@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Menu, X, Accessibility } from 'lucide-react';
 import AccessibilityHub from '../ui/AccessibilityHub';
 import ThemeToggle from '../ui/ThemeToggle';
+import { toDirectImageUrl } from '../../lib/google-sheets';
 
 export default function Navbar({ brand, setup, accConfig }) {
   const [isOpen, setIsOpen]       = useState(false);
@@ -28,8 +29,8 @@ export default function Navbar({ brand, setup, accConfig }) {
     { id: 'blog',        label: setup?.blog?.valor        || 'BLOG',        href: '/blog' },
   ].filter(item => setup?.[item.id]?.status !== 'OFF');
 
-  const logoBlancoSrc = brand?.Logo_Blanco?.valor || brand?.logo_blanco?.valor || '/images/JOIN-Blanco.png';
-  const logoColorSrc  = brand?.Logo_Color?.valor  || brand?.logo_color?.valor  || '/images/JOIN---Burdeos (1).png';
+  const logoBlancoSrc = toDirectImageUrl(brand?.Logo_Blanco?.valor || brand?.logo_blanco?.valor) || '/images/JOIN-Blanco.png';
+  const logoColorSrc  = toDirectImageUrl(brand?.Logo_Color?.valor  || brand?.logo_color?.valor)  || '/images/JOIN---Burdeos (1).png';
   const logoSrc = isDark ? logoBlancoSrc : logoColorSrc;
 
   return (

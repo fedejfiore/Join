@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Typewriter from 'typewriter-effect';
 import Image from 'next/image';
+import SheetText from '../../lib/sheet-text';
 
 export default function Hero({ config }) {
   // 1. Extraemos los valores exactos del Sheet
@@ -42,7 +43,7 @@ export default function Hero({ config }) {
       {/* CONTENIDO TEXTUAL */}
       <div className="relative max-w-4xl mx-auto text-center z-10">
         <h1 className="text-4xl md:text-6xl font-black text-white leading-[1.1] tracking-tighter drop-shadow-2xl">
-          {titulo}
+          <SheetText text={titulo} />
           <br />
           <span className="italic inline-block mt-3 text-accent">
             <Typewriter
@@ -58,9 +59,7 @@ export default function Hero({ config }) {
         </h1>
 
         {textoInferior && (
-          <p className="mt-8 text-base md:text-xl text-slate-200 max-w-2xl mx-auto font-medium leading-relaxed drop-shadow-md">
-            {textoInferior}
-          </p>
+          <SheetText as="p" text={textoInferior} className="mt-8 text-base md:text-xl text-slate-200 max-w-2xl mx-auto font-medium leading-relaxed drop-shadow-md" />
         )}
 
         <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">

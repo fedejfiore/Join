@@ -153,13 +153,10 @@ export default function BlogList({ noticias = [] }) {
                 <span style={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#999', marginBottom: '0.75rem', display: 'block' }}>
                   {nota.Fecha}
                 </span>
-                <h3 style={{ fontSize: '1.0625rem', fontWeight: 700, lineHeight: 1.4, color: '#111', marginBottom: '0.875rem', transition: 'color 0.2s' }}
-                  className="group-hover:text-[#660033]">
-                  {nota.Titulo}
-                </h3>
-                <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#555', marginBottom: '1.5rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                  {nota.Copete}
-                </p>
+                <SheetText as="h3" text={nota.Titulo} className="group-hover:text-[#660033]"
+                  style={{ fontSize: '1.0625rem', fontWeight: 700, lineHeight: 1.4, color: '#111', marginBottom: '0.875rem', transition: 'color 0.2s' }} />
+                <SheetText as="p" text={nota.Copete}
+                  style={{ fontSize: '14px', lineHeight: 1.7, color: '#555', marginBottom: '1.5rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }} />
 
                 <div style={{ marginTop: 'auto', paddingTop: '1.25rem', borderTop: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <button
@@ -227,9 +224,8 @@ export default function BlogList({ noticias = [] }) {
                 </span>
               </div>
 
-              <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 800, lineHeight: 1.2, color: '#111', marginBottom: '2rem', letterSpacing: '-0.02em' }}>
-                {selectedNota.Titulo}
-              </h2>
+              <SheetText as="h2" text={selectedNota.Titulo}
+                style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 800, lineHeight: 1.2, color: '#111', marginBottom: '2rem', letterSpacing: '-0.02em' }} />
 
               <div style={{ fontSize: '16px', lineHeight: 1.8, color: '#333' }}>
                 <SheetText as="div" text={selectedNota.Cuerpo} />
