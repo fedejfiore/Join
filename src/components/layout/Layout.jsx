@@ -2,33 +2,24 @@ import Head from 'next/head';
 import Script from 'next/script';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import { MessageCircle, X, Download } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { MessageCircle } from 'lucide-react';
+import { useEffect } from 'react';
+import { toDirectImageUrl } from '../../lib/google-sheets';
 
 export default function Layout({ children, data }) {
-  const [showInstallBanner, setShowInstallBanner] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [isIOS, setIsIOS] = useState(false);
-
   useEffect(() => {
+    // Desinstala cualquier Service Worker / cache de versiones anteriores del sitio
+    // que hayan quedado activos en el navegador de visitantes recurrentes (PWA dada de baja).
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(() => {});
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        regs.forEach(reg => reg.unregister());
+      });
     }
-    const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-    if (isPWA) return;
+    if ('caches' in window) {
+      caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+    }
+
     const userAgent = window.navigator.userAgent;
-    const isApple = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-    setIsIOS(isApple);
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      if (!sessionStorage.getItem('pwa_banner_cerrado')) {
-        setTimeout(() => setShowInstallBanner(true), 3000);
-      }
-    });
-    if (isApple && !sessionStorage.getItem('pwa_banner_cerrado')) {
-      setTimeout(() => setShowInstallBanner(true), 3000);
-    }
     const esMovil = /Android|iPhone|iPad|iPod/i.test(userAgent);
     if (esMovil) {
       const handleInstaClick = (e) => {
@@ -44,23 +35,6 @@ export default function Layout({ children, data }) {
       return () => document.removeEventListener('click', handleInstaClick);
     }
   }, []);
-
-  const handleInstallClick = async () => {
-    if (isIOS) {
-      alert('Para instalar en tu iPhone:\n1. Toca el botón "Compartir".\n2. Elegí "Añadir a la pantalla de inicio".');
-      cerrarBanner();
-    } else if (deferredPrompt) {
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      cerrarBanner();
-      setDeferredPrompt(null);
-    }
-  };
-
-  const cerrarBanner = () => {
-    setShowInstallBanner(false);
-    sessionStorage.setItem('pwa_banner_cerrado', 'true');
-  };
 
   if (!data?.brand || !data?.setup) return null;
 
@@ -85,7 +59,7 @@ export default function Layout({ children, data }) {
   const themePrimary = brand?.theme_color?.valor || '#0D3B66';
   const whatsappNum = (brand?.whatsapp?.valor || brand?.whatsapp_flotante?.valor || '541126820000').replace(/\D/g, '');
   const showWhatsapp = brand?.whatsapp?.status === 'ON' || brand?.whatsapp_flotante?.status === 'ON';
-  const favicon = brand?.favicon?.valor || '/images/JOIN---Burdeos (1).png';
+  const favicon = toDirectImageUrl(brand?.favicon?.valor) || '/images/JOIN---Burdeos (1).png';
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -95,14 +69,9 @@ export default function Layout({ children, data }) {
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDesc} />
         <meta property="og:type" content="website" />
-        <link rel="icon" type="image/png" href="/JOINlogo.png" />
-        <link rel="apple-touch-icon" href="/JOINlogo.png" />
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" type="image/png" href={favicon} />
+        <link rel="apple-touch-icon" href={favicon} />
         <meta name="theme-color" content="#660033" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="JOIN" />
         <style>{`:root{--color-primary:${colorPrimary};--color-accent:${colorAccent};--typo-hero-size:${heroSize};--typo-hero-tracking:${heroTracking};--typo-h1-size:${h1Size};--typo-h1-tracking:${h1Tracking};--typo-h2-size:${h2Size};--typo-h2-tracking:${h2Tracking}}`}</style>
       </Head>
 
@@ -123,41 +92,6 @@ export default function Layout({ children, data }) {
       <main className="flex-grow">{children}</main>
 
       {setup?.footer?.status !== 'OFF' && <Footer brand={brand} setup={setup} />}
-
-      {showInstallBanner && (
-        <div style={{
-          position: 'fixed', bottom: '6rem', left: '1.5rem', right: '1.5rem',
-          maxWidth: '340px', marginLeft: 'auto',
-          background: 'var(--nav-bg)', border: '1px solid var(--nav-border)',
-          borderRadius: '1.25rem', padding: '1rem 1.25rem',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.35)', zIndex: 60,
-        }}>
-          {/* Fila superior: label + X */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-            <span style={{ fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.25em', color: '#cc0044' }}>App Disponible</span>
-            <button onClick={cerrarBanner} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--nav-icon)', display: 'flex', padding: '2px' }}>
-              <X size={15} />
-            </button>
-          </div>
-          {/* Fila con icono + texto */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-            {/* Ícono: exactamente el mismo que aparece en pantalla de inicio */}
-            <img src="/JOINlogo.png" alt="JOIN" style={{ width: '44px', height: '44px', borderRadius: '10px', flexShrink: 0 }} />
-            <span style={{ fontWeight: 700, fontSize: '13px', color: 'var(--nav-text-hover)' }}>
-              {isIOS ? 'Añadir a Inicio' : 'Instalar App JOIN'}
-            </span>
-          </div>
-          {/* Botón full-width */}
-          <button onClick={handleInstallClick} style={{
-            width: '100%', background: '#660033', color: '#fff',
-            padding: '0.6rem 1rem', borderRadius: '0.75rem', border: 'none',
-            fontWeight: 900, fontSize: '11px', textTransform: 'uppercase',
-            letterSpacing: '0.15em', cursor: 'pointer',
-          }}>
-            {isIOS ? 'Ver Cómo' : 'Instalar'}
-          </button>
-        </div>
-      )}
 
       {showWhatsapp && (
         <a
