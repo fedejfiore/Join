@@ -59,7 +59,7 @@ export default function Layout({ children, data }) {
   const themePrimary = brand?.theme_color?.valor || '#0D3B66';
   const whatsappNum = (brand?.whatsapp?.valor || brand?.whatsapp_flotante?.valor || '541126820000').replace(/\D/g, '');
   const showWhatsapp = brand?.whatsapp?.status === 'ON' || brand?.whatsapp_flotante?.status === 'ON';
-  const favicon = toDirectImageUrl(brand?.favicon?.valor) || '/images/JOIN---Burdeos (1).png';
+  const favicon = toDirectImageUrl(brand?.favicon?.valor || brand?.Favicon?.valor) || '/images/JOIN---Burdeos (1).png';
 
   return (
     <div className="min-h-screen flex flex-col">
